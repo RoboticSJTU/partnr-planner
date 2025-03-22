@@ -11,8 +11,9 @@
                     "object_classes": [
                         "bowl"
                     ],
+                    "allowed_regions": ["kitchen_0"],
                     "location": "on",
-                    "furniture_classes": []
+                    "furniture_classes": ["counter"]
                 }
             ]
         }

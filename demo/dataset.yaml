@@ -1,0 +1,7 @@
+type: CollaborationDataset-v0
+split: train
+scenes_dir: data/hssd-hab
+content_scenes:
+- '*'
+data_path: demo/test.json.gz
+metadata: null
