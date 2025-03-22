@@ -118,3 +118,7 @@ dmypy.json
 
 # ignore rlm logs
 rlm/
+
+# demo temp files
+/demo/*.json.gz
+/demo/test.json

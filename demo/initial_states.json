@@ -1,0 +1,20 @@
+{
+    "initial_state_dicts": [
+        {
+            "scene_id": "102817140",
+            "episode_id": "test|102817140|1",
+            "instruction": "dummy",
+            "initial_state": [
+                {
+                    "name": "default all",
+                    "number": "2",
+                    "object_classes": [
+                        "bowl"
+                    ],
+                    "location": "on",
+                    "furniture_classes": []
+                }
+            ]
+        }
+    ]
+}

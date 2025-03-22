@@ -1,0 +1,15 @@
+{
+    "scene_dataset": "data/hssd-hab/hssd-hab-partnr.scene_dataset_config.json",
+    "additional_object_paths": [
+        "data/objects/ycb/configs/",
+        "data/objects_ovmm/train_val/ai2thorhab/configs/objects",
+        "data/objects_ovmm/train_val/amazon_berkeley/configs",
+        "data/objects_ovmm/train_val/google_scanned/configs",
+        "data/objects_ovmm/train_val/hssd/configs/objects"
+    ],
+    "ep_dataset_output": "demo/test.json.gz",
+    "failure_log_output": "generator_failure_log.json",
+    "enable_check_obj_stability": false,
+    "agent_max_climb": 0.2,
+    "agent_max_slope": 45.0
+}
