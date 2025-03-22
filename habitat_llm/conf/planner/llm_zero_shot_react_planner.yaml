@@ -1,5 +1,5 @@
 defaults:
-  - /llm@plan_config.llm: llama
+  - /llm@plan_config.llm: openai_chat
   - /instruct@plan_config.instruct: zero_shot_prompt
 
 _target_: 'habitat_llm.planner.ZeroShotReactPlanner'

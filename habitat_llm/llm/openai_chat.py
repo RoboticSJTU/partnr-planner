@@ -9,6 +9,7 @@ from typing import Dict, List, Optional
 
 from omegaconf import DictConfig, OmegaConf
 from openai import AzureOpenAI
+from openai import OpenAI
 
 from habitat_llm.llm.base_llm import BaseLLM, Prompt
 
@@ -49,11 +50,13 @@ class OpenAIChat(BaseLLM):
             assert len(endpoint) > 0, ValueError("No OPENAI_ENDPOINT keys provided")
         except Exception:
             raise ValueError("No OPENAI endpoint keys provided")
-        self.client = AzureOpenAI(
-            api_version="2024-06-01",
-            api_key=api_key,
-            azure_endpoint=f"https://{endpoint}",
-        )
+        # self.client = AzureOpenAI(
+        #     api_version="2024-06-01",
+        #     api_key=api_key,
+        #     azure_endpoint=f"https://{endpoint}",
+        # )
+        
+        self.client = OpenAI(api_key=api_key, base_url=endpoint)
         self._validate_conf()
         self.verbose = self.llm_conf.verbose
         self.verbose = True
@@ -109,8 +112,11 @@ class OpenAIChat(BaseLLM):
             image_detail = "low"  # high/low/auto
             messages.append(generate_message(prompt, image_detail=image_detail))
 
+        # text_response = self.client.chat.completions.create(
+        #     model=params["model"], messages=messages
+        # )
         text_response = self.client.chat.completions.create(
-            model=params["model"], messages=messages
+            model="deepseek-chat", messages=messages
         )
         text_response = text_response.choices[0].message.content
         self.response = text_response

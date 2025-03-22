@@ -170,8 +170,8 @@ class MetadataExtractor:
                 "orientation": [0.0, 0.0, 0.0],
             }
         }
-
-        additional_object_paths = self.dataset["episodes"][0]["additional_object_paths"]
+        additional_object_paths = self.dataset["episodes"][0].get("additional_object_paths", [])
+        # additional_object_paths = self.dataset["episodes"][0]["additional_object_paths"]
 
         cfg = get_config_defaults()
 
