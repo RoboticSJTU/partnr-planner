@@ -52,7 +52,7 @@ class DebugVideoUtil:
 
         
         # 异步显示参数
-        self.preview_queue = queue.Queue(maxsize=1000)
+        self.preview_queue = queue.Queue(maxsize=1)
         self.preview_active = True  # 窗口是否处于激活状态
         
         # 启动独立的显示线程
@@ -168,7 +168,7 @@ class DebugVideoUtil:
             #     self.preview_active = False
             # 非阻塞方式投递到显示线程
             try:
-                self.preview_queue.put_nowait(bgr_image)
+                self.preview_queue.put(bgr_image)
             except queue.Full:
                 pass  # 跳过偶发的帧丢弃
 

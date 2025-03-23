@@ -262,7 +262,7 @@ def zero_shot_prompt_action_parser(text):
     regex = r"Action: (.*?)[\n]*Action Input: (.*)"
     match = re.search(regex, text, re.DOTALL)
     if not match:
-        print(text)
+        #print(text)
         raise ValueError(f"Could not parse LLM output: `{text}`")
     action = match.group(1).strip()
     action_input = match.group(2)
@@ -300,7 +300,7 @@ def zero_shot_prompt_agent_action_parser(text):
     regex = r"Action: (.*?)[\n]*Action Input: (.*)[\n]*Agent: (.*)"
     match = re.search(regex, text, re.DOTALL)
     if not match:
-        print(text)
+        # print(text)
         raise ValueError(f"Could not parse LLM output: `{text}`")
     action = match.group(1).strip()
     action_input = match.group(2).strip()

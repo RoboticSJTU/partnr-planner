@@ -1,0 +1,2658 @@
+{
+    "config": null,
+    "episodes": [
+        {
+            "episode_id": "0",
+            "scene_id": "102817140",
+            "scene_dataset_config": "data/hssd-hab/hssd-hab-partnr.scene_dataset_config.json",
+            "additional_obj_config_paths": [
+                "data/objects/ycb/configs/",
+                "data/objects_ovmm/train_val/ai2thorhab/configs/objects",
+                "data/objects_ovmm/train_val/amazon_berkeley/configs",
+                "data/objects_ovmm/train_val/google_scanned/configs",
+                "data/objects_ovmm/train_val/hssd/configs/objects"
+            ],
+            "start_position": [
+                0,
+                0,
+                0
+            ],
+            "start_rotation": [
+                0,
+                0,
+                0,
+                1
+            ],
+            "info": {
+                "episode_id": "test|102817140|1",
+                "is_dynamic": false,
+                "sample_configs": {
+                    "0": {
+                        "name": "apple",
+                        "number": "1",
+                        "object_classes": [
+                            "apple"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "1": {
+                        "name": "laptop",
+                        "number": "1",
+                        "object_classes": [
+                            "laptop"
+                        ],
+                        "allowed_regions": [
+                            "living room"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "table"
+                        ]
+                    },
+                    "2": {
+                        "name": "canister",
+                        "number": "1",
+                        "object_classes": [
+                            "canister"
+                        ],
+                        "allowed_regions": [
+                            "bedroom"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "table"
+                        ]
+                    },
+                    "3": {
+                        "name": "lamp",
+                        "number": "1",
+                        "object_classes": [
+                            "lamp"
+                        ],
+                        "allowed_regions": [
+                            "bedroom"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "table"
+                        ]
+                    },
+                    "4": {
+                        "name": "bocushionok",
+                        "number": "1",
+                        "object_classes": [
+                            "cushion"
+                        ],
+                        "allowed_regions": [
+                            "bedroom"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "bed"
+                        ]
+                    },
+                    "5": {
+                        "name": "toy_animal",
+                        "number": "1",
+                        "object_classes": [
+                            "toy_animal"
+                        ],
+                        "allowed_regions": [
+                            "bedroom"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "bed"
+                        ]
+                    },
+                    "6": {
+                        "name": "doll",
+                        "number": "1",
+                        "object_classes": [
+                            "doll"
+                        ],
+                        "allowed_regions": [
+                            "bedroom"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "bed"
+                        ]
+                    },
+                    "7": {
+                        "name": "toy_vehicle",
+                        "number": "1",
+                        "object_classes": [
+                            "toy_vehicle"
+                        ],
+                        "allowed_regions": [
+                            "bedroom"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "bench"
+                        ]
+                    },
+                    "8": {
+                        "name": "backpack",
+                        "number": "1",
+                        "object_classes": [
+                            "backpack"
+                        ],
+                        "allowed_regions": [
+                            "bedroom"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "bench"
+                        ]
+                    },
+                    "9": {
+                        "name": "cushion",
+                        "number": "1",
+                        "object_classes": [
+                            "cushion"
+                        ],
+                        "allowed_regions": [
+                            "bedroom"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "bench"
+                        ]
+                    },
+                    "10": {
+                        "name": "clock",
+                        "number": "1",
+                        "object_classes": [
+                            "clock"
+                        ],
+                        "allowed_regions": [
+                            "bedroom"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "table"
+                        ]
+                    },
+                    "11": {
+                        "name": "candle",
+                        "number": "1",
+                        "object_classes": [
+                            "candle"
+                        ],
+                        "allowed_regions": [
+                            "bedroom"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "table"
+                        ]
+                    },
+                    "12": {
+                        "name": "bowl",
+                        "number": "2",
+                        "object_classes": [
+                            "bowl"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "13": {
+                        "name": "butter_dish",
+                        "number": "2",
+                        "object_classes": [
+                            "butter_dish"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "cabinet"
+                        ]
+                    },
+                    "14": {
+                        "name": "bottle",
+                        "number": "1",
+                        "object_classes": [
+                            "bottle"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "15": {
+                        "name": "cup",
+                        "number": "2",
+                        "object_classes": [
+                            "cup"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "16": {
+                        "name": "apple",
+                        "number": "1",
+                        "object_classes": [
+                            "apple"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "17": {
+                        "name": "teapot",
+                        "number": "1",
+                        "object_classes": [
+                            "teapot"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "18": {
+                        "name": "phone_stand",
+                        "number": "1",
+                        "object_classes": [
+                            "phone_stand"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "chair"
+                        ]
+                    },
+                    "19": {
+                        "name": "tape",
+                        "number": "1",
+                        "object_classes": [
+                            "tape"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "chair"
+                        ]
+                    },
+                    "20": {
+                        "name": "basket",
+                        "number": "1",
+                        "object_classes": [
+                            "basket"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "21": {
+                        "name": "cake_pan",
+                        "number": "1",
+                        "object_classes": [
+                            "cake_pan"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "22": {
+                        "name": "can_opener",
+                        "number": "1",
+                        "object_classes": [
+                            "can_opener"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "23": {
+                        "name": "lunch_box",
+                        "number": "1",
+                        "object_classes": [
+                            "lunch_box"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "24": {
+                        "name": "scissors",
+                        "number": "1",
+                        "object_classes": [
+                            "scissors"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "25": {
+                        "name": "sponge",
+                        "number": "1",
+                        "object_classes": [
+                            "sponge"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "cabinet"
+                        ]
+                    },
+                    "26": {
+                        "name": "toy_fruits",
+                        "number": "1",
+                        "object_classes": [
+                            "toy_fruits"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "27": {
+                        "name": "toy_food",
+                        "number": "1",
+                        "object_classes": [
+                            "toy_food"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "counter"
+                        ]
+                    },
+                    "28": {
+                        "name": "bread",
+                        "number": "1",
+                        "object_classes": [
+                            "bread"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "cabinet"
+                        ]
+                    },
+                    "29": {
+                        "name": "fork",
+                        "number": "1",
+                        "object_classes": [
+                            "fork"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "cabinet"
+                        ]
+                    },
+                    "30": {
+                        "name": "tomato",
+                        "number": "1",
+                        "object_classes": [
+                            "tomato"
+                        ],
+                        "allowed_regions": [
+                            "kitchen"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "cabinet"
+                        ]
+                    },
+                    "31": {
+                        "name": "cup",
+                        "number": "1",
+                        "object_classes": [
+                            "cup"
+                        ],
+                        "allowed_regions": [
+                            "living room"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "table"
+                        ]
+                    },
+                    "32": {
+                        "name": "toy_animal",
+                        "number": "1",
+                        "object_classes": [
+                            "toy_animal"
+                        ],
+                        "allowed_regions": [
+                            "living room"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "couch"
+                        ]
+                    },
+                    "33": {
+                        "name": "stuffed toy",
+                        "number": "1",
+                        "object_classes": [
+                            "stuffed toy"
+                        ],
+                        "allowed_regions": [
+                            "living room"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "couch"
+                        ]
+                    },
+                    "34": {
+                        "name": "book",
+                        "number": "1",
+                        "object_classes": [
+                            "book"
+                        ],
+                        "allowed_regions": [
+                            "living room"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "table"
+                        ]
+                    },
+                    "35": {
+                        "name": "box",
+                        "number": "1",
+                        "object_classes": [
+                            "box"
+                        ],
+                        "allowed_regions": [
+                            "living room"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "chair"
+                        ]
+                    },
+                    "36": {
+                        "name": "doll",
+                        "number": "1",
+                        "object_classes": [
+                            "doll"
+                        ],
+                        "allowed_regions": [
+                            "living room"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "chair"
+                        ]
+                    },
+                    "37": {
+                        "name": "doll",
+                        "number": "1",
+                        "object_classes": [
+                            "doll"
+                        ],
+                        "allowed_regions": [
+                            "living room"
+                        ],
+                        "location": "on",
+                        "furniture_classes": [
+                            "couch"
+                        ]
+                    }
+                },
+                "object_labels": {},
+                "extra_info": {
+                    "scene_id": "102817140",
+                    "episode_id": "test|102817140|1",
+                    "instruction": "dummy",
+                    "initial_state": [
+                        {
+                            "name": "apple",
+                            "number": "1",
+                            "object_classes": [
+                                "apple"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "laptop",
+                            "number": "1",
+                            "object_classes": [
+                                "laptop"
+                            ],
+                            "allowed_regions": [
+                                "living room"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "table"
+                            ]
+                        },
+                        {
+                            "name": "canister",
+                            "number": "1",
+                            "object_classes": [
+                                "canister"
+                            ],
+                            "allowed_regions": [
+                                "bedroom"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "table"
+                            ]
+                        },
+                        {
+                            "name": "lamp",
+                            "number": "1",
+                            "object_classes": [
+                                "lamp"
+                            ],
+                            "allowed_regions": [
+                                "bedroom"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "table"
+                            ]
+                        },
+                        {
+                            "name": "bocushionok",
+                            "number": "1",
+                            "object_classes": [
+                                "cushion"
+                            ],
+                            "allowed_regions": [
+                                "bedroom"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "bed"
+                            ]
+                        },
+                        {
+                            "name": "toy_animal",
+                            "number": "1",
+                            "object_classes": [
+                                "toy_animal"
+                            ],
+                            "allowed_regions": [
+                                "bedroom"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "bed"
+                            ]
+                        },
+                        {
+                            "name": "doll",
+                            "number": "1",
+                            "object_classes": [
+                                "doll"
+                            ],
+                            "allowed_regions": [
+                                "bedroom"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "bed"
+                            ]
+                        },
+                        {
+                            "name": "toy_vehicle",
+                            "number": "1",
+                            "object_classes": [
+                                "toy_vehicle"
+                            ],
+                            "allowed_regions": [
+                                "bedroom"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "bench"
+                            ]
+                        },
+                        {
+                            "name": "backpack",
+                            "number": "1",
+                            "object_classes": [
+                                "backpack"
+                            ],
+                            "allowed_regions": [
+                                "bedroom"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "bench"
+                            ]
+                        },
+                        {
+                            "name": "cushion",
+                            "number": "1",
+                            "object_classes": [
+                                "cushion"
+                            ],
+                            "allowed_regions": [
+                                "bedroom"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "bench"
+                            ]
+                        },
+                        {
+                            "name": "clock",
+                            "number": "1",
+                            "object_classes": [
+                                "clock"
+                            ],
+                            "allowed_regions": [
+                                "bedroom"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "table"
+                            ]
+                        },
+                        {
+                            "name": "candle",
+                            "number": "1",
+                            "object_classes": [
+                                "candle"
+                            ],
+                            "allowed_regions": [
+                                "bedroom"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "table"
+                            ]
+                        },
+                        {
+                            "name": "bowl",
+                            "number": "2",
+                            "object_classes": [
+                                "bowl"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "butter_dish",
+                            "number": "2",
+                            "object_classes": [
+                                "butter_dish"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "cabinet"
+                            ]
+                        },
+                        {
+                            "name": "bottle",
+                            "number": "1",
+                            "object_classes": [
+                                "bottle"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "cup",
+                            "number": "2",
+                            "object_classes": [
+                                "cup"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "apple",
+                            "number": "1",
+                            "object_classes": [
+                                "apple"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "teapot",
+                            "number": "1",
+                            "object_classes": [
+                                "teapot"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "phone_stand",
+                            "number": "1",
+                            "object_classes": [
+                                "phone_stand"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "chair"
+                            ]
+                        },
+                        {
+                            "name": "tape",
+                            "number": "1",
+                            "object_classes": [
+                                "tape"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "chair"
+                            ]
+                        },
+                        {
+                            "name": "basket",
+                            "number": "1",
+                            "object_classes": [
+                                "basket"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "cake_pan",
+                            "number": "1",
+                            "object_classes": [
+                                "cake_pan"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "can_opener",
+                            "number": "1",
+                            "object_classes": [
+                                "can_opener"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "lunch_box",
+                            "number": "1",
+                            "object_classes": [
+                                "lunch_box"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "scissors",
+                            "number": "1",
+                            "object_classes": [
+                                "scissors"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "sponge",
+                            "number": "1",
+                            "object_classes": [
+                                "sponge"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "cabinet"
+                            ]
+                        },
+                        {
+                            "name": "toy_fruits",
+                            "number": "1",
+                            "object_classes": [
+                                "toy_fruits"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "toy_food",
+                            "number": "1",
+                            "object_classes": [
+                                "toy_food"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "counter"
+                            ]
+                        },
+                        {
+                            "name": "bread",
+                            "number": "1",
+                            "object_classes": [
+                                "bread"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "cabinet"
+                            ]
+                        },
+                        {
+                            "name": "fork",
+                            "number": "1",
+                            "object_classes": [
+                                "fork"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "cabinet"
+                            ]
+                        },
+                        {
+                            "name": "tomato",
+                            "number": "1",
+                            "object_classes": [
+                                "tomato"
+                            ],
+                            "allowed_regions": [
+                                "kitchen"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "cabinet"
+                            ]
+                        },
+                        {
+                            "name": "cup",
+                            "number": "1",
+                            "object_classes": [
+                                "cup"
+                            ],
+                            "allowed_regions": [
+                                "living room"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "table"
+                            ]
+                        },
+                        {
+                            "name": "toy_animal",
+                            "number": "1",
+                            "object_classes": [
+                                "toy_animal"
+                            ],
+                            "allowed_regions": [
+                                "living room"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "couch"
+                            ]
+                        },
+                        {
+                            "name": "stuffed toy",
+                            "number": "1",
+                            "object_classes": [
+                                "stuffed toy"
+                            ],
+                            "allowed_regions": [
+                                "living room"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "couch"
+                            ]
+                        },
+                        {
+                            "name": "book",
+                            "number": "1",
+                            "object_classes": [
+                                "book"
+                            ],
+                            "allowed_regions": [
+                                "living room"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "table"
+                            ]
+                        },
+                        {
+                            "name": "box",
+                            "number": "1",
+                            "object_classes": [
+                                "box"
+                            ],
+                            "allowed_regions": [
+                                "living room"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "chair"
+                            ]
+                        },
+                        {
+                            "name": "doll",
+                            "number": "1",
+                            "object_classes": [
+                                "doll"
+                            ],
+                            "allowed_regions": [
+                                "living room"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "chair"
+                            ]
+                        },
+                        {
+                            "name": "doll",
+                            "number": "1",
+                            "object_classes": [
+                                "doll"
+                            ],
+                            "allowed_regions": [
+                                "living room"
+                            ],
+                            "location": "on",
+                            "furniture_classes": [
+                                "couch"
+                            ]
+                        }
+                    ],
+                    "obj_info": {
+                        "apple": "Apple_12_:0000",
+                        "laptop": "Laptop_10_:0000",
+                        "canister": "B07MBFDKYY_:0000",
+                        "lamp": "B07HK83QRB_:0000",
+                        "cushion": "7a590a8f0f30182dd62af488b48e7cdbce77fd24_:0000",
+                        "toy_animal": "Schleich_Allosaurus_:0000",
+                        "doll": "3D_Dollhouse_Happy_Brother_:0002",
+                        "toy_vehicle": "Thomas_Friends_Wooden_Railway_Talking_Thomas_z7yi7UFHJRj_:0000",
+                        "backpack": "Olive_Kids_Dinosaur_Land_Lunch_Box_:0000",
+                        "clock": "1565076fc4398d7ae449941b4dcf3cfbf1de292d_:0000",
+                        "candle": "Candle_2_:0000",
+                        "bowl": "391972f73810b6eab26e322652d88a61aea7a739_:0000",
+                        "butter_dish": "Cole_Hardware_Butter_Dish_Square_Red_:0001",
+                        "bottle": "c1bd4ed24b1eab295513bd16896686129dff4f1a_:0000",
+                        "cup": "bd12f6fd478618cc550689cd9a050e61b1b5abe0_:0000",
+                        "teapot": "4db7a1a5377cf18b8a14ab335a2970724ec43f2c_:0000",
+                        "phone_stand": "B01IJ5A0PC_:0000",
+                        "tape": "Cole_Hardware_Antislip_Surfacing_White_2_x_60_:0000",
+                        "basket": "87ed6d0c785b3245207bb217eb3ee3fc079f8633_:0000",
+                        "cake_pan": "Chef_Style_Round_Cake_Pan_9_inch_pan_:0000",
+                        "can_opener": "OXO_Soft_Works_Can_Opener_SnapLock_:0000",
+                        "lunch_box": "Paul_Frank_Dot_Lunch_Box_:0000",
+                        "scissors": "Diamond_Visions_Scissors_Red_:0000",
+                        "sponge": "Dish_Sponge_1_:0000",
+                        "toy_fruits": "Fruity_Friends_:0000",
+                        "toy_food": "Squirt_Strain_Fruit_Basket_:0000",
+                        "bread": "Bread_22_:0000",
+                        "fork": "Fork_1_:0000",
+                        "tomato": "Tomato_30_:0000",
+                        "stuffed toy": "4823bfe94520f3df3bb07ab8c5d95c197f68f2c8_:0000",
+                        "book": "Book_24_:0000",
+                        "box": "Perricone_MD_No_Foundation_Serum_:0000"
+                    }
+                }
+            },
+            "ao_states": {},
+            "rigid_objs": [
+                [
+                    "Apple_4.object_config.json",
+                    [
+                        [
+                            -0.65486,
+                            0.00000,
+                            0.75575,
+                            -9.98430
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.29149
+                        ],
+                        [
+                            -0.75575,
+                            0.00000,
+                            -0.65486,
+                            -1.84128
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Laptop_10.object_config.json",
+                    [
+                        [
+                            -0.91900,
+                            0.00000,
+                            -0.39426,
+                            -4.31656
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.69478
+                        ],
+                        [
+                            0.39426,
+                            0.00000,
+                            -0.91900,
+                            -0.63630
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "B07MBFDKYY.object_config.json",
+                    [
+                        [
+                            -0.99516,
+                            0.00000,
+                            -0.09828,
+                            -17.31047
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.22790
+                        ],
+                        [
+                            0.09828,
+                            0.00000,
+                            -0.99516,
+                            -10.19710
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "B07HK83QRB.object_config.json",
+                    [
+                        [
+                            0.83507,
+                            0.00000,
+                            0.55015,
+                            -14.54957
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.25317
+                        ],
+                        [
+                            -0.55015,
+                            0.00000,
+                            0.83507,
+                            -10.15998
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "3a4de797eaf7e86ae473c53104760c4457a3ee15.object_config.json",
+                    [
+                        [
+                            -0.90253,
+                            0.00000,
+                            0.43063,
+                            -3.17644
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            1.06828
+                        ],
+                        [
+                            -0.43063,
+                            0.00000,
+                            -0.90253,
+                            5.45192
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Schleich_Bald_Eagle.object_config.json",
+                    [
+                        [
+                            0.86344,
+                            0.00000,
+                            -0.50444,
+                            -3.50281
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.76901
+                        ],
+                        [
+                            0.50444,
+                            0.00000,
+                            0.86344,
+                            5.45209
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "3D_Dollhouse_Happy_Brother.object_config.json",
+                    [
+                        [
+                            0.93080,
+                            0.00000,
+                            -0.36552,
+                            -15.49449
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.77378
+                        ],
+                        [
+                            0.36552,
+                            0.00000,
+                            0.93080,
+                            -9.73546
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Thomas_Friends_Wooden_Railway_Talking_Thomas_z7yi7UFHJRj.object_config.json",
+                    [
+                        [
+                            0.96854,
+                            0.00000,
+                            -0.24887,
+                            -16.25514
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.50174
+                        ],
+                        [
+                            0.24887,
+                            0.00000,
+                            0.96854,
+                            -8.01165
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Olive_Kids_Dinosaur_Land_Lunch_Box.object_config.json",
+                    [
+                        [
+                            0.37503,
+                            0.00000,
+                            -0.92701,
+                            -1.69784
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.52151
+                        ],
+                        [
+                            0.92701,
+                            0.00000,
+                            0.37503,
+                            2.90868
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "7a590a8f0f30182dd62af488b48e7cdbce77fd24.object_config.json",
+                    [
+                        [
+                            -0.09230,
+                            0.00000,
+                            -0.99573,
+                            -1.43243
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.64792
+                        ],
+                        [
+                            0.99573,
+                            0.00000,
+                            -0.09230,
+                            2.95110
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "1565076fc4398d7ae449941b4dcf3cfbf1de292d.object_config.json",
+                    [
+                        [
+                            -0.86392,
+                            0.00000,
+                            -0.50363,
+                            -18.44471
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.86592
+                        ],
+                        [
+                            0.50363,
+                            0.00000,
+                            -0.86392,
+                            -8.55119
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Candle_2.object_config.json",
+                    [
+                        [
+                            0.56676,
+                            0.00000,
+                            0.82388,
+                            -4.33385
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.66255
+                        ],
+                        [
+                            -0.82388,
+                            0.00000,
+                            0.56676,
+                            5.65633
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "11a27304451d7af4d398303cccdfea4d8c26ebb9.object_config.json",
+                    [
+                        [
+                            0.03562,
+                            0.00000,
+                            -0.99937,
+                            -12.56916
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            1.00334
+                        ],
+                        [
+                            0.99937,
+                            0.00000,
+                            0.03562,
+                            -1.81269
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "391972f73810b6eab26e322652d88a61aea7a739.object_config.json",
+                    [
+                        [
+                            -0.99562,
+                            0.00000,
+                            0.09348,
+                            -12.21457
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.98447
+                        ],
+                        [
+                            -0.09348,
+                            0.00000,
+                            -0.99562,
+                            -2.44672
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Cole_Hardware_Butter_Dish_Square_Red.object_config.json",
+                    [
+                        [
+                            0.95090,
+                            0.00000,
+                            -0.30951,
+                            -12.00712
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.94917
+                        ],
+                        [
+                            0.30951,
+                            0.00000,
+                            0.95090,
+                            -3.09005
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Cole_Hardware_Butter_Dish_Square_Red.object_config.json",
+                    [
+                        [
+                            -0.19785,
+                            0.00000,
+                            -0.98023,
+                            -12.10570
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.95040
+                        ],
+                        [
+                            0.98023,
+                            0.00000,
+                            -0.19785,
+                            -3.19253
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "c1bd4ed24b1eab295513bd16896686129dff4f1a.object_config.json",
+                    [
+                        [
+                            -0.10321,
+                            0.00000,
+                            -0.99466,
+                            -9.33906
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            1.06358
+                        ],
+                        [
+                            0.99466,
+                            0.00000,
+                            -0.10321,
+                            -1.77874
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "87a34af23efddf90b6267768647fbedcbf846827.object_config.json",
+                    [
+                        [
+                            -0.06195,
+                            0.00000,
+                            0.99808,
+                            -9.24334
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.98013
+                        ],
+                        [
+                            -0.99808,
+                            0.00000,
+                            -0.06195,
+                            -1.28356
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "5742501065a46cf69165e60257b42a86f5fadf8b.object_config.json",
+                    [
+                        [
+                            -0.08708,
+                            0.00000,
+                            0.99620,
+                            -9.62137
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.98978
+                        ],
+                        [
+                            -0.99620,
+                            0.00000,
+                            -0.08708,
+                            -1.48721
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Apple_12.object_config.json",
+                    [
+                        [
+                            0.63695,
+                            0.00000,
+                            0.77091,
+                            -12.47391
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            1.01067
+                        ],
+                        [
+                            -0.77091,
+                            0.00000,
+                            0.63695,
+                            -2.38419
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "4db7a1a5377cf18b8a14ab335a2970724ec43f2c.object_config.json",
+                    [
+                        [
+                            -0.58752,
+                            0.00000,
+                            0.80921,
+                            -12.28101
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            1.08077
+                        ],
+                        [
+                            -0.80921,
+                            0.00000,
+                            -0.58752,
+                            -2.76919
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "B01IJ5A0PC.object_config.json",
+                    [
+                        [
+                            -0.26256,
+                            0.00000,
+                            0.96492,
+                            -8.64068
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.84239
+                        ],
+                        [
+                            -0.96492,
+                            0.00000,
+                            -0.26256,
+                            -2.78940
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Cole_Hardware_Antislip_Surfacing_White_2_x_60.object_config.json",
+                    [
+                        [
+                            -0.64937,
+                            0.00000,
+                            -0.76047,
+                            -9.13464
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.75473
+                        ],
+                        [
+                            0.76047,
+                            0.00000,
+                            -0.64937,
+                            -1.78407
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "87ed6d0c785b3245207bb217eb3ee3fc079f8633.object_config.json",
+                    [
+                        [
+                            0.11050,
+                            0.00000,
+                            -0.99388,
+                            -9.75593
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            1.01219
+                        ],
+                        [
+                            0.99388,
+                            0.00000,
+                            0.11050,
+                            -2.06031
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Chef_Style_Round_Cake_Pan_9_inch_pan.object_config.json",
+                    [
+                        [
+                            0.99983,
+                            0.00000,
+                            0.01863,
+                            -9.97063
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.92334
+                        ],
+                        [
+                            -0.01863,
+                            0.00000,
+                            0.99983,
+                            -1.64324
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "OXO_Soft_Works_Can_Opener_SnapLock.object_config.json",
+                    [
+                        [
+                            0.21724,
+                            0.00000,
+                            -0.97612,
+                            -9.57051
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.92668
+                        ],
+                        [
+                            0.97612,
+                            0.00000,
+                            0.21724,
+                            -1.65660
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Paul_Frank_Dot_Lunch_Box.object_config.json",
+                    [
+                        [
+                            0.64766,
+                            0.00000,
+                            -0.76193,
+                            -9.78131
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            1.01680
+                        ],
+                        [
+                            0.76193,
+                            0.00000,
+                            0.64766,
+                            -1.33151
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Diamond_Visions_Scissors_Red.object_config.json",
+                    [
+                        [
+                            -0.88686,
+                            0.00000,
+                            0.46204,
+                            -12.25774
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.92049
+                        ],
+                        [
+                            -0.46204,
+                            0.00000,
+                            -0.88686,
+                            -1.73667
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Dish_Sponge_1.object_config.json",
+                    [
+                        [
+                            0.08264,
+                            0.00000,
+                            0.99658,
+                            -12.21867
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.95188
+                        ],
+                        [
+                            -0.99658,
+                            0.00000,
+                            0.08264,
+                            -1.60926
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Fruity_Friends.object_config.json",
+                    [
+                        [
+                            0.17895,
+                            0.00000,
+                            0.98386,
+                            -9.99614
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.27086
+                        ],
+                        [
+                            -0.98386,
+                            0.00000,
+                            0.17895,
+                            -2.02696
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Squirt_Strain_Fruit_Basket.object_config.json",
+                    [
+                        [
+                            0.99770,
+                            0.00000,
+                            -0.06783,
+                            -12.56403
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.97531
+                        ],
+                        [
+                            0.06783,
+                            0.00000,
+                            0.99770,
+                            -2.55650
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Bread_22.object_config.json",
+                    [
+                        [
+                            -0.94987,
+                            0.00000,
+                            0.31264,
+                            -12.27534
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.99545
+                        ],
+                        [
+                            -0.31264,
+                            0.00000,
+                            -0.94987,
+                            -0.83191
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Fork_1.object_config.json",
+                    [
+                        [
+                            -0.99989,
+                            0.00000,
+                            -0.01482,
+                            -12.17337
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.95556
+                        ],
+                        [
+                            0.01482,
+                            0.00000,
+                            -0.99989,
+                            -2.84789
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Tomato_30.object_config.json",
+                    [
+                        [
+                            -0.04273,
+                            0.00000,
+                            0.99909,
+                            -11.92661
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.98815
+                        ],
+                        [
+                            -0.99909,
+                            0.00000,
+                            -0.04273,
+                            -0.20393
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "bd12f6fd478618cc550689cd9a050e61b1b5abe0.object_config.json",
+                    [
+                        [
+                            -0.25300,
+                            0.00000,
+                            0.96747,
+                            -7.38469
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.85750
+                        ],
+                        [
+                            -0.96747,
+                            0.00000,
+                            -0.25300,
+                            -7.83707
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Schleich_Allosaurus.object_config.json",
+                    [
+                        [
+                            0.95465,
+                            0.00000,
+                            0.29772,
+                            -3.50837
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.55542
+                        ],
+                        [
+                            -0.29772,
+                            0.00000,
+                            0.95465,
+                            -0.90321
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "4823bfe94520f3df3bb07ab8c5d95c197f68f2c8.object_config.json",
+                    [
+                        [
+                            -0.70796,
+                            0.00000,
+                            -0.70625,
+                            -3.26308
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.68160
+                        ],
+                        [
+                            0.70625,
+                            0.00000,
+                            -0.70796,
+                            -0.63707
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Book_24.object_config.json",
+                    [
+                        [
+                            0.99936,
+                            0.00000,
+                            -0.03572,
+                            -6.90942
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.83974
+                        ],
+                        [
+                            0.03572,
+                            0.00000,
+                            0.99936,
+                            -7.50944
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "Perricone_MD_No_Foundation_Serum.object_config.json",
+                    [
+                        [
+                            -0.92289,
+                            0.00000,
+                            -0.38506,
+                            -1.10488
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.55796
+                        ],
+                        [
+                            0.38506,
+                            0.00000,
+                            -0.92289,
+                            -1.43800
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "3D_Dollhouse_Happy_Brother.object_config.json",
+                    [
+                        [
+                            -0.16550,
+                            0.00000,
+                            0.98621,
+                            -7.04090
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.47911
+                        ],
+                        [
+                            -0.98621,
+                            0.00000,
+                            -0.16550,
+                            -7.17123
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ],
+                [
+                    "3D_Dollhouse_Happy_Brother.object_config.json",
+                    [
+                        [
+                            0.98185,
+                            0.00000,
+                            -0.18968,
+                            -3.40343
+                        ],
+                        [
+                            0.00000,
+                            1.00000,
+                            0.00000,
+                            0.54359
+                        ],
+                        [
+                            0.18968,
+                            0.00000,
+                            0.98185,
+                            -0.84833
+                        ],
+                        [
+                            0.00000,
+                            0.00000,
+                            0.00000,
+                            1.00000
+                        ]
+                    ]
+                ]
+            ],
+            "targets": {},
+            "markers": [],
+            "target_receptacles": [],
+            "goal_receptacles": [],
+            "name_to_receptacle": {
+                "Apple_4_:0000": "465c339f405bf0f55e0c316820958dee1126dabd_:0000|kitchen_island_cabinet0007_drawer02_receptacle_mesh.0000",
+                "Laptop_10_:0000": "d886d10e71a0365a725abcf139142223409f7b4f_:0001|receptacle_mesh_d886d10e71a0365a725abcf139142223409f7b4f.0000",
+                "B07MBFDKYY_:0000": "72305abe342ae61ffd01243a6acfcdb8aa0381c6_:0001|receptacle_mesh_72305abe342ae61ffd01243a6acfcdb8aa0381c6.0000",
+                "B07HK83QRB_:0000": "72305abe342ae61ffd01243a6acfcdb8aa0381c6_:0000|receptacle_mesh_72305abe342ae61ffd01243a6acfcdb8aa0381c6.0000",
+                "3a4de797eaf7e86ae473c53104760c4457a3ee15_:0000": "cd95f463e8f80aed4f5671bac25e2679cc21600f_:0000|receptacle_mesh_cd95f463e8f80aed4f5671bac25e2679cc21600f.0006",
+                "Schleich_Bald_Eagle_:0000": "cd95f463e8f80aed4f5671bac25e2679cc21600f_:0000|receptacle_mesh_cd95f463e8f80aed4f5671bac25e2679cc21600f.0006",
+                "3D_Dollhouse_Happy_Brother_:0000": "5e72623c1e3999e0fab6656621f8f6b23879a5a1_:0000|receptacle_mesh_5e72623c1e3999e0fab6656621f8f6b23879a5a1.0000",
+                "Thomas_Friends_Wooden_Railway_Talking_Thomas_z7yi7UFHJRj_:0000": "c0b50a7f924f4738899cebd17412dc364bcfaf3e_:0000|receptacle_mesh_c0b50a7f924f4738899cebd17412dc364bcfaf3e.0000",
+                "Olive_Kids_Dinosaur_Land_Lunch_Box_:0000": "d97263f23707276962a32f4bebc880c741b15f42_:0001|receptacle_mesh_d97263f23707276962a32f4bebc880c741b15f42.0000",
+                "7a590a8f0f30182dd62af488b48e7cdbce77fd24_:0000": "d97263f23707276962a32f4bebc880c741b15f42_:0001|receptacle_mesh_d97263f23707276962a32f4bebc880c741b15f42.0000",
+                "1565076fc4398d7ae449941b4dcf3cfbf1de292d_:0000": "2d677064b6bd4a3ba262cd510fd03c58efb57533_:0000|receptacle_mesh_2d677064b6bd4a3ba262cd510fd03c58efb57533.0000",
+                "Candle_2_:0000": "689340fdf94601c7e57aabc45c1f1752bc7791da_:0000|receptacle_mesh_689340fdf94601c7e57aabc45c1f1752bc7791da.0000",
+                "11a27304451d7af4d398303cccdfea4d8c26ebb9_:0000": "59d4630af6aee8b19660537466b52f2c26a74c19_:0000|receptacle_mesh_59d4630af6aee8b19660537466b52f2c26a74c19.0000",
+                "391972f73810b6eab26e322652d88a61aea7a739_:0000": "59d4630af6aee8b19660537466b52f2c26a74c19_:0000|receptacle_mesh_59d4630af6aee8b19660537466b52f2c26a74c19.0000",
+                "Cole_Hardware_Butter_Dish_Square_Red_:0000": "a19b47699883e5841599452274d671a1bb2c775e_:0001|receptacle_mesh_a19b47699883e5841599452274d671a1bb2c775e.0000",
+                "Cole_Hardware_Butter_Dish_Square_Red_:0001": "a19b47699883e5841599452274d671a1bb2c775e_:0001|receptacle_mesh_a19b47699883e5841599452274d671a1bb2c775e.0000",
+                "c1bd4ed24b1eab295513bd16896686129dff4f1a_:0000": "465c339f405bf0f55e0c316820958dee1126dabd_:0000|kitchen_island_cabinet0007_top_receptacle_mesh.0000",
+                "87a34af23efddf90b6267768647fbedcbf846827_:0000": "465c339f405bf0f55e0c316820958dee1126dabd_:0000|kitchen_island_cabinet0007_top_receptacle_mesh.0000",
+                "5742501065a46cf69165e60257b42a86f5fadf8b_:0000": "465c339f405bf0f55e0c316820958dee1126dabd_:0000|kitchen_island_cabinet0007_top_receptacle_mesh.0000",
+                "Apple_12_:0000": "59d4630af6aee8b19660537466b52f2c26a74c19_:0000|receptacle_mesh_59d4630af6aee8b19660537466b52f2c26a74c19.0000",
+                "4db7a1a5377cf18b8a14ab335a2970724ec43f2c_:0000": "59d4630af6aee8b19660537466b52f2c26a74c19_:0000|receptacle_mesh_59d4630af6aee8b19660537466b52f2c26a74c19.0000",
+                "B01IJ5A0PC_:0000": "5a20869f8b556232e59d6882c8ba9940d48cd266_:0000|receptacle_mesh_5a20869f8b556232e59d6882c8ba9940d48cd266.0001",
+                "Cole_Hardware_Antislip_Surfacing_White_2_x_60_:0000": "aaa389ae6c9465fe510a26cfa3e65b8fdc1fcfda_:0000|receptacle_mesh_aaa389ae6c9465fe510a26cfa3e65b8fdc1fcfda.0000",
+                "87ed6d0c785b3245207bb217eb3ee3fc079f8633_:0000": "465c339f405bf0f55e0c316820958dee1126dabd_:0000|kitchen_island_cabinet0007_top_receptacle_mesh.0000",
+                "Chef_Style_Round_Cake_Pan_9_inch_pan_:0000": "465c339f405bf0f55e0c316820958dee1126dabd_:0000|kitchen_island_cabinet0007_top_receptacle_mesh.0000",
+                "OXO_Soft_Works_Can_Opener_SnapLock_:0000": "465c339f405bf0f55e0c316820958dee1126dabd_:0000|kitchen_island_cabinet0007_top_receptacle_mesh.0000",
+                "Paul_Frank_Dot_Lunch_Box_:0000": "465c339f405bf0f55e0c316820958dee1126dabd_:0000|kitchen_island_cabinet0007_top_receptacle_mesh.0000",
+                "Diamond_Visions_Scissors_Red_:0000": "59d4630af6aee8b19660537466b52f2c26a74c19_:0000|receptacle_mesh_59d4630af6aee8b19660537466b52f2c26a74c19.0000",
+                "Dish_Sponge_1_:0000": "6acafe4f37b17ff0c33d22c8dc3fede1bddc67de_:0000|double_sided_sink_cabinet0004_top_receptacle_mesh.0000",
+                "Fruity_Friends_:0000": "465c339f405bf0f55e0c316820958dee1126dabd_:0000|kitchen_island_cabinet0007_drawer02_receptacle_mesh.0000",
+                "Squirt_Strain_Fruit_Basket_:0000": "59d4630af6aee8b19660537466b52f2c26a74c19_:0000|receptacle_mesh_59d4630af6aee8b19660537466b52f2c26a74c19.0000",
+                "Bread_22_:0000": "a19b47699883e5841599452274d671a1bb2c775e_:0000|receptacle_mesh_a19b47699883e5841599452274d671a1bb2c775e.0000",
+                "Fork_1_:0000": "a19b47699883e5841599452274d671a1bb2c775e_:0001|receptacle_mesh_a19b47699883e5841599452274d671a1bb2c775e.0000",
+                "Tomato_30_:0000": "a19b47699883e5841599452274d671a1bb2c775e_:0000|receptacle_mesh_a19b47699883e5841599452274d671a1bb2c775e.0000",
+                "bd12f6fd478618cc550689cd9a050e61b1b5abe0_:0000": "925f48efff312862677c9517a8ec0faba4909570_part_1_:0000|receptacle_mesh_925f48efff312862677c9517a8ec0faba4909570_part_1.0000",
+                "Schleich_Allosaurus_:0000": "4b5cf3882456f61a3078e7d151657892d2e5ec7f_:0000|receptacle_mesh_4b5cf3882456f61a3078e7d151657892d2e5ec7f.0002",
+                "4823bfe94520f3df3bb07ab8c5d95c197f68f2c8_:0000": "4b5cf3882456f61a3078e7d151657892d2e5ec7f_:0000|receptacle_mesh_4b5cf3882456f61a3078e7d151657892d2e5ec7f.0002",
+                "Book_24_:0000": "925f48efff312862677c9517a8ec0faba4909570_part_1_:0000|receptacle_mesh_925f48efff312862677c9517a8ec0faba4909570_part_1.0000",
+                "Perricone_MD_No_Foundation_Serum_:0000": "8ac28a1a29cb5d49f55dd27dbd06d7f3749db356_:0001|receptacle_mesh_8ac28a1a29cb5d49f55dd27dbd06d7f3749db356.0000",
+                "3D_Dollhouse_Happy_Brother_:0001": "925f48efff312862677c9517a8ec0faba4909570_part_2_:0002|receptacle_mesh_925f48efff312862677c9517a8ec0faba4909570_part_2.0000",
+                "3D_Dollhouse_Happy_Brother_:0002": "4b5cf3882456f61a3078e7d151657892d2e5ec7f_:0000|receptacle_mesh_4b5cf3882456f61a3078e7d151657892d2e5ec7f.0002"
+            },
+            "instruction": "",
+            "evaluation_propositions": [],
+            "evaluation_proposition_dependencies": [],
+            "evaluation_constraints": [],
+            "object_states": {
+                "is_clean": {
+                    "220-29_:0016": false,
+                    "220-29_:0011": false,
+                    "220-29_:0005": false,
+                    "219-18_:0000": false,
+                    "220-29_:0004": false,
+                    "220-29_:0003": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0019": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0018": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0017": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0013": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0011": false,
+                    "5c88f6ea56161cf39bc50d4567989b5ccad73302_:0000": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0008": false,
+                    "220-29_:0000": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0007": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0004": false,
+                    "220-29_:0007": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0000": false,
+                    "5e72623c1e3999e0fab6656621f8f6b23879a5a1_:0000": false,
+                    "47ac569487f82e23b0a5d18057a6c6fc77610aa9_:0000": false,
+                    "220-29_:0013": false,
+                    "af5f3591007b35ad2057014aa1109f56a96bb14c_:0001": false,
+                    "af5f3591007b35ad2057014aa1109f56a96bb14c_:0000": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0009": false,
+                    "9c0567a6a0032ec2bad911ec5024eb5f7633868d_:0000": false,
+                    "220-29_:0015": false,
+                    "d97263f23707276962a32f4bebc880c741b15f42_:0001": false,
+                    "d97263f23707276962a32f4bebc880c741b15f42_:0000": false,
+                    "bfd4046f9f30d1e3a05544cd5b92d283991bbfcc_:0000": false,
+                    "9108c4dc1b6df8d8e92ad046ebdeca26d9faac0a_:0000": false,
+                    "220-29_:0001": false,
+                    "0239c03b6896e4e4fad328885cf078995c913046_:0000": false,
+                    "5474ea875207bd950038f8f91773cc84d4762926_:0000": false,
+                    "1f2e2502feadd989b0e9a03c5e7eda0aac253f0c_:0000": false,
+                    "220-29_:0009": false,
+                    "5a20869f8b556232e59d6882c8ba9940d48cd266_:0000": false,
+                    "c859b2b52d3f2acdde6a00b4f0767f63e0bccad5_:0000": false,
+                    "920e3797a52036dd338a603e25d46725ec257956_:0003": false,
+                    "920e3797a52036dd338a603e25d46725ec257956_:0001": false,
+                    "134af5bbd297391d029c56e7819958574dd823a6_:0000": false,
+                    "c2febcc32890f66534eec8364ae9ba1ec6802615_:0000": false,
+                    "9579bcb2634795d7cd256d9c9a7819513f7727e6_:0000": false,
+                    "209-2_:0000": false,
+                    "8ac28a1a29cb5d49f55dd27dbd06d7f3749db356_:0000": false,
+                    "4db7a1a5377cf18b8a14ab335a2970724ec43f2c_:0000": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0016": false,
+                    "Apple_12_:0000": false,
+                    "a19b47699883e5841599452274d671a1bb2c775e_:0001": false,
+                    "87a34af23efddf90b6267768647fbedcbf846827_:0000": false,
+                    "d886d10e71a0365a725abcf139142223409f7b4f_:0001": false,
+                    "c1bd4ed24b1eab295513bd16896686129dff4f1a_:0000": false,
+                    "7d8617011c72509329256bd40de9ec5547688286_:0000": false,
+                    "Cole_Hardware_Butter_Dish_Square_Red_:0001": false,
+                    "af5f3591007b35ad2057014aa1109f56a96bb14c_:0002": false,
+                    "4674e54f5e3e83758a27435ec7a38e78ae3b0018_:0000": false,
+                    "Cole_Hardware_Butter_Dish_Square_Red_:0000": false,
+                    "220-29_:0014": false,
+                    "Olive_Kids_Dinosaur_Land_Lunch_Box_:0000": false,
+                    "3b42467b3c64e5ef9a2353a3247305f1b2009ade_:0000": false,
+                    "689340fdf94601c7e57aabc45c1f1752bc7791da_:0000": false,
+                    "3D_Dollhouse_Happy_Brother_:0000": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0001": false,
+                    "49cd31a1c9bb7819449fefb8b8ac45adc970de53_:0000": false,
+                    "3f7e151179b654ffc659bc49f5f4c16cb1142a15_:0001": false,
+                    "3f7e151179b654ffc659bc49f5f4c16cb1142a15_:0000": false,
+                    "21241eacac2464ad03d363bf02b470b29974caa0_:0003": false,
+                    "B07HK83QRB_:0000": false,
+                    "B07MBFDKYY_:0000": false,
+                    "21241eacac2464ad03d363bf02b470b29974caa0_:0001": false,
+                    "Laptop_10_:0000": false,
+                    "21241eacac2464ad03d363bf02b470b29974caa0_:0000": false,
+                    "Apple_4_:0000": false,
+                    "391972f73810b6eab26e322652d88a61aea7a739_:0000": false,
+                    "88e0939fb3cf5e618321fa878151c8339544cfeb_:0000": false,
+                    "8d97968066d74649237e6afe846f1f33a4c67571_:0000": false,
+                    "925f48efff312862677c9517a8ec0faba4909570_part_2_:0003": false,
+                    "925f48efff312862677c9517a8ec0faba4909570_part_2_:0001": false,
+                    "7a590a8f0f30182dd62af488b48e7cdbce77fd24_:0000": false,
+                    "925f48efff312862677c9517a8ec0faba4909570_part_2_:0000": false,
+                    "eaec5282f4c09e8d460bb6ae9fbb1e70f79d5970_:0000": false,
+                    "ed3890167aedfeb71af4b995fb92ce17bef66639_:0003": false,
+                    "5742501065a46cf69165e60257b42a86f5fadf8b_:0000": false,
+                    "88e0939fb3cf5e618321fa878151c8339544cfeb_:0001": false,
+                    "69535e254b7dddfd421598ded839f392b0a72910_:0000": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0015": false,
+                    "90cc68efe43711ff25d327c05c5d2abfaa3c9def_:0000": false,
+                    "99a5f505af290fb896dbb6407665336df9fce83a_:0000": false,
+                    "0022fa6ee5a44330e765488919803155b1a9e88c_:0000": false,
+                    "925f48efff312862677c9517a8ec0faba4909570_part_2_:0002": false,
+                    "7bf5d72ea721296ab6faf52406c0ba83714d55c1_:0001": false,
+                    "9a33b9011f40b5d464b03836bda13a98cd488ca6_:0000": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0006": false,
+                    "ed3890167aedfeb71af4b995fb92ce17bef66639_:0000": false,
+                    "ed3890167aedfeb71af4b995fb92ce17bef66639_:0001": false,
+                    "B01IJ5A0PC_:0000": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0014": false,
+                    "Chef_Style_Round_Cake_Pan_9_inch_pan_:0000": false,
+                    "c0b50a7f924f4738899cebd17412dc364bcfaf3e_:0000": false,
+                    "OXO_Soft_Works_Can_Opener_SnapLock_:0000": false,
+                    "Paul_Frank_Dot_Lunch_Box_:0000": false,
+                    "d886d10e71a0365a725abcf139142223409f7b4f_:0000": false,
+                    "ed3890167aedfeb71af4b995fb92ce17bef66639_:0002": false,
+                    "3dc921df078e6983e36985a1bd9b0023ba6842b7_:0000": false,
+                    "Diamond_Visions_Scissors_Red_:0000": false,
+                    "f9a24444a0c313313c4243e8f489729f2fcea684_:0000": false,
+                    "c59a5e54e8082f4a2e4ace78e0940d290b55df65_:0000": false,
+                    "Dish_Sponge_1_:0000": false,
+                    "220-29_:0008": false,
+                    "219-18_:0001": false,
+                    "Fruity_Friends_:0000": false,
+                    "7badc6cf44e8b66b36938846242492fac54e5ceb_:0000": false,
+                    "11a27304451d7af4d398303cccdfea4d8c26ebb9_:0000": false,
+                    "Schleich_Bald_Eagle_:0000": false,
+                    "Squirt_Strain_Fruit_Basket_:0000": false,
+                    "bcb3afdf6675c9c0de5e1dff03c05643dbc28506_:0001": false,
+                    "7badc6cf44e8b66b36938846242492fac54e5ceb_:0002": false,
+                    "Fork_1_:0000": false,
+                    "3a4de797eaf7e86ae473c53104760c4457a3ee15_:0000": false,
+                    "474663aec910e240c7de975590e59bcf819c7489_:0000": false,
+                    "220-29_:0010": false,
+                    "474663aec910e240c7de975590e59bcf819c7489_:0001": false,
+                    "920e3797a52036dd338a603e25d46725ec257956_:0002": false,
+                    "72305abe342ae61ffd01243a6acfcdb8aa0381c6_:0000": false,
+                    "72305abe342ae61ffd01243a6acfcdb8aa0381c6_:0001": false,
+                    "4b5cf3882456f61a3078e7d151657892d2e5ec7f_:0000": false,
+                    "aaa389ae6c9465fe510a26cfa3e65b8fdc1fcfda_:0000": false,
+                    "aaa389ae6c9465fe510a26cfa3e65b8fdc1fcfda_:0001": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0005": false,
+                    "aaa389ae6c9465fe510a26cfa3e65b8fdc1fcfda_:0002": false,
+                    "87ed6d0c785b3245207bb217eb3ee3fc079f8633_:0000": false,
+                    "9b6dca7b332efae3c2e3939ed628578874e1cb7d_:0001": false,
+                    "1c19a987e1bd8c206353d18066b117cc0b21e841_:0000": false,
+                    "451e882aeb903af797a2298ae5fcc18ab87e0bb5_:0000": false,
+                    "451e882aeb903af797a2298ae5fcc18ab87e0bb5_:0001": false,
+                    "3bd0e65f7e1c55fe38c4b6101e30f44fe392151a_:0000": false,
+                    "9adc11afde6b82707a265cbfa3556675b99c6698_:0001": false,
+                    "1c19a987e1bd8c206353d18066b117cc0b21e841_:0001": false,
+                    "6612b8bbaa15f88ff679932eb9b370d843831c75_:0000": false,
+                    "Thomas_Friends_Wooden_Railway_Talking_Thomas_z7yi7UFHJRj_:0000": false,
+                    "59d4630af6aee8b19660537466b52f2c26a74c19_:0000": false,
+                    "bcb3afdf6675c9c0de5e1dff03c05643dbc28506_:0000": false,
+                    "109afc6efb93da1a724fd47595a3cf5c97debcaa_:0000": false,
+                    "045fbffe4884b8583b3768185fe8cdc15662e835_:0000": false,
+                    "7dd945cd322afe036693317f078c8a090a322d7b_:0000": false,
+                    "86c594b95727a2f743e07669e7c99d5da6343be2_:0000": false,
+                    "220-29_:0012": false,
+                    "48e26ef9b82dea6a528a63804e477f747dc02f73_:0000": false,
+                    "6abdf0ae193cb06761aa72bc6acff7fc7320e76f_:0000": false,
+                    "32a0a1818c04208ac457579c89c2276f2f7f85a4_:0000": false,
+                    "6abdf0ae193cb06761aa72bc6acff7fc7320e76f_:0001": false,
+                    "7bf5d72ea721296ab6faf52406c0ba83714d55c1_:0000": false,
+                    "7badc6cf44e8b66b36938846242492fac54e5ceb_:0001": false,
+                    "6abdf0ae193cb06761aa72bc6acff7fc7320e76f_:0002": false,
+                    "6abdf0ae193cb06761aa72bc6acff7fc7320e76f_:0003": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0010": false,
+                    "6abdf0ae193cb06761aa72bc6acff7fc7320e76f_:0004": false,
+                    "6abdf0ae193cb06761aa72bc6acff7fc7320e76f_:0005": false,
+                    "50c294cd4703c993b36e0874f67c241260de1e54_:0000": false,
+                    "9adc11afde6b82707a265cbfa3556675b99c6698_:0000": false,
+                    "dfefd7abfc58df9f16eac562b399e52add53386f_:0000": false,
+                    "7b395deb580a75ca10a361d25b5e10b1bab8464b_:0000": false,
+                    "9b6dca7b332efae3c2e3939ed628578874e1cb7d_:0000": false,
+                    "81d0d47953778079c6cf43c917247b8be8d9a78a_:0000": false,
+                    "9c5db6e77b1207d689e035d957bff9216d1615e5_:0000": false,
+                    "32a0a1818c04208ac457579c89c2276f2f7f85a4_:0001": false,
+                    "a73ee286689e2976024da0b13fc734cfb29d7596_:0000": false,
+                    "e9ee3acf2be7b9ad67b98d771068c71834874f69_:0000": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0003": false,
+                    "a19b47699883e5841599452274d671a1bb2c775e_:0000": false,
+                    "003949689122adfc2370d64c0615edc1b257db83_:0000": false,
+                    "220-29_:0006": false,
+                    "81d0d47953778079c6cf43c917247b8be8d9a78a_:0001": false,
+                    "c3db13f077c3e9d28bcedb5bf5d7b547a43a752b_:0000": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0012": false,
+                    "3a9c2d2f765a2399442f845b7da0ddaa61e82071_:0000": false,
+                    "cd95f463e8f80aed4f5671bac25e2679cc21600f_:0000": false,
+                    "247a1aadc2327d7c0f7d6cc5626046b083f3e84a_:0000": false,
+                    "2d677064b6bd4a3ba262cd510fd03c58efb57533_:0000": false,
+                    "2aec13eb84fb93992cc5f2c713cfe1819df678c6_:0000": false,
+                    "04ed449bae4986d2fcf17340168a9bdfeeac5084_:0002": false,
+                    "2aec13eb84fb93992cc5f2c713cfe1819df678c6_:0001": false,
+                    "920e3797a52036dd338a603e25d46725ec257956_:0000": false,
+                    "8523b0c0c4a17a845cc33d92c7b3705f48db1efd_:0000": false,
+                    "dac239021012ec77f30a0fbc7526c4ade3348ab3_:0000": false,
+                    "21241eacac2464ad03d363bf02b470b29974caa0_:0002": false,
+                    "29292c60beae9b293ee026b619af852e657b95a4_:0000": false,
+                    "bd12f6fd478618cc550689cd9a050e61b1b5abe0_:0000": false,
+                    "220-29_:0002": false,
+                    "Schleich_Allosaurus_:0000": false,
+                    "1565076fc4398d7ae449941b4dcf3cfbf1de292d_:0000": false,
+                    "925f48efff312862677c9517a8ec0faba4909570_part_1_:0000": false,
+                    "Book_24_:0000": false,
+                    "Tomato_30_:0000": false,
+                    "Perricone_MD_No_Foundation_Serum_:0000": false,
+                    "b883b58bdd53fccec7153d88a98dea8e31158c64_:0000": false,
+                    "3D_Dollhouse_Happy_Brother_:0001": false,
+                    "8ac28a1a29cb5d49f55dd27dbd06d7f3749db356_:0001": false,
+                    "3D_Dollhouse_Happy_Brother_:0002": false,
+                    "6acafe4f37b17ff0c33d22c8dc3fede1bddc67de_:0000": false,
+                    "49b7ece681efd7ebe1cfc2bdfb80173663358adc_:0000": false,
+                    "47c28745703eaa9b3bfe792ad97a4de3467d3bc3_:0000": false,
+                    "465c339f405bf0f55e0c316820958dee1126dabd_:0000": false,
+                    "2d93837fd0fb80b2f2e9b0d3d55eb6506b22d4c1_:0000": false,
+                    "71fa3c2594d4399ed3f0d0942e3edcd2be8fdbc5_:0000": false,
+                    "ee4b6239be4a2513feccbe0a96c2a59cda30b1ee_:0000": false,
+                    "a858cba39573583f6aff0a31d237bcebabaaf503_:0000": false,
+                    "61d4155613cdff2e36558a2c210452232eea676f_:0000": false
+                },
+                "is_filled": {
+                    "0dfcf1e690e0a6705a5ae5fd0cb0dc01f3a600db_:0000": false,
+                    "4db7a1a5377cf18b8a14ab335a2970724ec43f2c_:0000": false,
+                    "87a34af23efddf90b6267768647fbedcbf846827_:0000": false,
+                    "c1bd4ed24b1eab295513bd16896686129dff4f1a_:0000": false,
+                    "2fe7c6f08e5e7584b760a0dc2ede9b854908fd29_:0001": false,
+                    "bd8a1dc70062c8e7c8a33cb92ee86fbe6b015547_:0000": false,
+                    "f0ba4441429787fe8c15827ad4db233c4c743b3e_:0000": false,
+                    "B07HK83QRB_:0000": false,
+                    "B07MBFDKYY_:0000": false,
+                    "2fe7c6f08e5e7584b760a0dc2ede9b854908fd29_:0000": false,
+                    "391972f73810b6eab26e322652d88a61aea7a739_:0000": false,
+                    "5742501065a46cf69165e60257b42a86f5fadf8b_:0000": false,
+                    "cb47ce31bd4309c8b3c99a1d53db43f7046cb489_:0000": false,
+                    "0022fa6ee5a44330e765488919803155b1a9e88c_:0000": false,
+                    "Chef_Style_Round_Cake_Pan_9_inch_pan_:0000": false,
+                    "Paul_Frank_Dot_Lunch_Box_:0000": false,
+                    "Dish_Sponge_1_:0000": false,
+                    "11a27304451d7af4d398303cccdfea4d8c26ebb9_:0000": false,
+                    "3c163391afeb4130eadacb6ef9b6e5930329a32b_:0000": false,
+                    "87ed6d0c785b3245207bb217eb3ee3fc079f8633_:0000": false,
+                    "db8288398b2513371f31aff4e2e6271dd08476af_:0000": false,
+                    "1c19a987e1bd8c206353d18066b117cc0b21e841_:0000": false,
+                    "1c19a987e1bd8c206353d18066b117cc0b21e841_:0001": false,
+                    "77a30b013c7dfe65de4713e54866a395b8b9513d_:0000": false,
+                    "Thomas_Friends_Wooden_Railway_Talking_Thomas_z7yi7UFHJRj_:0000": false,
+                    "81d0d47953778079c6cf43c917247b8be8d9a78a_:0000": false,
+                    "14bdc1398760aef6d8757e2dd6a1c674d7851e66_:0000": false,
+                    "81d0d47953778079c6cf43c917247b8be8d9a78a_:0001": false,
+                    "29c9ab6ad9b6d2c5830c113a3abec93a1a6e4e13_:0000": false,
+                    "3a9c2d2f765a2399442f845b7da0ddaa61e82071_:0000": false,
+                    "29292c60beae9b293ee026b619af852e657b95a4_:0000": false,
+                    "bd12f6fd478618cc550689cd9a050e61b1b5abe0_:0000": false,
+                    "6cbae88d39aac82b80e2345da72d16978f51f384_:0000": false,
+                    "Perricone_MD_No_Foundation_Serum_:0000": false
+                },
+                "is_powered_on": {
+                    "4db7a1a5377cf18b8a14ab335a2970724ec43f2c_:0000": false,
+                    "Candle_2_:0000": false,
+                    "21241eacac2464ad03d363bf02b470b29974caa0_:0003": false,
+                    "B07HK83QRB_:0000": false,
+                    "21241eacac2464ad03d363bf02b470b29974caa0_:0001": false,
+                    "Laptop_10_:0000": false,
+                    "21241eacac2464ad03d363bf02b470b29974caa0_:0000": false,
+                    "88e0939fb3cf5e618321fa878151c8339544cfeb_:0000": false,
+                    "88e0939fb3cf5e618321fa878151c8339544cfeb_:0001": false,
+                    "99a5f505af290fb896dbb6407665336df9fce83a_:0000": false,
+                    "B01IJ5A0PC_:0000": false,
+                    "474663aec910e240c7de975590e59bcf819c7489_:0000": false,
+                    "474663aec910e240c7de975590e59bcf819c7489_:0001": false,
+                    "1c19a987e1bd8c206353d18066b117cc0b21e841_:0000": false,
+                    "1c19a987e1bd8c206353d18066b117cc0b21e841_:0001": false,
+                    "Thomas_Friends_Wooden_Railway_Talking_Thomas_z7yi7UFHJRj_:0000": false,
+                    "109afc6efb93da1a724fd47595a3cf5c97debcaa_:0000": false,
+                    "48e26ef9b82dea6a528a63804e477f747dc02f73_:0000": false,
+                    "dfefd7abfc58df9f16eac562b399e52add53386f_:0000": false,
+                    "9c5db6e77b1207d689e035d957bff9216d1615e5_:0000": false,
+                    "a73ee286689e2976024da0b13fc734cfb29d7596_:0000": false,
+                    "c3db13f077c3e9d28bcedb5bf5d7b547a43a752b_:0000": false,
+                    "8523b0c0c4a17a845cc33d92c7b3705f48db1efd_:0000": false,
+                    "21241eacac2464ad03d363bf02b470b29974caa0_:0002": false,
+                    "1565076fc4398d7ae449941b4dcf3cfbf1de292d_:0000": false,
+                    "71fa3c2594d4399ed3f0d0942e3edcd2be8fdbc5_:0000": false
+                }
+            }
+        }
+    ]
+}

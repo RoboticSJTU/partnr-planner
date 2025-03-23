@@ -115,7 +115,8 @@ def call_LLM(model_name, messages):
         stream = client.chat.completions.create(
             model="deepseek-chat",
             messages=messages,
-            stream=True  # 启用流式
+            stream=True,
+            temperature=0.0# 启用流式
         )
 
         # 逐块处理响应
@@ -219,8 +220,8 @@ def semantic_search(scene_graph_path, task, model_name):
         cprint("\n---------------------------------", "light")
         cprint(f"{number_to_ordinal(llm_count+1)} time calling LLM", "light")
         cprint("\n---------------------------------", "light")
-        cprint("Please press any button to continue.", "red")
-        input()
+        # cprint("Please press any button to continue.", "red")
+        # input()
         
         gpt_reply = remove_comments(call_LLM(model_name, messages))
         llm_count += 1
@@ -257,8 +258,8 @@ def semantic_search(scene_graph_path, task, model_name):
                 messages.append({"role": "user", "content": check_result})
                 cprint("\n---------------------------------", "red")
                 cprint("\n Plan is not executable, force LLM to replan", "red")
-                cprint("Please press any button to continue.", "red")
-                input()
+                # cprint("Please press any button to continue.", "red")
+                # input()
             else:
                 # print_plan_rich(gpt_reply_json['command']['plan'])
                 cprint("\n---------------------------------", "green")

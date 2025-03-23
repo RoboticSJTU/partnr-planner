@@ -56,7 +56,7 @@ class LLMPlanner(Planner):
         :param env_interface: The environment interface.
         """
         # Set the planner config
-        print("============== init LLMPlanner")
+        
         super().__init__(plan_config, env_interface)
         # Initialize LLM
         self.__initialize_llm()
@@ -204,15 +204,15 @@ class LLMPlanner(Planner):
         This method instantiates LLM as defined in the config
         """
         # Instantiate LLM from the Hydra config
-        print("========initialize llm")
+        
         llm_conf = self.planner_config.llm
-        print("========llm_conf")
-        print(llm_conf)
+        
+        
         #self.llm = instantiate(llm_conf.llm)
         #self.llm = self.llm(llm_conf)
         self.llm = OpenAIChat(llm_conf)
         #self.llm = self.llm(conf=llm_conf)
-        print("========initialized llm")
+        
         # Setup the LLM parameters
         # self.instruct = self.planner_config.llm.instruct
         self.instruct = self.planner_config.instruct

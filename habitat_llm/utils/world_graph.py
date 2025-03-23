@@ -16,17 +16,18 @@ def print_all_entities(world_graph: WorldGraph) -> None:
 
     :param world_graph: The active WorldGraph with all instantiated entities.
     """
-    print("\n")
-    cprint("Currently available Entities:", "green")
-    cprint(" Rooms: ", "green")
-    cprint(f"  {[node.name for node in world_graph.get_all_rooms()]}", "yellow")
-    cprint(" Furniture: ", "green")
-    cprint(f"  {[node.name for node in world_graph.get_all_furnitures()]}", "yellow")
-    cprint(" Objects: ", "green")
-    cprint(f"  {[node.name for node in world_graph.get_all_objects()]}", "yellow")
-    cprint(" Receptacles: ", "green")
-    cprint(f"  {[node.name for node in world_graph.get_all_receptacles()]}", "yellow")
-    print("\n")
+    # print("\n")
+    # cprint("Currently available Entities:", "green")
+    # cprint(" Rooms: ", "green")
+    # cprint(f"  {[node.name for node in world_graph.get_all_rooms()]}", "yellow")
+    # cprint(" Furniture: ", "green")
+    # cprint(f"  {[node.name for node in world_graph.get_all_furnitures()]}", "yellow")
+    # cprint(" Objects: ", "green")
+    # cprint(f"  {[node.name for node in world_graph.get_all_objects()]}", "yellow")
+    # cprint(" Receptacles: ", "green")
+    # cprint(f"  {[node.name for node in world_graph.get_all_receptacles()]}", "yellow")
+    # print("\n")
+    return
 
 
 def print_furniture_entity_handles(world_graph: WorldGraph) -> None:

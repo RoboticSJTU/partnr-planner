@@ -31,7 +31,7 @@ class ZeroShotReactPlanner(LLMPlanner):
         :param plan_config: The planner configuration.
         :param env_interface: The environment interface.
         """
-        print("=============== ZeroShotReactPlanner")
+        
         super().__init__(plan_config, env_interface)
         self.planning_chunk = []
         
@@ -114,7 +114,7 @@ class ZeroShotReactPlanner(LLMPlanner):
                     eot_tag=self.planner_config.llm.eot_tag,
                 )
                 self.curr_prompt += result + self.planner_config.llm.assistant_tag
-                print(result + self.planner_config.llm.assistant_tag, end="")
+                # print(result + self.planner_config.llm.assistant_tag, end="")
                 self.trace += result + self.planner_config.llm.assistant_tag
         else:
             result = super()._add_responses_to_prompt(responses)
@@ -267,7 +267,7 @@ class ZeroShotReactPlanner(LLMPlanner):
             # print(high_level_actions, type(high_level_actions))
             # print("high_level_actionshigh_level_actionshigh_level_actions")
             # print(high_level_actions)
-            print(f"\n\n[DEBUG] Now Executing: {high_level_actions}\n\n")
+            print(f"\n\n[Info] Now Executing: {high_level_actions}\n\n")
 
             # Get low level actions and/or responses
             # print(f"ret----------------------")
