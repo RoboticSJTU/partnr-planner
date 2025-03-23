@@ -13,7 +13,7 @@ import traceback
 import json
 import shutil
 from omegaconf import OmegaConf
-
+import logging
 
 # append the path of the
 # parent directory
@@ -444,6 +444,7 @@ def run_planner(config, dataset: CollaborationDatasetV0 = None, conn=None):
 
 
 if __name__ == "__main__":
+    logging.getLogger("httpx").setLevel(logging.ERROR)
     cprint(
         "\nStart of the example program to demonstrate multi-agent planner demo.",
         "blue",

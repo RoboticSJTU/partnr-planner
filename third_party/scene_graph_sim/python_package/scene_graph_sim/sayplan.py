@@ -19,7 +19,7 @@ Agent Role: You are an excellent graph planning agent. Given a graph representat
 Environment Functions:
 Navigate: [NAV_TARGET]
 Pick: [OBJECT], If you pick something, you can't pick it again before you place the item in your hand.
-Place: [OBJECT, SPATIAL_RELATION, FURNITURE], SPATIAL_RELATION can only be 'on' or 'within'
+Place: [OBJECT, SPATIAL_RELATION, FURNITURE], SPATIAL_RELATION can only be 'on'
 Open: [FURNITURE]
 Close: [FURNITURE]
 Environment API:
@@ -210,7 +210,6 @@ def semantic_search(scene_graph_path, task, model_name):
             messages.append({"role": "user", "content": user_input})
         gpt_reply = remove_comments(call_LLM(model_name, messages))
         llm_count += 1
-        print('semantic_search----reply\n', gpt_reply)
         try:
             gpt_reply_json = json.loads(gpt_reply)
         except Exception as e:
