@@ -13,8 +13,7 @@ import traceback
 import json
 import shutil
 from omegaconf import OmegaConf
-
-
+import logging
 # append the path of the
 # parent directory
 sys.path.append("..")
@@ -238,7 +237,7 @@ def run_eval(config):
         write_to_csv(config.paths.end_result_file_path, all_metrics)
 
     e_t = time.time() - t0
-    print(f"Time elapsed since start of experiment: {e_t} seconds.")
+    # print(f"Time elapsed since start of experiment: {e_t} seconds.")
 
 
 def run_planner(config, dataset: CollaborationDatasetV0 = None, conn=None):
@@ -291,28 +290,28 @@ def run_planner(config, dataset: CollaborationDatasetV0 = None, conn=None):
         return
 
     # Print the planner
-    cprint(f"Successfully constructed the '{config.evaluation.type}' planner!", "green")
-    print(eval_runner)
+    # cprint(f"Successfully constructed the '{config.evaluation.type}' planner!", "green")
+    # print(eval_runner)
 
     # Declare observability mode
-    cprint(
-        f"Partial observability is set to: '{config.world_model.partial_obs}'", "green"
-    )
+    # cprint(
+    #     f"Partial observability is set to: '{config.world_model.partial_obs}'", "green"
+    # )
 
     # Print the agent list
-    print("\nAgent List:")
-    print(eval_runner.agent_list)
+    # print("\nAgent List:")
+    # print(eval_runner.agent_list)
 
     # Print the agent description
-    print("\nAgent Description:")
-    print(eval_runner.agent_descriptions)
+    # print("\nAgent Description:")
+    # print(eval_runner.agent_descriptions)
 
     # Highlight the mode of operation
-    cprint("\n---------------------------------------", "blue")
-    cprint(f"Planner Mode: {config.evaluation.type.capitalize()}", "blue")
+    # cprint("\n---------------------------------------", "blue")
+    # cprint(f"Planner Mode: {config.evaluation.type.capitalize()}", "blue")
     # cprint(f"LLM model: {config.planner.llm.llm._target_}", "blue")
-    cprint(f"Partial Observability: {config.world_model.partial_obs}", "blue")
-    cprint("---------------------------------------\n", "blue")
+    # cprint(f"Partial Observability: {config.world_model.partial_obs}", "blue")
+    # cprint("---------------------------------------\n", "blue")
 
     os.makedirs(config.paths.results_dir, exist_ok=True)
 
@@ -443,11 +442,12 @@ def run_planner(config, dataset: CollaborationDatasetV0 = None, conn=None):
 
         conn.close()
 
-
 if __name__ == "__main__":
+    
+    logging.getLogger("httpx").setLevel(logging.ERROR)
     cprint(
-        "\nStart of the example program to demonstrate multi-agent planner demo.",
-        "blue",
+        "\nStart of the example program to demonstrate long-horizon task planning demo.",
+        "green",
     )
 
     if len(sys.argv) < 2:
@@ -458,6 +458,6 @@ if __name__ == "__main__":
     run_eval()
 
     cprint(
-        "\nEnd of the example program to demonstrate multi-agent planner demo.",
-        "blue",
+        "\nEnd of the example program to demonstrate long-horizon task planning demo.",
+        "green",
     )
