@@ -54,6 +54,8 @@ class DebugVideoUtil:
         cv2.resizeWindow("Simulation Preview", 1920, 1080)
         self.preview_active = True  # 窗口是否处于激活状态
         
+        # self.env_interface.get_observations()
+        
         
     def __get_combined_frames(self, batch: Dict[str, Any]) -> np.ndarray:
         """

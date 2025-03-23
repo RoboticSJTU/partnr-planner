@@ -1,8 +1,8 @@
 import json
 import copy
-from Node import NodeType
-from State import State
-from Action import Action
+from .Node import NodeType
+from .State import State
+from .Action import Action
 
 class Simulator:
 	def __init__(self):

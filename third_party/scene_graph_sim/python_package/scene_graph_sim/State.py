@@ -1,5 +1,5 @@
-from Node import Node, NodeType
-from Action import Action
+from .Node import Node, NodeType
+from .Action import Action
 class State:
 	def __init__(self, scene):
 		# a dict save the nodes, key is the node's id and the value is the object
