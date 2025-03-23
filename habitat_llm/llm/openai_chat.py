@@ -8,8 +8,7 @@ import os
 from typing import Dict, List, Optional
 
 from omegaconf import DictConfig, OmegaConf
-from openai import AzureOpenAI
-
+from openai import AzureOpenAI, OpenAI
 from habitat_llm.llm.base_llm import BaseLLM, Prompt
 
 
@@ -39,21 +38,25 @@ class OpenAIChat(BaseLLM):
         """
         self.llm_conf = conf
         self.generation_params = self.llm_conf.generation_params
-        try:
-            api_key = os.getenv("OPENAI_API_KEY")
-            assert len(api_key) > 0, ValueError("No OPENAI_API_KEY keys provided")
-        except Exception:
-            raise ValueError("No OPENAI API keys provided")
-        try:
-            endpoint = os.getenv("OPENAI_ENDPOINT")
-            assert len(endpoint) > 0, ValueError("No OPENAI_ENDPOINT keys provided")
-        except Exception:
-            raise ValueError("No OPENAI endpoint keys provided")
-        self.client = AzureOpenAI(
-            api_version="2024-06-01",
-            api_key=api_key,
-            azure_endpoint=f"https://{endpoint}",
-        )
+        api_key = "sk-8ad8780714b7462d950860ee8f9dc4c8"
+        # try:
+        #     api_key = os.getenv("OPENAI_API_KEY")
+        #     assert len(api_key) > 0, ValueError("No OPENAI_API_KEY keys provided")
+        # except Exception:
+        #     raise ValueError("No OPENAI API keys provided")
+        # try:
+        #     endpoint = os.getenv("OPENAI_ENDPOINT")
+        #     assert len(endpoint) > 0, ValueError("No OPENAI_ENDPOINT keys provided")
+        # except Exception:
+        #     raise ValueError("No OPENAI endpoint keys provided")
+        endpoint = "https://api.deepseek.com/v1"
+        # self.client = AzureOpenAI(
+        #     api_version="2024-06-01",
+        #     api_key=api_key,
+        #     azure_endpoint=f"https://{endpoint}",
+        # )
+        self.client = OpenAI(
+            api_key=api_key, base_url=endpoint)
         self._validate_conf()
         self.verbose = self.llm_conf.verbose
         self.verbose = True
@@ -110,7 +113,7 @@ class OpenAIChat(BaseLLM):
             messages.append(generate_message(prompt, image_detail=image_detail))
 
         text_response = self.client.chat.completions.create(
-            model=params["model"], messages=messages
+            model="deepseek-chat", messages=messages
         )
         text_response = text_response.choices[0].message.content
         self.response = text_response
@@ -119,7 +122,18 @@ class OpenAIChat(BaseLLM):
         if self.keep_message_history:
             self.message_history = messages.copy()
             self.message_history.append({"role": "assistant", "content": text_response})
-
+        # import time
+        # # 获取当前时间的结构化表示
+        # current_time = time.localtime()
+        # cur_time = time.strftime("%H:%M:%S", current_time)
+        # log_dir = "/home/jintian/Desktop/llm_log_tmp"
+        # import os
+        # import json
+        # os.makedirs(log_dir, exist_ok=True)
+        # with open(f"{log_dir}/{cur_time}_llm_prompt.json", "w") as f:
+        #     json.dump(messages, f, indent=4)
+        # with open(f"{log_dir}/{cur_time}_llm_response.txt", "a") as f:
+        #     f.write(text_response)
         if stop is not None:
             text_response = text_response.split(stop)[0]
         return text_response

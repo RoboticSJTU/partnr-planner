@@ -49,6 +49,9 @@ class DecentralizedEvaluationRunner(EvaluationRunner):
         # Set an agent to each planner
         for agent_conf in self.evaluation_runner_config.agents.values():
             planner_conf = agent_conf.planner
+            import pickle
+            with open("/home/jintian/Desktop/planner_conf.pkl", "rb") as f:
+                planner_conf = pickle.load(f)
             planner = instantiate(planner_conf)
             planner = planner(env_interface=self.env_interface)
             planner.agents = [self.agents[agent_conf.uid]]
@@ -145,5 +148,4 @@ class DecentralizedEvaluationRunner(EvaluationRunner):
                     )
 
             all_planners_are_done = this_planner_is_done and all_planners_are_done
-
         return low_level_actions, planner_info, all_planners_are_done

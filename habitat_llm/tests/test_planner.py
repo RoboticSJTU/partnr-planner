@@ -37,8 +37,8 @@ DATASET_OVERRIDES = [
     "habitat.dataset.scenes_dir=data/hssd-partnr-ci",
     "+habitat.dataset.metadata.metadata_folder=data/hssd-partnr-ci/metadata",
     "habitat.environment.iterator_options.shuffle=False",
-    "habitat.simulator.agents.agent_1.articulated_agent_urdf=data/humanoids/female_0/female_0.urdf",  # We change the config to human 0 since only human 0 in the CI testing dataset
-    "habitat.simulator.agents.agent_1.motion_data_path=data/humanoids/female_0/female_0_motion_data_smplx.pkl",  # We change the config to human 0 since only human 0 in the CI testing dataset
+    "habitat.simulator.agents.agent_1.articulated_agent_urdf=data/humanoids/humanoid_data/female_0/female_0.urdf",  # We change the config to human 0 since only human 0 in the CI testing dataset
+    "habitat.simulator.agents.agent_1.motion_data_path=data/humanoids/humanoid_data/female_0/female_0_motion_data_smplx.pkl",  # We change the config to human 0 since only human 0 in the CI testing dataset
 ]
 
 
@@ -241,7 +241,7 @@ def test_oracle_planner():
 def test_llm_planner():
     config = get_config(
         "examples/planner_multi_agent_demo_config.yaml",
-        overrides=["llm@evaluation.planner.plan_config.llm=mock"] + DATASET_OVERRIDES,
+        overrides=["llm@evaluation.planner.plan_config.llm=openai_chat"] + DATASET_OVERRIDES,
     )
 
     if not CollaborationDatasetV0.check_config_paths_exist(config.habitat.dataset):
@@ -400,8 +400,8 @@ def test_react_based_llm_planner_rag_format():
         "examples/planner_multi_agent_demo_config.yaml",
         overrides=[
             "evaluation='decentralized_evaluation_runner_multi_agent'",
-            "llm@evaluation.agents.agent_0.planner.plan_config.llm=mock",
-            "llm@evaluation.agents.agent_1.planner.plan_config.llm=mock",
+            "llm@evaluation.agents.agent_0.planner.plan_config.llm=openai_chat",
+            "llm@evaluation.agents.agent_1.planner.plan_config.llm=openai_chat",
             "instruct@evaluation.agents.agent_0.planner.plan_config.instruct=few_shot_decentralized_partial_obs_coordinated_robot_spatial",
             "instruct@evaluation.agents.agent_1.planner.plan_config.instruct=few_shot_decentralized_partial_obs_coordinated_human_spatial",
             "evaluation.agents.agent_0.planner.plan_config.enable_rag=True",  # Enable RAG
@@ -543,8 +543,8 @@ def test_zero_shot_react_planner():
         overrides=[
             "evaluation=decentralized_evaluation_runner_single_agent",
             "planner@evaluation.agents.agent_0.planner=llm_zero_shot_react_planner",
-            "llm@evaluation.agents.agent_0.planner.plan_config.llm=llama",
-            "llm@evaluation.agents.agent_0.planner.plan_config.llm=llama",
+            "llm@evaluation.agents.agent_0.planner.plan_config.llm=openai_chat",
+            "llm@evaluation.agents.agent_0.planner.plan_config.llm=openai_chat",
             "agent@evaluation.agents.agent_0.config=oracle_rearrange_agent_motortoolsonly",
             "evaluation.agents.agent_0.planner.plan_config.objects_response_include_states=True",
         ]

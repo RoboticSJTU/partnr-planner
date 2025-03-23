@@ -1,10 +1,10 @@
 defaults:
-  - /llm@plan_config.llm: llama
+  - /llm@plan_config.llm: openai_chat
   - /instruct@plan_config.instruct: zero_shot_prompt
 
 _target_: 'habitat_llm.planner.ZeroShotReactPlanner'
 _recursive_: False
-_partial_: True
+_partial_: False
 
 plan_config:
     replanning_threshold: 25 # max number of times the LLM is allowed to plan to finish the task

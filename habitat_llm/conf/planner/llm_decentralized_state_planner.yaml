@@ -1,10 +1,10 @@
 defaults:
-  - /llm@plan_config.llm: llama
+  - /llm@plan_config.llm: openai_chat
   - /instruct@plan_config.instruct: few_shot_decentralized_state_replan_robot
 
 _target_: 'habitat_llm.planner.StateBasedLLMPlanner'
 _recursive_: False
-_partial_: True
+_partial_: False
 
 plan_config:
     replanning_threshold: 25
