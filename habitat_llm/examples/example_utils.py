@@ -112,7 +112,8 @@ class DebugVideoUtil:
 
         self.frames.append(frames_concat)
         if self.preview_active:
-            cv2.imshow("Simulation Preview", frames_concat)
+            bgr_image = cv2.cvtColor(frames_concat, cv2.COLOR_RGB2BGR)
+            cv2.imshow("Simulation Preview", bgr_image)
             key = cv2.waitKey(1) & 0xFF
             if key == ord('q'):
                 cv2.destroyWindow("Simulation Preview")

@@ -319,7 +319,7 @@ def run_planner(config, dataset: CollaborationDatasetV0 = None, conn=None):
     # Run the planner
     if config.mode == "cli":
         instruction = "Go to the bed" if not config.instruction else config.instruction
-
+        instruction = input("Please enter an instruction: ")
         cprint(f'\nExecuting instruction: "{instruction}"', "blue")
         try:
             info = eval_runner.run_instruction(instruction)
