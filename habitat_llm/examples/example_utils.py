@@ -9,6 +9,7 @@ import time
 from typing import Any, Dict, List, Tuple
 import subprocess
 import threading
+import queue
 
 import cv2
 import imageio
@@ -49,13 +50,57 @@ class DebugVideoUtil:
         for _agent_conf in self.env_interface.conf.evaluation.agents.values():
             self.num_agents += 1
 
-        # 初始化实时预览窗口
-        cv2.namedWindow("Simulation Preview", cv2.WINDOW_NORMAL)
-        cv2.resizeWindow("Simulation Preview", 1920, 1080)
+        
+        # 异步显示参数
+        self.preview_queue = queue.Queue(maxsize=1000)
         self.preview_active = True  # 窗口是否处于激活状态
         
-        # self.env_interface.get_observations()
+        # 启动独立的显示线程
+        self.preview_thread = threading.Thread(
+            target=self._preview_worker, 
+            daemon=True
+        )
+        self.preview_thread.start()
         
+        # obs = self.env_interface.get_observations()
+        # start_obs=obs['agent_0_third_rgb'][0].cpu().numpy()
+        # bgr_image = cv2.cvtColor(start_obs, cv2.COLOR_RGB2BGR)
+        # # 非阻塞方式投递到显示线程
+        # try:
+        #     self.preview_queue.put_nowait(bgr_image)
+        # except queue.Full:
+        #     pass  # 跳过偶发的帧丢弃
+        
+    def _preview_worker(self):
+        """独立的显示线程工作函数"""
+        # 初始化实时预览窗口
+        cv2.namedWindow("Simulation Preview", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow("Simulation Preview", 1080, 1080)
+        print("Press 'q' to close the preview window.")
+        obs = self.env_interface.get_observations()
+        start_obs=obs['agent_0_third_rgb'][0].cpu().numpy()
+        bgr_image = cv2.cvtColor(start_obs, cv2.COLOR_RGB2BGR)
+        frame = cv2.resize(bgr_image, (1024, 1024))
+        
+        # for i in range(10):
+        #     cv2.imshow("Simulation Preview", bgr_image)
+        while self.preview_active:
+            try:
+                # 显示帧并检查退出
+                cv2.imshow("Simulation Preview", frame)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    self.preview_active = False
+                # 非阻塞获取数据，最多等待33ms（约30fps）
+                frame = self.preview_queue.get(timeout=1/30)
+                frame = cv2.resize(frame, (1024, 1024))
+               
+                
+                
+            except queue.Empty:
+                continue  # 无新帧时继续等待
+            
+            
+        cv2.destroyWindow("Simulation Preview")
         
     def __get_combined_frames(self, batch: Dict[str, Any]) -> np.ndarray:
         """
@@ -116,11 +161,16 @@ class DebugVideoUtil:
         self.frames.append(frames_concat)
         if self.preview_active:
             bgr_image = cv2.cvtColor(frames_concat, cv2.COLOR_RGB2BGR)
-            cv2.imshow("Simulation Preview", bgr_image)
-            key = cv2.waitKey(1) & 0xFF
-            if key == ord('q'):
-                cv2.destroyWindow("Simulation Preview")
-                self.preview_active = False
+            # cv2.imshow("Simulation Preview", bgr_image)
+            # key = cv2.waitKey(1) & 0xFF
+            # if key == ord('q'):
+            #     cv2.destroyWindow("Simulation Preview")
+            #     self.preview_active = False
+            # 非阻塞方式投递到显示线程
+            try:
+                self.preview_queue.put_nowait(bgr_image)
+            except queue.Full:
+                pass  # 跳过偶发的帧丢弃
 
     def _make_video(self, play: bool = True, postfix: str = "") -> None:
         """
