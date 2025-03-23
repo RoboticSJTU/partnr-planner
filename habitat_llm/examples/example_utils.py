@@ -27,10 +27,6 @@ class DebugVideoUtil:
     NOTE: This code was largely adapted from the evaluation_runner.py
     """
 
-    # HLS stream URL for streaming video
-    # HLS_STREAM_URL = "http://localhost:8080/hls/stream.m3u8"
-    
-
     def __init__(
         self, env_interface_arg: EnvironmentInterface, output_dir: str,
         stream_name: str = "simulation_stream"  # HLS流名称
@@ -53,103 +49,10 @@ class DebugVideoUtil:
         for _agent_conf in self.env_interface.conf.evaluation.agents.values():
             self.num_agents += 1
 
-        # 初始化HLS客户端
-        self.hls_client = HLSClient("http://localhost:5000")  # 根据服务器地址修改
-
-        # create HLS stream
-        self.ffmpeg_process = None
-        # self.hls_output_path = f"{output_dir}/dvu_stream.m3u8"  # HLS输出路径
-        self.target_fps = 30  # 根据实际情况调整帧率
-        self.segment_duration = 1  # 每个TS分段时长（秒）
-        self.segment_counter = 0
-        self.current_segment = BytesIO()
-        self.upload_thread = None
-        self.running = True
-        self.stream_name = stream_name  # HLS流名称
+        # 初始化实时预览窗口
+        cv2.namedWindow("Simulation Preview", cv2.WINDOW_NORMAL)
+        self.preview_active = True  # 窗口是否处于激活状态
         
-        # 创建推流目录结构
-        if env_interface_arg.conf.evaluation.hls_streaming:
-            print("Creating HLS stream...")
-            self._init_streaming_paths()
-    
-    def _init_streaming_paths(self):
-        """初始化推流路径"""
-        self.m3u8_path = f"{self.stream_name}/playlist.m3u8"
-        self.ts_pattern = f"{self.stream_name}/segment%03d.ts"
-        
-        # 初始化服务器端目录
-        self.hls_client.push_file("", self.m3u8_path)  # 创建空m3u8文件
-        
-    def _start_upload_thread(self):
-        """启动分段上传后台线程"""
-        def upload_worker():
-            while self.running:
-                # 读取FFmpeg输出
-                if self.ffmpeg_process is None:
-                    print("FFmpeg进程未初始化")
-                    break
-                data = self.ffmpeg_process.stdout.read(4096)
-                if not data:
-                    continue
-                
-                # 写入内存缓冲区
-                self.current_segment.write(data)
-                
-                # 达到分段时长时上传
-                if self.current_segment.tell() / (self.target_fps * 1e6) >= self.segment_duration:
-                    self._upload_segment()
-                    self.segment_counter += 1
-                    self.current_segment = BytesIO()
-        
-        self.upload_thread = threading.Thread(target=upload_worker)
-        self.upload_thread.start()
-        
-    def _upload_segment(self):
-        """上传单个TS分段和更新m3u8"""
-        # 生成分段文件名
-        ts_name = f"segment{self.segment_counter:04d}.ts"
-        m3u8_path = f"{self.stream_name}/playlist.m3u8"
-        
-        # 上传TS文件
-        self.hls_client.push_file(
-            self.current_segment.getvalue(),
-            f"{self.stream_name}/{ts_name}"
-        )
-        
-        # 更新m3u8播放列表
-        m3u8_content = f"#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-TARGETDURATION:{self.segment_duration}\n"
-        for i in range(max(0, self.segment_counter-5), self.segment_counter+1):
-            m3u8_content += f"#EXTINF:{self.segment_duration},\nsegment{i:04d}.ts\n"
-        self.hls_client.push_file(
-            m3u8_content.encode(),
-            m3u8_path
-        )
-    def _start_ffmpeg_process(self, width, height):
-        """启动FFmpeg HLS推流进程"""
-        print("Starting FFmpeg process...")
-        command = [
-            'ffmpeg',
-            '-y',
-            '-f', 'rawvideo',
-            '-pix_fmt', 'bgr24',
-            '-s', f'{width}x{height}',
-            '-r', str(self.target_fps),
-            '-i', '-',
-            '-c:v', 'libx264',
-            '-pix_fmt', 'yuv420p',
-            '-hls_time', str(self.segment_duration),
-            '-hls_list_size', '200',      # 播放列表保留的分段数
-            '-hls_flags', 'delete_segments+append_list',
-            '-hls_segment_filename', self.ts_pattern,  # 直接使用服务器路径模式
-            self.m3u8_path
-        ]
-        
-        return subprocess.Popen(
-            command,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-        )
 
     def __get_combined_frames(self, batch: Dict[str, Any]) -> np.ndarray:
         """
@@ -208,49 +111,12 @@ class DebugVideoUtil:
             )
 
         self.frames.append(frames_concat)
-        
-        # Streaming frames to HLS
-        # HLS推流处理
-        if self.env_interface.conf.evaluation.hls_streaming:
-            if self.ffmpeg_process is None:
-                # 根据第一帧初始化FFmpeg
-                h, w, _ = frames_concat.shape
-                self.ffmpeg_process = self._start_ffmpeg_process(w, h)
-                if self.ffmpeg_process is None:
-                    print("FFmpeg进程启动失败")
-                    return
-                self._start_upload_thread()
-
-            try:
-                # 将帧写入FFmpeg管道
-                # CV2的图像格式是BGR，FFmpeg要求的是RGB，所以这里需要转换
-                rgb_frame = cv2.cvtColor(frames_concat, cv2.COLOR_BGR2RGB)
-                self.ffmpeg_process.stdin.write(rgb_frame.tobytes())
-            except BrokenPipeError as e:
-                print(f"HLS流错误: {str(e)}")
-                # 这里可以添加重新初始化逻辑
-                self._restart_ffmpeg_process(frames_concat.shape)
-            
-            return
-        
-    def _restart_ffmpeg_process(self, frame_shape):
-        """重启FFmpeg进程"""
-        h, w, _ = frame_shape
-        self.ffmpeg_process = self._start_ffmpeg_process(w, h)
-        if self.ffmpeg_process is None:
-            print("FFmpeg进程启动失败")
-        self._start_upload_thread()
-        print("FFmpeg进程已重启")
-        
-    def close_stream(self):
-        self.running = False
-        if self.upload_thread:
-            self.upload_thread.join()
-        """关闭推流资源"""
-        if self.ffmpeg_process:
-            self.ffmpeg_process.stdin.close()
-            self.ffmpeg_process.wait()
-            self.ffmpeg_process = None
+        if self.preview_active:
+            cv2.imshow("Simulation Preview", frames_concat)
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord('q'):
+                cv2.destroyWindow("Simulation Preview")
+                self.preview_active = False
 
     def _make_video(self, play: bool = True, postfix: str = "") -> None:
         """
@@ -272,10 +138,6 @@ class DebugVideoUtil:
 
         writer.close()
         
-        # 关闭HLS推流
-        if self.env_interface.conf.evaluation.hls_streaming:
-            print("Closing HLS stream...")
-            self.close_stream()
         if play:
             print("     ...playing video, press 'q' to continue...")
             self.play_video(out_file)
