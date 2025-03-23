@@ -318,13 +318,17 @@ def run_planner(config, dataset: CollaborationDatasetV0 = None, conn=None):
 
     # Run the planner
     if config.mode == "cli":
-        instruction = "Go to the bed" if not config.instruction else config.instruction
-        instruction = input("Please enter an instruction: ")
-        cprint(f'\nExecuting instruction: "{instruction}"', "blue")
-        try:
-            info = eval_runner.run_instruction(instruction)
-        except Exception as e:
-            print("An error occurred:", e)
+        while True:
+            # instruction = "Go to the bed" if not config.instruction else config.instruction
+            instruction = input("Please enter an instruction: ")
+            if instruction == "":
+                cprint("\nEmpty instruction.", "blue")
+                continue
+            cprint(f'\nExecuting instruction: "{instruction}"', "blue")
+            try:
+                info = eval_runner.run_instruction(instruction)
+            except Exception as e:
+                print("An error occurred:", e)
 
     else:
         stats_episodes: Dict[str, Dict] = {
