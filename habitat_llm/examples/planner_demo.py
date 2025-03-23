@@ -329,6 +329,7 @@ def run_planner(config, dataset: CollaborationDatasetV0 = None, conn=None):
                 info = eval_runner.run_instruction(instruction)
             except Exception as e:
                 print("An error occurred:", e)
+            env_interface.reset_environment(move_to_next_episode=False)
 
     else:
         stats_episodes: Dict[str, Dict] = {
