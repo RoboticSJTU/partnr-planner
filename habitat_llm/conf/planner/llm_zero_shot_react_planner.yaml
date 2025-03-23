@@ -4,7 +4,7 @@ defaults:
 
 _target_: 'habitat_llm.planner.ZeroShotReactPlanner'
 _recursive_: False
-_partial_: True
+_partial_: False
 
 plan_config:
     replanning_threshold: 25 # max number of times the LLM is allowed to plan to finish the task

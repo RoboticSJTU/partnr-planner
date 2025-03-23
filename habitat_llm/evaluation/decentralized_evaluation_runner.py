@@ -148,5 +148,4 @@ class DecentralizedEvaluationRunner(EvaluationRunner):
                     )
 
             all_planners_are_done = this_planner_is_done and all_planners_are_done
-
         return low_level_actions, planner_info, all_planners_are_done

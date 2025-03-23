@@ -8,9 +8,7 @@ import os
 from typing import Dict, List, Optional
 
 from omegaconf import DictConfig, OmegaConf
-from openai import AzureOpenAI
-from openai import OpenAI
-
+from openai import AzureOpenAI, OpenAI
 from habitat_llm.llm.base_llm import BaseLLM, Prompt
 
 
@@ -125,7 +123,18 @@ class OpenAIChat(BaseLLM):
         if self.keep_message_history:
             self.message_history = messages.copy()
             self.message_history.append({"role": "assistant", "content": text_response})
-
+        # import time
+        # # 获取当前时间的结构化表示
+        # current_time = time.localtime()
+        # cur_time = time.strftime("%H:%M:%S", current_time)
+        # log_dir = "/home/jintian/Desktop/llm_log_tmp"
+        # import os
+        # import json
+        # os.makedirs(log_dir, exist_ok=True)
+        # with open(f"{log_dir}/{cur_time}_llm_prompt.json", "w") as f:
+        #     json.dump(messages, f, indent=4)
+        # with open(f"{log_dir}/{cur_time}_llm_response.txt", "a") as f:
+        #     f.write(text_response)
         if stop is not None:
             text_response = text_response.split(stop)[0]
         return text_response

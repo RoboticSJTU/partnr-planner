@@ -1,6 +1,6 @@
 llm:
   _target_    : habitat_llm.llm.OpenAIChat
-  _partial_   : True
+  _partial_   : False
 
 verbose       : True
 
