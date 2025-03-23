@@ -76,7 +76,7 @@ class DebugVideoUtil:
         # 初始化实时预览窗口
         cv2.namedWindow("Simulation Preview", cv2.WINDOW_NORMAL)
         cv2.resizeWindow("Simulation Preview", 1080, 1080)
-        print("Press 'q' to close the preview window.")
+        # print("Press 'q' to close the preview window.")
         obs = self.env_interface.get_observations()
         start_obs=obs['agent_0_third_rgb'][0].cpu().numpy()
         bgr_image = cv2.cvtColor(start_obs, cv2.COLOR_RGB2BGR)
