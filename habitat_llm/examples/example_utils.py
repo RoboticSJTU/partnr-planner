@@ -29,7 +29,7 @@ class DebugVideoUtil:
 
     def __init__(
         self, env_interface_arg: EnvironmentInterface, output_dir: str,
-        stream_name: str = "simulation_stream"  # HLS流名称
+        
     ) -> None:
         """
         Construct the DebugVideoUtil instance from an EnvironmentInterface.
@@ -51,9 +51,10 @@ class DebugVideoUtil:
 
         # 初始化实时预览窗口
         cv2.namedWindow("Simulation Preview", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow("Simulation Preview", 1920, 1080)
         self.preview_active = True  # 窗口是否处于激活状态
         
-
+        
     def __get_combined_frames(self, batch: Dict[str, Any]) -> np.ndarray:
         """
         For each agent, extract the observation from the "third_rgb" sensor and merge them into a single split-screen image.
