@@ -7,6 +7,7 @@
 import os
 import time
 from typing import Any, Dict, List, Tuple
+import subprocess
 
 import cv2
 import imageio
@@ -22,6 +23,10 @@ class DebugVideoUtil:
     For example, see `execute_skill` function below.
     NOTE: This code was largely adapted from the evaluation_runner.py
     """
+
+    # HLS stream URL for streaming video
+    HLS_STREAM_URL = "http://localhost:8080/hls/stream.m3u8"
+    
 
     def __init__(
         self, env_interface_arg: EnvironmentInterface, output_dir: str
@@ -43,6 +48,34 @@ class DebugVideoUtil:
         self.num_agents = 0
         for _agent_conf in self.env_interface.conf.evaluation.agents.values():
             self.num_agents += 1
+
+        # create HLS stream
+        self.ffmpeg_process = None
+        self.hls_output_path = f"{output_dir}/dvu_stream.m3u8"  # HLS输出路径
+        self.target_fps = 30  # 根据实际情况调整帧率
+        
+    def _start_ffmpeg_process(self, width, height):
+        """启动FFmpeg HLS推流进程"""
+        command = [
+            'ffmpeg',
+            '-y',
+            '-f', 'rawvideo',
+            '-pix_fmt', 'bgr24',
+            '-s', f'{width}x{height}',
+            '-r', str(self.target_fps),
+            '-i', '-',
+            '-c:v', 'libx264',
+            '-pix_fmt', 'yuv420p',
+            '-hls_time', '4',          # 每个TS分段时长（秒）
+            '-hls_list_size', '5',      # 播放列表保留的分段数
+            '-hls_flags', 'delete_segments',  # 自动删除旧分段
+            self.hls_output_path
+        ]
+        return subprocess.Popen(
+            command,
+            stdin=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
 
     def __get_combined_frames(self, batch: Dict[str, Any]) -> np.ndarray:
         """
@@ -101,7 +134,32 @@ class DebugVideoUtil:
             )
 
         self.frames.append(frames_concat)
+        
+        # Streaming frames to HLS
+        # HLS推流处理
+        if self.ffmpeg_process is None:
+            # 根据第一帧初始化FFmpeg
+            h, w, _ = frames_concat.shape
+            self.ffmpeg_process = self._start_ffmpeg_process(w, h)
+
+        try:
+            # 将帧写入FFmpeg管道
+            # CV2的图像格式是BGR，FFmpeg要求的是RGB，所以这里需要转换
+            frames_concat = cv2.cvtColor(frames_concat, cv2.COLOR_BGR2RGB)
+            self.ffmpeg_process.stdin.write(frames_concat.tobytes())
+        except BrokenPipeError as e:
+            print(f"HLS流错误: {str(e)}")
+            # 这里可以添加重新初始化逻辑
+            raise
+        
         return
+
+    def close_stream(self):
+        """关闭推流资源"""
+        if self.ffmpeg_process:
+            self.ffmpeg_process.stdin.close()
+            self.ffmpeg_process.wait()
+            self.ffmpeg_process = None
 
     def _make_video(self, play: bool = True, postfix: str = "") -> None:
         """
@@ -122,6 +180,10 @@ class DebugVideoUtil:
             writer.append_data(frame)
 
         writer.close()
+        
+        # 关闭HLS推流
+        print("Closing HLS stream...")
+        self.close_stream()
         if play:
             print("     ...playing video, press 'q' to continue...")
             self.play_video(out_file)

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HLS Player</title>
+    <!-- 引入hls.js库 -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        video {
+            width: 80%;
+            max-width: 1280px;
+            margin: 20px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <video id="video" controls></video>
+
+    <script>
+        // HLS播放初始化
+        const video = document.getElementById('video');
+        
+        // 检查浏览器是否原生支持HLS
+        if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // Safari等原生支持HLS的浏览器
+            video.src = '/hls/dvu_stream.m3u8';
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+            });
+        } else if (Hls.isSupported()) {
+            // 使用hls.js进行播放
+            const hls = new Hls();
+            hls.loadSource('/hls/dvu_stream.m3u8');
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+            });
+        } else {
+            alert('你的浏览器不支持HLS播放');
+        }
+    </script>
+</body>
+</html>

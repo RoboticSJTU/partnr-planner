@@ -613,6 +613,7 @@ class EvaluationRunner:
                     self.dvu._store_for_video(
                         observations, planner_info["high_level_actions"]
                     )
+                    # self._store_for_top_down_viz(0)
 
             # Get next low level actions
             low_level_actions, planner_info, should_end = self.get_low_level_actions(
@@ -709,6 +710,7 @@ class EvaluationRunner:
         # Make video
         if self.evaluation_runner_config.save_video:
             self.dvu._make_video(play=False, postfix=self.episode_filename)
+            # self._make_td_video()
 
         # Log planner information per step
         self._log_planner_data(planner_infos)
