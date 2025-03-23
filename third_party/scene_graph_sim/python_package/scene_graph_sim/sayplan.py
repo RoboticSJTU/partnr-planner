@@ -109,20 +109,30 @@ def call_LLM(model_name, messages):
             api_key=OPENAI_API_KEY, base_url=endpoint)
     # client = OpenAI(api_key=OPENAI_API_KEY)
     try:
-        response = client.beta.chat.completions.parse(
+        response = ""
+        stream = client.chat.completions.create(
             model="deepseek-chat",
             messages=messages,
+            stream=True  # 启用流式
         )
+
+        # 逐块处理响应
+        for chunk in stream:
+            if chunk.choices:  # 确保 choices 存在
+                delta = chunk.choices[0].delta
+                if delta and delta.content:  # 提取内容
+                    print(delta.content, end="", flush=True)
+                    response += delta.content
     except Exception as e:
         print(e)
     # 使用正则表达式提取最大范围的花括号
     pattern = r'```json\s*({.*})\s*```'
-    match = re.search(pattern, response.choices[0].message.content, re.DOTALL)
+    match = re.search(pattern, response, re.DOTALL)
     if match:
         json_content = match.group(1)
         return json_content
     else:
-        return response.choices[0].message.content
+        return response
 
 def remove_comments(json_str):
     """

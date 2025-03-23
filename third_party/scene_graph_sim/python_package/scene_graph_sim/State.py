@@ -46,7 +46,6 @@ class State:
 		# save links
 		for link in scene['links']:
 			node1, node2 = link.split('↔')
-			print(node1, node2)
 			if self.nodes[node1].type == NodeType.ROOM or self.nodes[node1].type == NodeType.POSE:
 				if self.nodes[node2].type == NodeType.POSE:
 					self.nodes[node1].neighbors.append(node2)
