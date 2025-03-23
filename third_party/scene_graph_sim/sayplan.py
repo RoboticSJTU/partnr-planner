@@ -4,9 +4,12 @@ import sys
 import json
 import argparse
 from openai import OpenAI
-sys.path.append('.')
-sys.path.append('/home/jintian/code/partnr-planner/third_party/scene_graph_sim')
-sys.path.append('/home/jintian/code/partnr-planner/third_party')
+from rich.console import Console
+from rich.json import JSON
+from rich.table import Table
+# sys.path.append('.')
+# sys.path.append('/home/jintian/code/partnr-planner/third_party/scene_graph_sim')
+# sys.path.append('/home/jintian/code/partnr-planner/third_party')
 from scene_graph_sim.Simulator import Simulator
 from dotenv import load_dotenv
 # from utils import remove_comments, call_LLM, update_sub_graph
@@ -16,7 +19,7 @@ Agent Role: You are an excellent graph planning agent. Given a graph representat
 Environment Functions:
 Navigate: [NAV_TARGET]
 Pick: [OBJECT], If you pick something, you can't pick it again before you place the item in your hand.
-Place: [OBJECT, SPATIAL_RELATION, FURNITURE, optional_constraint(default to None)]
+Place: [OBJECT, SPATIAL_RELATION, FURNITURE], SPATIAL_RELATION can only be 'on' or 'within'
 Open: [FURNITURE]
 Close: [FURNITURE]
 Environment API:
@@ -63,7 +66,6 @@ reasoning: I will generate a task plan using the identified subgraph
 plan: ["Navigate[kitchen]", "Navigate[counter1]", "Pick[apple1]", "Navigate[toms_room]", "Navigate[desk1]", "Place[apple1, on ,desk1]", "done"]
 }
 """
-
 
 
 # 获取当前工作目录并添加src路径
@@ -137,6 +139,53 @@ def remove_comments(json_str):
     # 返回去除注释后的字符串
     return str(cleaned_json_str)
 
+def check_consecutive_pickups(plan):
+    """
+    检查 plan 列表中是否出现连续多个 pickup 操作
+    """
+    last_was_pickup = False
+    for i, step in enumerate(plan):
+        if step.startswith("Pick"):
+            if last_was_pickup:
+                
+                return 'There are continuous pickup operations, and the agent can only pick up one item at a time.'
+            last_was_pickup = True
+        else:
+            last_was_pickup = False
+    return True
+console = Console()
+def print_reply_rich(reply, step=None):
+    title = f"Semantic Search Reply"
+    if step is not None:
+        title += f" - Step {step + 1}"
+    console.rule(f"[bold cyan]{title}")
+
+    # 如果是 dict，就转成 json 字符串
+    if isinstance(reply, dict):
+        reply = json.dumps(reply, indent=2, ensure_ascii=False)
+
+    console.print(JSON(reply))
+    console.rule()
+    
+def print_plan_rich(plan_list, step=None):
+    title = f"Task Plan"
+    if step is not None:
+        title += f" - Step {step + 1}"
+    console.rule(f"[bold magenta]{title}")
+
+    if not plan_list:
+        console.print("[bold red]⚠️ No plan found.[/bold red]")
+        return
+
+    table = Table(show_header=True, header_style="bold blue")
+    table.add_column("Step", justify="right", width=6)
+    table.add_column("Action", style="green")
+
+    for i, step in enumerate(plan_list, 1):
+        table.add_row(str(i), step)
+
+    console.print(table)
+    console.rule()
 def semantic_search(scene_graph_path, task, model_name):
     llm_count = 0
     sim = Simulator()
@@ -177,9 +226,18 @@ def semantic_search(scene_graph_path, task, model_name):
                 faliure_count = 0
         else:
             # print('plan: ', gpt_reply_json['command']['plan'])
-            with open("/home/jintian/Desktop/tmp_plan.json", "w") as f:
-                json.dump(gpt_reply_json['command']['plan'], f, indent=4)
-            return str(sim.sub_graph.to_json()), llm_count, sim
+            
+            plan = gpt_reply_json['command']['plan']
+            check_result = check_consecutive_pickups(plan)
+            if check_result != True:
+                messages.append({"role": "assistant", "content": gpt_reply})
+                messages.append({"role": "user", "content": check_result})
+            else:
+                print_plan_rich(gpt_reply_json['command']['plan'])
+               
+                with open("/tmp/tmp_plan.json", "w") as f:
+                    json.dump(gpt_reply_json['command']['plan'], f, indent=4)
+                return str(sim.sub_graph.to_json()), llm_count, sim
 
 def convert_wg_to_sg(wg_path, sg_path):
     with open(wg_path, 'r') as f:

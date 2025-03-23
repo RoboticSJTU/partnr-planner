@@ -31,8 +31,10 @@ class ZeroShotReactPlanner(LLMPlanner):
         :param plan_config: The planner configuration.
         :param env_interface: The environment interface.
         """
+        print("=============== ZeroShotReactPlanner")
         super().__init__(plan_config, env_interface)
         self.planning_chunk = []
+        
     def build_response_grammar(self, world_graph: "WorldGraph") -> str:
         """
         Build a grammar that accepts all valid responses based on a world graph.
@@ -60,16 +62,16 @@ class ZeroShotReactPlanner(LLMPlanner):
         """
         if len(self.planning_chunk) ==0:
             # Generate response
-            tmp_sg_path = "/home/jintian/Desktop/tmp_sg.txt"
+            tmp_sg_path = "/tmp/tmp_sg.txt"
             with open(tmp_sg_path, "w") as f:
                 f.write(world_graph[0].to_string())
-            tmp_sg_json_path = "/home/jintian/Desktop/tmp_sg.json"
+            tmp_sg_json_path = "/tmp/tmp_sg.json"
             convert_wg_to_sg(tmp_sg_path, tmp_sg_json_path)
             print("----- debug ----")
             print(tmp_sg_json_path)
             _, _, _ = semantic_search(tmp_sg_json_path, instruction, "deepseek-chat")
             print("----------saypan result----------------")
-            with open("/home/jintian/Desktop/tmp_plan.json", "r") as f:
+            with open("/tmp/tmp_plan.json", "r") as f:
                 full_plan = json.load(f)
             self.planning_chunk = full_plan
             tmp_ret = self.planning_chunk[0]

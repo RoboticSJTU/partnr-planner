@@ -71,6 +71,23 @@ class CollaborationDatasetV0(RearrangeDatasetV0):
             if config and not self.check_config_paths_exist(config):
                 data_p = config.data_path.format(split=config.split)
                 scenes_p = config.scenes_dir
+                # if not os.path.exists(data_p):
+                #     print(
+                #         f"Collaboration task assets are not downloaded locally. {data_p} does not exist."
+                #     )
+                # if not os.path.exists(scenes_p):
+                #     print(
+                #         f"Collaboration task assets are not downloaded locally. {scenes_p} does not exist."
+                #     )
+                    
+                # if not os.path.exists(config.data_path.format(split=config.split)):
+                #     print(
+                #         f"Collaboration task assets are not downloaded locally. {config.data_path.format(split=config.split)} does not exist."
+                #     ) 
+                # if not os.path.exists(config.scenes_dir):
+                #     print(
+                #         f"Collaboration task assets are not downloaded locally. {config.scenes_dir} does not exist."
+                #     )
                 raise ValueError(
                     f"Collaboration task assets are not downloaded locally. Either {data_p} or {scenes_p} do not exist."
                 )

@@ -49,10 +49,10 @@ class DecentralizedEvaluationRunner(EvaluationRunner):
         # Set an agent to each planner
         for agent_conf in self.evaluation_runner_config.agents.values():
             planner_conf = agent_conf.planner
-            # import pickle
-            # with open("outputs/planner_conf.pkl", "wb") as f:
-            #     pickle.dump(planner_conf, f)
+
             planner = instantiate(planner_conf)
+            print("planner instantiated")
+            
             planner = planner(env_interface=self.env_interface)
             planner.agents = [self.agents[agent_conf.uid]]
             self.planner[agent_conf.uid] = planner

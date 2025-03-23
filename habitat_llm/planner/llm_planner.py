@@ -37,6 +37,9 @@ if TYPE_CHECKING:
     from habitat_llm.world_model.world_graph import WorldGraph
 
 
+# @TODO remove
+from habitat_llm.llm.openai_chat import OpenAIChat
+
 class LLMPlanner(Planner):
     """
     High level planner policy used by agents to decide high level actions
@@ -53,6 +56,7 @@ class LLMPlanner(Planner):
         :param env_interface: The environment interface.
         """
         # Set the planner config
+        print("============== init LLMPlanner")
         super().__init__(plan_config, env_interface)
         # Initialize LLM
         self.__initialize_llm()
@@ -200,10 +204,15 @@ class LLMPlanner(Planner):
         This method instantiates LLM as defined in the config
         """
         # Instantiate LLM from the Hydra config
+        print("========initialize llm")
         llm_conf = self.planner_config.llm
-        self.llm = instantiate(llm_conf.llm)
-        self.llm = self.llm(llm_conf)
-
+        print("========llm_conf")
+        print(llm_conf)
+        #self.llm = instantiate(llm_conf.llm)
+        #self.llm = self.llm(llm_conf)
+        self.llm = OpenAIChat(llm_conf)
+        #self.llm = self.llm(conf=llm_conf)
+        print("========initialized llm")
         # Setup the LLM parameters
         # self.instruct = self.planner_config.llm.instruct
         self.instruct = self.planner_config.instruct
