@@ -697,7 +697,7 @@ class EvaluationRunner:
                         self.env_interface.world_graph[agent_id].display_hierarchy(
                             file_handle=f
                         )
-                    print(f"WG written to:\n{filepath}")
+                    # print(f"WG written to:\n{filepath}")
 
         # Print
         if (

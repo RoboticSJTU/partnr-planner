@@ -12,7 +12,9 @@ from rich.table import Table
 # sys.path.append('/home/jintian/code/partnr-planner/third_party')
 from scene_graph_sim.Simulator import Simulator
 from dotenv import load_dotenv
+from habitat_llm.utils import cprint
 # from utils import remove_comments, call_LLM, update_sub_graph
+import inflect
 
 PROMPT_1 = """
 Agent Role: You are an excellent graph planning agent. Given a graph representation of an environment, you can explore the graph by expanding nodes to find the items of interest. You can then use this graph to generate a step-by-step task plan that the agent can follow to solve a given instruction.
@@ -121,7 +123,7 @@ def call_LLM(model_name, messages):
             if chunk.choices:  # 确保 choices 存在
                 delta = chunk.choices[0].delta
                 if delta and delta.content:  # 提取内容
-                    print(delta.content, end="", flush=True)
+                    cprint(delta.content, end="", flush=True, color="green")
                     response += delta.content
     except Exception as e:
         print(e)
@@ -176,7 +178,12 @@ def print_reply_rich(reply, step=None):
 
     console.print(JSON(reply))
     console.rule()
-    
+
+
+def number_to_ordinal(number):
+    p = inflect.engine()
+    return p.ordinal(number)
+
 def print_plan_rich(plan_list, step=None):
     title = f"Task Plan"
     if step is not None:
@@ -208,6 +215,13 @@ def semantic_search(scene_graph_path, task, model_name):
         if messages[-1]['role'] != 'user': 
             user_input = "Instruction: " + task + "\nScene Graph Simulator:" + str(sim.sub_graph.to_json()) + "\nMemory: " + str(expanded_nodes) + "\n"
             messages.append({"role": "user", "content": user_input})
+        
+        cprint("\n---------------------------------", "light")
+        cprint(f"{number_to_ordinal(llm_count+1)} time calling LLM", "light")
+        cprint("\n---------------------------------", "light")
+        cprint("Please press any button to continue.", "red")
+        input()
+        
         gpt_reply = remove_comments(call_LLM(model_name, messages))
         llm_count += 1
         try:
@@ -241,8 +255,16 @@ def semantic_search(scene_graph_path, task, model_name):
             if check_result != True:
                 messages.append({"role": "assistant", "content": gpt_reply})
                 messages.append({"role": "user", "content": check_result})
+                cprint("\n---------------------------------", "red")
+                cprint("\n Plan is not executable, force LLM to replan", "red")
+                cprint("Please press any button to continue.", "red")
+                input()
             else:
-                print_plan_rich(gpt_reply_json['command']['plan'])
+                # print_plan_rich(gpt_reply_json['command']['plan'])
+                cprint("\n---------------------------------", "green")
+                cprint("\n We got a good plan, now it's time to MINGLE!", "green")
+                cprint("Please press any button to continue.", "green")
+                input()
                
                 with open("/tmp/tmp_plan.json", "w") as f:
                     json.dump(gpt_reply_json['command']['plan'], f, indent=4)

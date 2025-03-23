@@ -132,7 +132,7 @@ def setup_config(config: DictConfig = None, seed: int = 47668090) -> DictConfig:
     return config
 
 
-def cprint(text: str, color: str = None, end: str = "\n") -> None:
+def cprint(text: str, color: str = None, end: str = "\n", flush=False) -> None:
     """
     Wrapper around print to set the text color from a pre-defined list of options.
 
@@ -140,18 +140,46 @@ def cprint(text: str, color: str = None, end: str = "\n") -> None:
     :param color: The name of the color to use. From ["red", "green", "blue", "gray", "yellow", None]
     :param end: string appended after the last value, default newline.
     """
+    def print_color(text, fg, bg):
+        print(f"\033[38;2;{fg[0]};{fg[1]};{fg[2]}m\033[48;2;{bg[0]};{bg[1]};{bg[2]}m{text}\033[0m", end=end, flush=flush)
+
+    # 1. 深海组合
+    navy_fg = (20, 40, 60)        # 深海军蓝
+    mist_bg = (200, 215, 220)     # 雾灰色
+
+    # 2. 苔藓组合
+    moss_fg = (50, 70, 40)        # 暗苔藓绿
+    parchment_bg = (230, 220, 200) # 羊皮纸色
+
+    # 3. 暮色组合
+    dusk_fg = (90, 60, 80)        # 暮紫色
+    dawn_bg = (240, 230, 235)     # 黎明粉
+
+    # 4. 砂岩组合
+    sienna_fg = (120, 80, 60)     # 赭石色
+    sand_bg = (245, 235, 220)     # 沙色
+
+    # 5. 钢灰组合
+    slate_fg = (60, 70, 80)       # 板岩灰
+    pearl_bg = (230, 235, 240)    # 珍珠白
+
+    # 6. 咖啡组合
+    espresso_fg = (70, 50, 40)    # 浓缩咖啡色
+    latte_bg = (245, 240, 230)    # 拿铁色
     if color is None:
         print(text, end=end)
     elif color == "red":
-        print("\033[31m" + text + "\033[0m", end=end)
+        print_color(text, dusk_fg, dawn_bg)
     elif color == "green":
-        print("\033[32m" + text + "\033[0m", end=end)
+        print_color(text, moss_fg, parchment_bg)
     elif color == "blue":
-        print("\033[34m" + text + "\033[0m", end=end)
+        print_color(text, navy_fg, mist_bg)
     elif color == "gray":
-        print("\033[37m" + text + "\033[0m", end=end)
+        print_color(text, slate_fg, pearl_bg)
     elif color == "yellow":
-        print("\033[33m" + text + "\033[0m", end=end)
+        print_color(text, sienna_fg, sand_bg)
+    elif color == "light":
+        print_color(text, espresso_fg, latte_bg)
     else:
         raise NotImplementedError(f"Requested color name '{color}' is not supported.")
 
