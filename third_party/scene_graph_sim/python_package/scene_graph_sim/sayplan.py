@@ -218,7 +218,7 @@ def semantic_search(scene_graph_path, task, model_name):
             messages.append({"role": "user", "content": user_input})
         
         cprint("\n---------------------------------", "light")
-        cprint(f"{number_to_ordinal(llm_count+1)} time calling LLM", "light")
+        cprint(f"{number_to_ordinal(llm_count+1)} time calling LLM", "blue")
         cprint("\n---------------------------------", "light")
         # cprint("Please press any button to continue.", "red")
         # input()
