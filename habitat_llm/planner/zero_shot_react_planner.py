@@ -67,10 +67,7 @@ class ZeroShotReactPlanner(LLMPlanner):
                 f.write(world_graph[0].to_string())
             tmp_sg_json_path = "/tmp/tmp_sg.json"
             convert_wg_to_sg(tmp_sg_path, tmp_sg_json_path)
-            print("----- debug ----")
-            print(tmp_sg_json_path)
             _, _, _ = semantic_search(tmp_sg_json_path, instruction, "deepseek-chat")
-            print("----------saypan result----------------")
             with open("/tmp/tmp_plan.json", "r") as f:
                 full_plan = json.load(f)
             self.planning_chunk = full_plan
@@ -79,13 +76,10 @@ class ZeroShotReactPlanner(LLMPlanner):
         else:
             tmp_ret = self.planning_chunk[0]
             self.planning_chunk = self.planning_chunk[1:]
-        print(self.planning_chunk)
         llm_response = tmp_ret
         # Format the response
         # This removes extra text followed by end expression when needed.
         llm_response = self.format_response(llm_response, self.end_expression)
-        print("-----------------llm_response-----------------")
-        print(llm_response)
         info = {"llm_response": llm_response}
         return info
 
