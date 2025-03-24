@@ -1,1 +1,1 @@
-{"0": {"scene": "102817140", "phase_details": {"1": {}}, "failure_mode": "exceeded max iterations"}}
+{"0": {"scene": "102817140", "phase_details": {"1": {}}, "failure_mode": "region exclusion in {'name': 'book in drawer', 'number': '1', 'object_classes': ['book'], 'allowed_regions': ['bedroom_0'], 'location': 'within', 'furniture_names': ['chest_of_drawers_3']}"}}

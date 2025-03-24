@@ -708,8 +708,8 @@ class EvaluationRunner:
             rollout_print(planner_info["print"])
 
         # Make video
-        if self.evaluation_runner_config.save_video:
-            self.dvu._make_video(play=False, postfix=self.episode_filename)
+        # if self.evaluation_runner_config.save_video:
+        #     self.dvu._make_video(play=False, postfix=self.episode_filename)
             # self._make_td_video()
 
         # Log planner information per step

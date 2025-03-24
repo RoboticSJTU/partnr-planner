@@ -29,7 +29,7 @@ Clean: [FURNITURE], If you pick something, you can't clean any furniture. You ne
 1. Before you execute Pick, Place, Open, Close and Clean Actions, you need to first navigate to the target room, then navigate to the furniture, and at last execute the action.
     - **example**: If you want to pick the apple on table_1 in living_room, your actions should be "Navigate[living_room]", "Navigate[table_1]", "Pick[apple]"
 2. Before clean the furniture, you need to remove all the objects on the furniture.
-    - **example**: If you want to clean the table_1 with an apple on it in living_room, and there's another furniture couch_1 in living_room, your actions should be "Navigate[living_room]", "Navigate[table_1]", "Pick[apple]", "Navigate[couch_1]", "Place[apple, on, couch_1]", "Navigate[table_1]", "Clean[table_1]"
+    - **example**: If you want to clean the table_1 with an apple on it in living_room, and there's another furniture shelf_1 in living_room, your actions should be "Navigate[living_room]", "Navigate[table_1]", "Pick[apple]", "Navigate[shelf_1]", "Place[apple, on, shelf_1]", "Navigate[table_1]", "Clean[table_1]"
 Environment API:
 expand(<node>): Reveal assets/objects connected to a room node.
 contract(<node>): Hide assets/objects. After expanding a room node and the room does not have anything relevant towards solving this task, you should immediately contract the room node in the next step to reduce the number of input tokens to support longer tasks.
@@ -258,7 +258,8 @@ def semantic_search(scene_graph_path, task, model_name):
             # print('plan: ', gpt_reply_json['command']['plan'])
             
             plan = gpt_reply_json['command']['plan']
-            check_result = check_consecutive_pickups(plan)
+            # check_result = check_consecutive_pickups(plan)
+            check_result = sim.check_the_plan(plan)
             if check_result != True:
                 messages.append({"role": "assistant", "content": gpt_reply})
                 messages.append({"role": "user", "content": check_result})
@@ -300,9 +301,13 @@ def convert_wg_to_sg(wg_path, sg_path):
             sg["nodes"]["room"].append({"id": current_room})
         elif line.startswith("Furniture:"):
             furniture_id = line.split(":")[1].strip()
-            sg["nodes"]["asset"].append({"id": furniture_id, "room": current_room, "affordances": ["place"], "attributes": []})
+            if furniture_id.startswith("cabinet"):
+                sg["nodes"]["asset"].append({"id": furniture_id, "room": current_room, "affordances": ["place", "open", "close"], "attributes": []})
+            else:
+                sg["nodes"]["asset"].append({"id": furniture_id, "room": current_room, "affordances": ["place"], "attributes": []})
             # if "table" in furniture_id:
             current_furniture = furniture_id
+            
             sg["links"].append(f"{current_room}↔{furniture_id}")
         # elif line.startswith("Receptacle:"):
         #     receptacle_id = line.split(":")[1].strip()

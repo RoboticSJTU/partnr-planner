@@ -269,8 +269,9 @@ class ZeroShotReactPlanner(LLMPlanner):
             # print("high_level_actionshigh_level_actionshigh_level_actions")
             # print(high_level_actions)
             print(f"\n\n[Info] Now Executing: {high_level_actions}\n\n")
-            if "Clean" in high_level_actions or "Open" in high_level_actions:
-                time.sleep(2)
+            # agent_action = high_level_actions[0][0]
+            # if "Clean" in agent_action or "Open" in agent_action:
+                # time.sleep(2)
 
             # Get low level actions and/or responses
             # print(f"ret----------------------")

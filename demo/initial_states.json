@@ -116,16 +116,6 @@
                     "furniture_classes": ["table"]
                 },
                 {
-                    "name": "candle",
-                    "number": "1",
-                    "object_classes": [
-                        "candle"
-                    ],
-                    "allowed_regions": ["bedroom"],
-                    "location": "on",
-                    "furniture_classes": ["table"]
-                },
-                {
                     "name": "bowl",
                     "number": "2",
                     "object_classes": [
@@ -292,7 +282,7 @@
                         "bread"
                     ],
                     "allowed_regions": ["kitchen"],
-                    "location": "on",
+                    "location": "with_in",
                     "furniture_classes": ["cabinet"]
                 },
                 {
@@ -316,16 +306,6 @@
                     "furniture_classes": ["cabinet"]
                 },
                 {
-                    "name": "cup",
-                    "number": "1",
-                    "object_classes": [
-                        "cup"
-                    ],
-                    "allowed_regions": ["living room"],
-                    "location": "on",
-                    "furniture_classes": ["table"]
-                },
-                {
                     "name": "toy_animal",
                     "number": "1",
                     "object_classes": [
@@ -346,11 +326,31 @@
                 },
                 {
                     "name": "book",
-                    "number": "1",
+                    "number": "2",
                     "object_classes": [
                         "book"
                     ],
-                    "allowed_regions": ["living room"],
+                    "allowed_regions": ["kitchen"],
+                    "location": "on",
+                    "furniture_classes": ["counter"]
+                },
+                {
+                    "name": "book",
+                    "number": "2",
+                    "object_classes": [
+                        "book"
+                    ],
+                    "allowed_regions": ["bedroom"],
+                    "location": "on",
+                    "furniture_classes": ["bed"]
+                },
+                {
+                    "name": "book",
+                    "number": "2",
+                    "object_classes": [
+                        "book"
+                    ],
+                    "allowed_regions": ["bathroom"],
                     "location": "on",
                     "furniture_classes": ["table"]
                 },

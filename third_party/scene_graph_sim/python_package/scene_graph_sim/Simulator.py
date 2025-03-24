@@ -99,7 +99,96 @@ class Simulator:
 	def get_pose_list(self):
 		return self.sub_graph.pose_list
 
+	
+	def check_the_plan(self, plan):
+		current_location = None  # 记录当前所在位置
+		errors = []  # 记录错误信息
 
+
+
+		# 用于记录当前是否已经拿起物品
+		holding_item = None
+
+		for action in plan:
+			# 检查是否是 Pick 动作
+			if action.startswith("Pick["):
+				# 如果已经拿着物品，则提示错误
+				if holding_item is not None:
+					errors.append("Error: you only can pick one thing at one time, you must place the object in hand brefore you pick another.")
+				holding_item = action
+
+			# 检查是否是 Place 动作
+			elif action.startswith("Place["):
+				# 如果放下物品，则清空当前拿起的物品
+				holding_item = None
+
+		near_cabinet = False
+		cabinet_opened = False
+
+		for action in plan:
+			# 检查是否是 Navigate 到 cabinet
+			if action.startswith("Navigate[cabinet_"):
+				near_cabinet = True
+				cabinet_opened = False  # 重置打开状态，因为导航到新的 cabinet 需要重新打开
+
+			# 检查是否是 Open cabinet
+			elif action.startswith("Open[cabinet_"):
+				if not near_cabinet:
+					errors.append(f"Error: you can not {action}, because you have not navigate to the canibet")
+				cabinet_opened = True
+
+			# 检查是否是 Pick 动作
+			elif action.startswith("Pick["):
+				if near_cabinet and not cabinet_opened:
+					errors.append(f"Error：you can not{action}, because you have not to open the cabinet")
+
+			# 如果离开 cabinet 区域，重置状态
+			elif action.startswith("Navigate[") and not action.startswith("Navigate[cabinet_"):
+				near_cabinet = False
+				cabinet_opened = False
+
+
+
+
+		for i, action in enumerate(plan):
+			# 解析动作类型和参数
+			if action.startswith("Navigate["):
+				current_location = action.split("[")[1].split("]")[0]
+
+			elif action.startswith("Place["):
+				parts = action.split("[")[1].split("]")[0].split(", ")
+				target_location = parts[2]  # Place 的第三个参数是目标位置
+				found = False
+
+				# 向前回溯查找最近的 Navigate 动作
+				for j in range(i-1, -1, -1):
+					if plan[j].startswith("Navigate["):
+						navigate_location = plan[j].split("[")[1].split("]")[0]
+						if navigate_location == target_location:
+							found = True
+						break
+
+				if not found:
+					errors.append(f"Error in action {i+1}: Place to {target_location} without Navigate to it")
+
+			elif action.startswith("Clean["):
+				target_location = action.split("[")[1].split("]")[0]  # Clean 的第一个参数是目标位置
+				found = False
+
+				# 向前回溯查找最近的 Navigate 动作
+				for j in range(i-1, -1, -1):
+					if plan[j].startswith("Navigate["):
+						navigate_location = plan[j].split("[")[1].split("]")[0]
+						if navigate_location == target_location:
+							found = True
+						break
+
+				if not found:
+					errors.append(f"Error in action {i+1}: Clean {target_location} without Navigating to that location")
+		if errors == []:
+			return True
+		else:
+			return '\n'.join(errors)
 
 if __name__ == '__main__':
 	sim = Simulator()
@@ -109,8 +198,8 @@ if __name__ == '__main__':
 	# sim.expand('storage_room')
 	action_sequence = [
 		"goto(bathroom1)",
-        "pickup(vase1)",
-      "done()"]
+		"pickup(vase1)",
+	  "done()"]
 	for action_str in action_sequence:
 		if action_str == 'done()':
 			break
@@ -118,3 +207,5 @@ if __name__ == '__main__':
 		print('legal_actions:', legal_actions)
 		print(f'take action:{action_str}')
 		sim.take_action(action = Action(action_str=action_str))
+  
+  

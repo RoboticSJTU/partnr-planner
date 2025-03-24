@@ -158,7 +158,7 @@ class DebugVideoUtil:
                 2,
             )
 
-        self.frames.append(frames_concat)
+        # self.frames.append(frames_concat)
         if self.preview_active:
             bgr_image = cv2.cvtColor(frames_concat, cv2.COLOR_RGB2BGR)
             # cv2.imshow("Simulation Preview", bgr_image)

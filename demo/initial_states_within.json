@@ -12,11 +12,11 @@
                         "book"
                     ],
                     "allowed_regions": [
-                        "bedroom_0"
+                        "bedroom"
                     ],
                     "location": "within",
                     "furniture_names": [
-                        "chest_of_drawers_0"
+                        "chest_of_drawers_1"
                     ]
                 },
                 {
