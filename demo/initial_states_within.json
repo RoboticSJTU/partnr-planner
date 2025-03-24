@@ -1,0 +1,39 @@
+{
+    "initial_state_dicts": [
+        {
+            "scene_id": "102817140",
+            "episode_id": "test|102817140|1",
+            "instruction": "dummy",
+            "initial_state": [
+                {
+                    "name": "book in drawer",
+                    "number": "1",
+                    "object_classes": [
+                        "book"
+                    ],
+                    "allowed_regions": [
+                        "bedroom_0"
+                    ],
+                    "location": "within",
+                    "furniture_names": [
+                        "chest_of_drawers_0"
+                    ]
+                },
+                {
+                    "name": "apple in kitchen cabinet",
+                    "number": "1",
+                    "object_classes": [
+                        "apple"
+                    ],
+                    "allowed_regions": [
+                        "kitchen_0"
+                    ],
+                    "location": "within",
+                    "furniture_names": [
+                        "cabinet_2"
+                    ]
+                }
+            ]
+        }
+    ]
+}
