@@ -22,8 +22,9 @@ Environment Functions:
 Navigate: [NAV_TARGET]
 Pick: [OBJECT], If you pick something, you can't pick it again before you place the item in your hand.
 Place: [OBJECT, SPATIAL_RELATION, FURNITURE], SPATIAL_RELATION can only be 'on'
-Open: [FURNITURE]
-Close: [FURNITURE]
+Open: [FURNITURE], If you pick something, you can't open any furniture. You need to place the item in your hand first.
+Close: [FURNITURE], If you pick something, you can't close any furniture. You need to place the item in your hand first.
+Clean: [FURNITURE], If you pick something, you can't clean any furniture. You need to place the item in your hand first.
 Environment API:
 expand(<node>): Reveal assets/objects connected to a room node.
 contract(<node>): Hide assets/objects. After expanding a room node and the room does not have anything relevant towards solving this task, you should immediately contract the room node in the next step to reduce the number of input tokens to support longer tasks.
