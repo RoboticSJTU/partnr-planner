@@ -25,7 +25,8 @@ Place: [OBJECT, SPATIAL_RELATION, FURNITURE], SPATIAL_RELATION can only be 'on'
 Open: [FURNITURE], If you pick something, you can't open any furniture. You need to place the item in your hand first.
 Close: [FURNITURE], If you pick something, you can't close any furniture. You need to place the item in your hand first.
 Clean: [FURNITURE], If you pick something, you can't clean any furniture. You need to place the item in your hand first.
-**Note**: Before you execute Pick, Place, Open, Close and Clean Actions, you need to navigate to the target location first.
+**Note**: Before you execute Pick, Place, Open, Close and Clean Actions, you need to first navigate to the target room, then navigate to the furniture, and at last execute the action.
+    - **example**: If you want to pick the apple on table_1 in living_room, your actions should be "Navigate[living_room]", "Navigate[table_1]", "Pick[apple]"
 
 Environment API:
 expand(<node>): Reveal assets/objects connected to a room node.
