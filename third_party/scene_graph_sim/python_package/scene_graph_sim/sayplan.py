@@ -98,10 +98,8 @@ def update_sub_graph(simulator, response, memory):
 
 def call_LLM(model_name, messages):
     load_dotenv(override=True)
-    # OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-    # OPENAI_API_KEY = "sk-8ad8780714b7462d950860ee8f9dc4c8"
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     # endpoint = "https://api.deepseek.com/v1"
-    OPENAI_API_KEY = "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"
     endpoint = "https://api.openai.com/v1"
     
         # self.client = AzureOpenAI(
