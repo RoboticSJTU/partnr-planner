@@ -9,6 +9,7 @@ from habitat_llm.utils.grammar import FREE_TEXT
 from scene_graph_sim.sayplan import *
 from habitat_llm.planner import LLMPlanner
 import json
+import time
 
 if TYPE_CHECKING:
     from omegaconf import DictConfig
@@ -268,6 +269,8 @@ class ZeroShotReactPlanner(LLMPlanner):
             # print("high_level_actionshigh_level_actionshigh_level_actions")
             # print(high_level_actions)
             print(f"\n\n[Info] Now Executing: {high_level_actions}\n\n")
+            if "Clean" in high_level_actions or "Open" in high_level_actions:
+                time.sleep(2)
 
             # Get low level actions and/or responses
             # print(f"ret----------------------")
