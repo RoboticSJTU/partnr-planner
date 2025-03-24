@@ -593,7 +593,7 @@ class EvaluationRunner:
         planner_info: Dict[str, Any] = {}
         low_level_actions: List[Dict[str, Any]] = []
         should_end = False
-
+        sleep_flag = False
         # Plan until required
         while not should_end:
             # Print the llm response
@@ -614,12 +614,15 @@ class EvaluationRunner:
                         observations, planner_info["high_level_actions"]
                     )
                     # self._store_for_top_down_viz(0)
+                if sleep_flag:
+                    sleep_flag=False
+                    time.sleep(0.5)
 
             # Get next low level actions
-            low_level_actions, planner_info, should_end = self.get_low_level_actions(
+            low_level_actions, planner_info, should_end, sleep_flag = self.get_low_level_actions(
                 self.current_instruction, observations, self.env_interface.world_graph
             )
-
+            
             # We terminate the episode if this loop gets stuck
             curr_env = self.env_interface.env.env.env._env
 

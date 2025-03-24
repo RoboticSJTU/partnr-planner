@@ -96,7 +96,7 @@ class DecentralizedEvaluationRunner(EvaluationRunner):
         instruction: str,
         observations: Dict[str, Any],
         world_graph: Dict[int, "WorldGraph"],
-    ) -> Tuple[Dict[int, Any], Dict[str, Any], bool]:
+    ) -> Tuple[Dict[int, Any], Dict[str, Any], bool, bool]:
         """
         Given a set of observations, gets a vector of low level actions,
         an info dictionary and a boolean indicating that the run should end.
@@ -128,6 +128,7 @@ class DecentralizedEvaluationRunner(EvaluationRunner):
                 this_planner_low_level_actions,
                 this_planner_info,
                 this_planner_is_done,
+                sleep_flag
             ) = planner.get_next_action(instruction, observations, world_graph)
             # Update the output dictionary with planned low level actions
             low_level_actions.update(this_planner_low_level_actions)
@@ -148,4 +149,4 @@ class DecentralizedEvaluationRunner(EvaluationRunner):
                     )
 
             all_planners_are_done = this_planner_is_done and all_planners_are_done
-        return low_level_actions, planner_info, all_planners_are_done
+        return low_level_actions, planner_info, all_planners_are_done, sleep_flag

@@ -35,7 +35,7 @@ class ZeroShotReactPlanner(LLMPlanner):
         
         super().__init__(plan_config, env_interface)
         self.planning_chunk = []
-        
+        self.sleep_flag = False
     def build_response_grammar(self, world_graph: "WorldGraph") -> str:
         """
         Build a grammar that accepts all valid responses based on a world graph.
@@ -155,7 +155,7 @@ class ZeroShotReactPlanner(LLMPlanner):
                 },
                 "is_done": {agent.uid: self.is_done for agent in self.agents},
             }
-            return {}, planner_info, self.is_done
+            return {}, planner_info, self.is_done, self.sleep_flag
 
         if self.curr_prompt == "":
             # Prepare prompts
@@ -233,7 +233,7 @@ class ZeroShotReactPlanner(LLMPlanner):
                         agent.uid: ("Done", None, None) for agent in self.agents
                     },
                 }
-                return {}, planner_info, self.is_done
+                return {}, planner_info, self.is_done, self.sleep_flag
 
             if "Place" in llm_response:
                 start = llm_response.find('[') + 1
@@ -249,6 +249,11 @@ class ZeroShotReactPlanner(LLMPlanner):
             high_level_actions = self.actions_parser(
                 self.agents, llm_response, self.params
             )
+            action_name = high_level_actions[0][0]
+            if "Clean" in action_name or "Open" in action_name:
+                self.sleep_flag = True
+            else:
+                self.sleep_flag = False
             # high_level_dir = "/home/jintian/Desktop/high_level_actions"
             # with open(f"{high_level_dir}/{self.replanning_count}.txt", "a") as f:
             #     f.writelines(llm_response)
@@ -319,7 +324,7 @@ class ZeroShotReactPlanner(LLMPlanner):
         planner_info["agent_states"] = self.get_last_agent_states()
         planner_info["agent_positions"] = self.get_last_agent_positions()
         planner_info["agent_collisions"] = self.get_agent_collisions()
-        return low_level_actions, planner_info, self.is_done
+        return low_level_actions, planner_info, self.is_done, self.sleep_flag
 
     def check_if_agent_done(self, llm_response: str) -> bool:
         """
