@@ -19,14 +19,13 @@ import inflect
 PROMPT_1 = """
 Agent Role: You are an excellent graph planning agent. Given a graph representation of an environment, you can explore the graph by expanding nodes to find the items of interest. You can then use this graph to generate a step-by-step task plan that the agent can follow to solve a given instruction.
 Environment Functions:
-Navigate: [NAV_TARGET]
+Navigate: [NAV_TARGET], you need to navigate to the room_node first, and then navigate to the asset_node
 Pick: [OBJECT], If you pick something, you can't pick it again before you place the item in your hand.
 Place: [OBJECT, SPATIAL_RELATION, FURNITURE], SPATIAL_RELATION can only be 'on'
 Open: [FURNITURE]
 Close: [FURNITURE]
 Environment API:
 expand(<node>): Reveal assets/objects connected to a room node.
-contract(<node>): Hide assets/objects. After expanding a room node and the room does not have anything relevant towards solving this task, you should immediately contract the room node in the next step to reduce the number of input tokens to support longer tasks.
 Your output must strictly conform to the Output Response Format below, and only the final result needs to be output.
 Please output JSON data directly, do not use Markdown format.
 Output Response Format(IMPORTANT NOTE: I will use json.loads() to parse the output, so you must follow the format, do not add any other characters.):
@@ -39,22 +38,22 @@ command: {
 "plan": complete task plan if in planning mode, refering to the <Example during planning mode>, which is a list of actions}}
 Instruction: Natural language description of the task
 3D Scene Graph: Text-serialised JSON description of a 3D scene graph
-Memory: History of previously expanded nodes
+Expanded nodes: nodes have beed expanded those can not be expanded again
 Feedback: External textual feedback from scene graph simulator Ensure the response can be parsed by Python json.loads.
 Example during exploring mode:
 {
 Instruction: bring some food for Tom and place it in his room
 3D Scene Graph: {nodes: {room: [{id: bobs_room}, {id: toms_room}, {id: jacks_room}, {id: kitchen}, {id: livingroom}], agent: [{location: bobs_room, id: agent}]}, links: []}
-Memory: []
+Expanded nodes: []
 SayPlan [Mode->Search]: chain-of-thought: explore graph to find some food and somewhere in toms room where can place the food -> perform common sense exploration first -> explore kitchen where there might be food -> if items not found then explore other nodes 
 command: expand(kitchen)
 Scene Graph Simulator: {nodes: {room: [{id: bobs_room}, {id: toms_room}, {id: jacks_room}, {id: kitchen}, {id: livingroom}], agent: [{location: bobs_room, id: agent}], asset: [{id: counter1, room: kitchen, affordance: [place], attributes: [clean]}], object: [{id: apple1, room: kitchen, parent: counter1, affordances: [pick, place], attributes: [red]}, {id: bow1, room: kitchen, parent: counter1, affordances: [pick, place], attributes: [empty]}]}, links: [kitchen↔counter1, counter1↔apple1, counter1↔bow1]}
-Memory: [kitchen]
+Expanded nodes: [kitchen]
 SayPlan [Mode->Search]: chain-of-thought:in the kitchen, i've found the apple1, the food, on the counter  -> i will explore toms room to find a place to put the apples ->  i will try tom's room next 
 reasoning: i will expand toms room next 
 command: expand(toms_room)
 Scene Graph Simulator: {nodes: {room: [{id: bobs_room}, {id: toms_room}, {id: jacks_room}, {id: kitchen}, {id: livingroom}], agent: [{location: bobs_room, id: agent}], asset: [{id: counter1, room: kitchen, affordance: [place], attributes: [clean]}, {id: desk1, room: toms_room, affordance: [place], attributes: [clean]}], object: [{id: apple1, room: kitchen, parent: counter1, affordances: [pick, place], attributes: [red]}, {id: bow1, room: kitchen, parent: counter1, affordances: [pick, place], attributes: [empty]}, {id: book1, room: toms_room, parent: desk1, affordances: [pick, place], attributes: [closed]}]}, links: [kitchen↔counter1, toms_room↔desk1 counter1↔apple1, counter1↔bow1, desk1↔book1]}
-Memory: [kitchen, toms_room]
+Expanded nodes: [kitchen, toms_room]
 SayPlan [Mode->Search]: chain-of-thought: i have found the apple and tom's desk on the graph -> search complete -> I will switch to planning mode-> navigate to counter and pick the apple ->  navigate to tom's desk and place apple1
 reasoning: I will generate a task plan using the identified subgraph
 }
@@ -62,7 +61,7 @@ Example during planning mode:
 {
 Instruction: bring some food for Tom and place it in his room
 3D Scene Graph: {nodes: {room: [{id: bobs_room}, {id: toms_room}, {id: jacks_room}, {id: kitchen}, {id: livingroom}], agent: [{location: bobs_room, id: agent}], asset: [{id: counter1, room: kitchen, affordance: [place], attributes: [clean]}, {id: desk1, room: toms_room, affordance: [place], attributes: [clean]}], object: [{id: apple1, room: kitchen, parent: counter1, affordances: [pick, place], attributes: [red]}, {id: bow1, room: kitchen, parent: counter1, affordances: [pick, place], attributes: [empty]}, {id: book1, room: toms_room, parent: desk1, affordances: [pick, place], attributes: [closed]}]}, links: [kitchen↔counter1, toms_room↔desk1 counter1↔apple1, counter1↔bow1, desk1↔book1]}
-Memory: [kitchen, toms_room]
+Expanded nodes: [kitchen, toms_room]
 SayPlan [Mode->Planning]: chain-of-thought: "i have found the apple and tom's desk on the graph -> search complete -> I will switch to planning mode-> navigate to counter and pick the apple ->  navigate to tom's desk and place apple1" 
 reasoning: I will generate a task plan using the identified subgraph 
 plan: ["Navigate[kitchen]", "Navigate[counter1]", "Pick[apple1]", "Navigate[toms_room]", "Navigate[desk1]", "Place[apple1, on ,desk1]", "done"]
@@ -111,7 +110,7 @@ def call_LLM(model_name, messages):
         #     azure_endpoint=f"https://{endpoint}",
         # )
     client = OpenAI(
-            api_key=OPENAI_API_KEY, base_url=endpoint)
+            api_key=OPENAI_API_KEY)
     # client = OpenAI(api_key=OPENAI_API_KEY)
     try:
         response = ""
@@ -225,7 +224,7 @@ def semantic_search(scene_graph_path, task, model_name):
     faliure_count = 0
     while faliure_count < 5:
         if messages[-1]['role'] != 'user': 
-            user_input = "Instruction: " + task + "\nScene Graph Simulator:" + str(sim.sub_graph.to_json()) + "\nMemory: " + str(expanded_nodes) + "\n"
+            user_input = "Instruction: " + task + "\nScene Graph Simulator:" + str(sim.sub_graph.to_json()) + "\nExpanded nodes: " + str(expanded_nodes) + "\n"
             messages.append({"role": "user", "content": user_input})
         
         cprint("\n---------------------------------", "light")
@@ -305,7 +304,10 @@ def convert_wg_to_sg(wg_path, sg_path):
             sg["nodes"]["room"].append({"id": current_room})
         elif line.startswith("Furniture:"):
             furniture_id = line.split(":")[1].strip()
-            sg["nodes"]["asset"].append({"id": furniture_id, "room": current_room, "affordances": ["place"], "attributes": []})
+            if furniture_id.startswith("cabinet"):
+                sg["nodes"]["asset"].append({"id": furniture_id, "room": current_room, "affordances": ["place", "open", "close"], "attributes": []})
+            else:
+                sg["nodes"]["asset"].append({"id": furniture_id, "room": current_room, "affordances": ["place"], "attributes": []})
             # if "table" in furniture_id:
             current_furniture = furniture_id
             sg["links"].append(f"{current_room}↔{furniture_id}")
