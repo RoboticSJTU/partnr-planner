@@ -100,8 +100,11 @@ def update_sub_graph(simulator, response, memory):
 def call_LLM(model_name, messages):
     load_dotenv(override=True)
     # OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-    OPENAI_API_KEY = "sk-8ad8780714b7462d950860ee8f9dc4c8"
-    endpoint = "https://api.deepseek.com/v1"
+    # OPENAI_API_KEY = "sk-8ad8780714b7462d950860ee8f9dc4c8"
+    # endpoint = "https://api.deepseek.com/v1"
+    OPENAI_API_KEY = "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"
+    endpoint = "https://api.openai.com/v1"
+    
         # self.client = AzureOpenAI(
         #     api_version="2024-06-01",
         #     api_key=api_key,
@@ -113,7 +116,7 @@ def call_LLM(model_name, messages):
     try:
         response = ""
         stream = client.chat.completions.create(
-            model="deepseek-chat",
+            model="gpt-4o",
             messages=messages,
             stream=True,
             temperature=0.0# 启用流式
@@ -157,14 +160,22 @@ def check_consecutive_pickups(plan):
     检查 plan 列表中是否出现连续多个 pickup 操作
     """
     last_was_pickup = False
+    last_was_place = False
     for i, step in enumerate(plan):
         if step.startswith("Pick"):
             if last_was_pickup:
                 
-                return 'There are continuous pickup operations, and the agent can only pick up one item at a time.'
+                return 'You have to place the object in hand before pick another object.'
             last_was_pickup = True
         else:
             last_was_pickup = False
+
+        if step.startswith("Place"):
+            if last_was_place:
+                return 'You have to place the object in hand before pick another object.'
+
+        else:
+            last_was_place =False
     return True
 console = Console()
 def print_reply_rich(reply, step=None):
@@ -252,7 +263,7 @@ def semantic_search(scene_graph_path, task, model_name):
             # print('plan: ', gpt_reply_json['command']['plan'])
             
             plan = gpt_reply_json['command']['plan']
-            check_result = check_consecutive_pickups(plan)
+            check_result = sim.check_the_plan(plan)
             if check_result != True:
                 messages.append({"role": "assistant", "content": gpt_reply})
                 messages.append({"role": "user", "content": check_result})
