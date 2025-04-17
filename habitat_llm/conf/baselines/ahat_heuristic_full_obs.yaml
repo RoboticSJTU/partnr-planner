@@ -1,0 +1,5 @@
+# @package _global_
+
+defaults:
+  - /examples/ahat_centralized_full_obs
+  - override /planner@evaluation.planner: dag_centralized_planner

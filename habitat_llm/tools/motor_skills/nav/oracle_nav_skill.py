@@ -143,10 +143,13 @@ class OracleNavSkill(SkillPolicy):
         The function checks if the agent collides with the object
         given the navmesh.
         """
-        nav_pos_3d = [
-            np.array([xz[0], 0.0, xz[1]])
-            for xz in self.articulated_agent.params.navmesh_offsets
-        ]  # type: ignore
+        if self.articulated_agent.params.navmesh_offsets is not None:
+            nav_pos_3d = [
+                np.array([xz[0], 0.0, xz[1]])
+                for xz in self.articulated_agent.params.navmesh_offsets
+            ]  # type: ignore
+        else:
+            nav_pos_3d = [np.array([0.0, 0.0, 0.0])]
         cur_pos = [trans.transform_point(xyz) for xyz in nav_pos_3d]
         cur_pos = [
             np.array([xz[0], self.articulated_agent.base_pos[1], xz[2]])
@@ -164,9 +167,10 @@ class OracleNavSkill(SkillPolicy):
         """
         Fix the robot leg's joint position
         """
-        self.articulated_agent.leg_joint_pos = (
-            self.articulated_agent.params.leg_init_params
-        )
+        if self.articulated_agent.params.leg_init_params is not None:
+            self.articulated_agent.leg_joint_pos = (
+                self.articulated_agent.params.leg_init_params
+            )
 
     def get_agent_object_ids(self) -> tuple[list[int], list[int]]:
         agent_object_ids: list[int] = []
