@@ -901,3 +901,61 @@ cs.store(
     name="teleport",
     node=TeleportActionConfig,
 )
+
+# add missing actions to the config store
+cs.store(
+    package="habitat.task.actions.oracle_pick",
+    group="habitat/task/actions",
+    name="oracle_pick",
+    node=OraclePickActionConfig,
+)
+
+cs.store(
+    package="habitat.task.actions.oracle_place",
+    group="habitat/task/actions",
+    name="oracle_place",
+    node=OraclePlaceActionConfig,
+)
+
+cs.store(
+    package="habitat.task.actions.oracle_open",
+    group="habitat/task/actions",
+    name="oracle_open",
+    node=OracleOpenActionConfig,
+)
+cs.store(
+    package="habitat.task.actions.oracle_close",
+    group="habitat/task/actions",
+    name="oracle_close",
+    node=OracleCloseActionConfig,
+)
+cs.store(
+    package="habitat.task.actions.oracle_power_on",
+    group="habitat/task/actions",
+    name="oracle_power_on",
+    node=OraclePowerOnActionConfig,
+)
+cs.store(
+    package="habitat.task.actions.oracle_power_off",
+    group="habitat/task/actions",
+    name="oracle_power_off",
+    node=OraclePowerOffActionConfig,
+)
+cs.store(
+    package="habitat.task.actions.oracle_clean",
+    group="habitat/task/actions",
+    name="oracle_clean",
+    node=OracleCleanActionConfig,
+)
+cs.store(
+    package="habitat.task.actions.oracle_fill",
+    group="habitat/task/actions",
+    name="oracle_fill",
+    node=OracleFillActionConfig,
+)
+cs.store(
+    package="habitat.task.actions.oracle_pour",
+    group="habitat/task/actions",
+    name="oracle_pour",
+    node=OraclePourActionConfig,
+)

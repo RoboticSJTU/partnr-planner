@@ -108,9 +108,13 @@ def setup_config(config: DictConfig = None, seed: int = 47668090) -> DictConfig:
         config.habitat.seed = seed
 
         # Agent setup
-        config.habitat.simulator.agents_order = sorted(
+        if not config.habitat.simulator.agents_order:
+            config.habitat.simulator.agents_order = sorted(
             config.habitat.simulator.agents.keys()
-        )
+            )
+        # config.habitat.simulator.agents_order = sorted(
+        #     config.habitat.simulator.agents.keys()
+        # )
 
         # Add the wandb information to the habitat config
         if "WANDB" in config:
