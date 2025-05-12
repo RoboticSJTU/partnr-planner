@@ -13,7 +13,7 @@ networkx
 nltk
 numba==0.60.0
 numpy==1.26.4
-openai==1.10.0
+openai==1.78.0
 pandas
 peft==0.13.1
 protobuf==3.20.1
