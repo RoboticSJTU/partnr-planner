@@ -8,7 +8,7 @@ import os
 from typing import Dict, List, Optional
 
 from omegaconf import DictConfig, OmegaConf
-from openai import OpenAI
+from openai import OpenAI, AzureOpenAI
 
 from habitat_llm.llm.base_llm import BaseLLM, Prompt
 
@@ -63,7 +63,7 @@ class OpenAIChat(BaseLLM):
         if self.llm_conf.client == "OpenAI":
             self.client = OpenAI(api_key=api_key, base_url=endpoint)
         elif self.llm_conf.client == "AzureOpenAI":
-            self.client = OpenAI(
+            self.client = AzureOpenAI(
                 api_key=api_key,
                 base_url=endpoint,
                 api_version=api_version,
