@@ -65,7 +65,7 @@ class OpenAIChat(BaseLLM):
         elif self.llm_conf.client == "AzureOpenAI":
             self.client = AzureOpenAI(
                 api_key=api_key,
-                base_url=endpoint,
+                azure_endpoint=endpoint,
                 api_version=api_version,
             )
         self._validate_conf()
