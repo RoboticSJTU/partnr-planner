@@ -720,3 +720,8 @@ class EnvironmentInterface:
         new_obs = [OrderedDict(new_obs)]
         batch = batch_obs(new_obs, device=self.device)
         return apply_obs_transforms_batch(batch, self.obs_transforms)
+    
+    # Expose core env methods
+    @property
+    def current_episode(self):
+        return self.env.env.env._env.current_episode

@@ -49,8 +49,9 @@ class OpenAIChat(BaseLLM):
             assert len(endpoint) > 0, ValueError("No OPENAI_ENDPOINT keys provided")
         except Exception:
             raise ValueError("No OPENAI endpoint keys provided")
-        
-        
+        api_version = os.getenv("OPENAI_API_VERSION")
+        if api_version is None:
+            api_version = "2024-06-01"
         self.model_name = os.getenv("OPENAI_MODEL_NAME")
         if self.model_name is None:
             self.model_name = "gpt-4o-mini"
@@ -59,7 +60,14 @@ class OpenAIChat(BaseLLM):
         #     api_key=api_key,
         #     azure_endpoint=f"https://{endpoint}",
         # )
-        self.client = OpenAI(api_key=api_key, base_url=endpoint)
+        if self.llm_conf.client == "OpenAI":
+            self.client = OpenAI(api_key=api_key, base_url=endpoint)
+        elif self.llm_conf.client == "AzureOpenAI":
+            self.client = OpenAI(
+                api_key=api_key,
+                base_url=endpoint,
+                api_version=api_version,
+            )
         self._validate_conf()
         self.verbose = self.llm_conf.verbose
         self.verbose = True
