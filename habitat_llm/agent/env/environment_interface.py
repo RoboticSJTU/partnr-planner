@@ -722,6 +722,7 @@ class EnvironmentInterface:
         return apply_obs_transforms_batch(batch, self.obs_transforms)
     
     # Expose core env methods
-    @property
-    def current_episode(self):
-        return self.env.env.env._env.current_episode
+    # [DEPRECATED] better to use env directly
+    # @property
+    # def current_episode(self):
+    #     return self.env.env.env._env.current_episode
