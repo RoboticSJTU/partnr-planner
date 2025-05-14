@@ -5,21 +5,11 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
-import csv
-import sys
 import time
 import os
-import traceback
-import json
-import shutil
 from omegaconf import OmegaConf, DictConfig
-import hydra
 from typing import Dict, Tuple
 from torch import multiprocessing as mp
-
-from habitat_llm.agent.env.evaluation.evaluation_functions import (
-    aggregate_measures,
-)
 
 from habitat_llm.utils import cprint, setup_config, fix_config
 
@@ -39,86 +29,26 @@ from habitat_llm.evaluation import (
 from habitat_llm.agent.env.dataset import CollaborationDatasetV0
 from habitat_baselines.utils.info_dict import extract_scalars_from_info
 
+from .planner_demo import write_config, save_exception_message
 
-def get_output_file(config, env_interface):
-    dataset_file = env_interface.conf.habitat.dataset.data_path.split("/")[-1]
-    episode_id = env_interface.env.env.env._env.current_episode.episode_id
-    output_file = os.path.join(
-        config.paths.results_dir,
-        dataset_file,
-        "stats",
-        f"{episode_id}.json",
-    )
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)
-    return output_file
-
-
-# Function to write data to the CSV file
-def write_to_csv(file_name, result_dict):
-    # Sort the dictionary by keys
-    # Needed to ensure sanity in multi-process operation
-    result_dict = dict(sorted(result_dict.items()))
-    with open(file_name, mode="a", newline="") as file:
-        writer = csv.DictWriter(file, fieldnames=result_dict.keys())
-
-        # Check if the file is empty (to write headers)
-        file.seek(0, 2)
-        file_empty = file.tell() == 0
-        if file_empty:
-            writer.writeheader()
-
-        writer.writerow(result_dict)
-
-
-def save_exception_message(config, env_interface):
-    output_file = get_output_file(config, env_interface)
-    exc_string = traceback.format_exc()
-    failure_dict = {"success": False, "info": str(exc_string)}
-    with open(output_file, "w+") as f:
-        f.write(json.dumps(failure_dict))
-
-
-def save_success_message(config, env_interface, info):
-    output_file = get_output_file(config, env_interface)
-    failure_dict = {"success": True, "stats": json.dumps(info)}
-    with open(output_file, "w+") as f:
-        f.write(json.dumps(failure_dict))
-
-
-# Write the config file into the results folders
-def write_config(config):
-    dataset_file = config.habitat.dataset.data_path.split("/")[-1]
-    output_file = os.path.join(config.paths.results_dir, dataset_file)
-    os.makedirs(output_file, exist_ok=True)
-    with open(f"{output_file}/config.yaml", "w+") as f:
-        f.write(OmegaConf.to_yaml(config))
-
-    # Copy over the RLM config
-    planner_configs = []
-    suffixes = []
-    if "planner" in config.evaluation:
-        # Centralized
-        if "plan_config" in config.evaluation.planner is not None:
-            planner_configs = [config.evaluation.planner.plan_config]
-            suffixes = [""]
+def setup_runner(config: DictConfig, env_interface: EnvironmentInterface) -> EvaluationRunner:
+    # Instantiate the agent planner
+    eval_runner: EvaluationRunner = None
+    if config.evaluation.type == "centralized":
+        eval_runner = CentralizedEvaluationRunner(config.evaluation, env_interface)
+    elif config.evaluation.type == "decentralized":
+        eval_runner = DecentralizedEvaluationRunner(config.evaluation, env_interface)
     else:
-        for agent_name in config.evaluation.agents:
-            suffixes.append(f"_{agent_name}")
-            planner_configs.append(
-                config.evaluation.agents[agent_name].planner.plan_config
-            )
+        cprint(
+            "Invalid planner type. Please select between 'centralized' or 'decentralized'. Exiting",
+            "red",
+        )
+        raise ValueError(
+            "Invalid planner type. Please select between 'centralized' or 'decentralized'. Exiting"
+        )
+    return eval_runner
 
-    for plan_config, suffix_rlm in zip(planner_configs, suffixes):
-        if "llm" in plan_config and "serverdir" in plan_config.llm:
-            yaml_rlm_path = plan_config.llm.serverdir
-            if len(yaml_rlm_path) > 0:
-                yaml_rlm_file = f"{yaml_rlm_path}/config.yaml"
-                if os.path.isfile(yaml_rlm_file):
-                    shutil.copy(
-                        yaml_rlm_file, f"{output_file}/config_rlm{suffix_rlm}.yaml"
-                    )
-
-def setup_env(config: DictConfig) -> EvaluationRunner:
+def setup_env(config: DictConfig) -> EnvironmentInterface:
     fix_config(config)
     # Setup a seed
     # seed = 48212516
@@ -187,219 +117,4 @@ def setup_env(config: DictConfig) -> EvaluationRunner:
         print("Error initializing the environment")
         if config.evaluation.log_data:
             save_exception_message(config, env_interface)
-    
-    # Instantiate the agent planner
-    eval_runner: EvaluationRunner = None
-    if config.evaluation.type == "centralized":
-        eval_runner = CentralizedEvaluationRunner(config.evaluation, env_interface)
-    elif config.evaluation.type == "decentralized":
-        eval_runner = DecentralizedEvaluationRunner(config.evaluation, env_interface)
-    else:
-        cprint(
-            "Invalid planner type. Please select between 'centralized' or 'decentralized'. Exiting",
-            "red",
-        )
-        raise ValueError(
-            "Invalid planner type. Please select between 'centralized' or 'decentralized'. Exiting"
-        )
-    return eval_runner
-
-
-def run_planner(config, dataset: CollaborationDatasetV0 = None, conn=None):
-    if config == None:
-        cprint("Failed to setup config. Exiting", "red")
-        return
-
-    # Setup interface with the simulator if the planner depends on it
-    if config.env == "habitat":
-        # Remove sensors if we are not saving video
-
-        # TODO: have a flag for this, or some check
-        keep_rgb = False
-        if "use_rgb" in config.evaluation:
-            keep_rgb = config.evaluation.use_rgb
-        if not config.evaluation.save_video and not keep_rgb:
-            remove_visual_sensors(config)
-
-        # TODO: Can we move this inside the EnvironmentInterface?
-        # We register the dynamic habitat sensors
-        register_sensors(config)
-        # We register custom actions
-        register_actions(config)
-        # We register custom measures
-        register_measures(config)
-
-        # Initialize the environment interface for the agent
-        env_interface = EnvironmentInterface(config, dataset=dataset, init_wg=False)
-
-        try:
-            env_interface.initialize_perception_and_world_graph()
-        except Exception:
-            print("Error initializing the environment")
-            if config.evaluation.log_data:
-                save_exception_message(config, env_interface)
-    else:
-        env_interface = None
-
-    # Instantiate the agent planner
-    eval_runner: EvaluationRunner = None
-    if config.evaluation.type == "centralized":
-        eval_runner = CentralizedEvaluationRunner(config.evaluation, env_interface)
-    elif config.evaluation.type == "decentralized":
-        eval_runner = DecentralizedEvaluationRunner(config.evaluation, env_interface)
-    else:
-        cprint(
-            "Invalid planner type. Please select between 'centralized' or 'decentralized'. Exiting",
-            "red",
-        )
-        return
-
-    # Print the planner
-    cprint(f"Successfully constructed the '{config.evaluation.type}' planner!", "green")
-    print(eval_runner)
-
-    # Declare observability mode
-    cprint(
-        f"Partial observability is set to: '{config.world_model.partial_obs}'", "green"
-    )
-
-    # Print the agent list
-    print("\nAgent List:")
-    print(eval_runner.agent_list)
-
-    # Print the agent description
-    print("\nAgent Description:")
-    print(eval_runner.agent_descriptions)
-
-    # Highlight the mode of operation
-    cprint("\n---------------------------------------", "blue")
-    cprint(f"Planner Mode: {config.evaluation.type.capitalize()}", "blue")
-    # cprint(f"LLM model: {config.planner.llm.llm._target_}", "blue")
-    cprint(f"Partial Observability: {config.world_model.partial_obs}", "blue")
-    cprint("---------------------------------------\n", "blue")
-
-    os.makedirs(config.paths.results_dir, exist_ok=True)
-
-    # Run the planner
-    if config.mode == "cli":
-        instruction = "Go to the bed" if not config.instruction else config.instruction
-
-        cprint(f'\nExecuting instruction: "{instruction}"', "blue")
-        try:
-            info = eval_runner.run_instruction(instruction)
-        except Exception as e:
-            print("An error occurred:", e)
-
-    else:
-        stats_episodes: Dict[str, Dict] = {
-            str(i): {} for i in range(config.num_runs_per_episode)
-        }
-
-        num_episodes = len(env_interface.env.episodes)
-        for run_id in range(config.num_runs_per_episode):
-            for _ in range(num_episodes):
-                # Get episode id
-                episode_id = env_interface.env.env.env._env.current_episode.episode_id
-
-                # Get instruction
-                instruction = env_interface.env.env.env._env.current_episode.instruction
-                print("\n\nEpisode", episode_id)
-
-                try:
-                    info = eval_runner.run_instruction(
-                        output_name=f"episode_{episode_id}_{run_id}"
-                    )
-
-                    info_episode = {
-                        "run_id": run_id,
-                        "episode_id": episode_id,
-                        "instruction": instruction,
-                    }
-                    stats_keys = {
-                        "task_percent_complete",
-                        "task_state_success",
-                        "sim_step_count",
-                        "replanning_count",
-                        "runtime",
-                    }
-
-                    # add replanning counts to stats_keys as scalars if replanning_count is a dict
-                    if "replanning_count" in info and isinstance(
-                        info["replanning_count"], dict
-                    ):
-                        for agent_id, replan_count in info["replanning_count"].items():
-                            stats_keys.add(f"replanning_count_{agent_id}")
-                            info[f"replanning_count_{agent_id}"] = replan_count
-
-                    stats_episode = extract_scalars_from_info(
-                        info, ignore_keys=info.keys() - stats_keys
-                    )
-                    stats_episodes[str(run_id)][episode_id] = stats_episode
-
-                    cprint("\n---------------------------------", "blue")
-                    cprint(f"Metrics For Run {run_id} Episode {episode_id}:", "blue")
-                    for k, v in stats_episodes[str(run_id)][episode_id].items():
-                        cprint(f"{k}: {v:.3f}", "blue")
-                    cprint("\n---------------------------------", "blue")
-                    # Log results onto a CSV
-                    epi_metrics = stats_episodes[str(run_id)][episode_id] | info_episode
-                    if config.evaluation.log_data:
-                        save_success_message(config, env_interface, stats_episode)
-                    write_to_csv(config.paths.epi_result_file_path, epi_metrics)
-                except Exception as e:
-                    # print exception and trace
-                    traceback.print_exc()
-                    print("An error occurred while running the episode:", e)
-                    print(f"Skipping evaluating episode: {episode_id}")
-                    if config.evaluation.log_data:
-                        save_exception_message(config, env_interface)
-
-                try:
-                    # Reset env_interface (moves onto the next episode in the dataset)
-                    env_interface.reset_environment()
-                except Exception as e:
-                    # print exception and trace
-                    traceback.print_exc()
-                    print("An error occurred while resetting the env_interface:", e)
-                    print("Skipping evaluating episode.")
-                    if config.evaluation.log_data:
-                        save_exception_message(config, env_interface)
-
-                # Reset evaluation runner
-                eval_runner.reset()
-
-            # aggregate metrics across the current run.
-            run_metrics = aggregate_measures(stats_episodes[str(run_id)])
-            cprint("\n---------------------------------", "blue")
-            cprint(f"Metrics For Run {run_id}:", "blue")
-            for k, v in run_metrics.items():
-                cprint(f"{k}: {v:.3f}", "blue")
-            cprint("\n---------------------------------", "blue")
-
-            # Write aggregated results across run
-            write_to_csv(config.paths.run_result_file_path, run_metrics)
-
-        # aggregate metrics across all runs.
-        if conn is None:
-            all_metrics = aggregate_measures(
-                {run_id: aggregate_measures(v) for run_id, v in stats_episodes.items()}
-            )
-            cprint("\n---------------------------------", "blue")
-            cprint("Metrics Across All Runs:", "blue")
-            for k, v in all_metrics.items():
-                cprint(f"{k}: {v:.3f}", "blue")
-            cprint("\n---------------------------------", "blue")
-            # Write aggregated results across experiment
-            write_to_csv(config.paths.end_result_file_path, all_metrics)
-        else:
-            conn.send(stats_episodes)
-
-    env_interface.env.close()
-    del env_interface
-
-    if conn is not None:
-        # Potentially we may want to send something
-
-        conn.close()
-
-
+    return env_interface
