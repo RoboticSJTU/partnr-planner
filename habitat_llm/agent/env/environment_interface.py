@@ -271,6 +271,11 @@ class EnvironmentInterface:
         :param episode_id: If set, reset the environment to a given episode id. Otherwise, moves to the next episode.
         """
         if not move_to_next_episode:
+            # @BUG:
+            # It seems that habitat-sim would use some cache if reset_environment stay in the same episode.
+            # We force the environment to reset to a new episode once before we set the current episode.
+            self.env.reset()
+            
             # We set this variable to reset the environment but stay in the same episode
             self.env.env.env._env.current_episode = (
                 self.env.env.env._env.current_episode
@@ -278,6 +283,10 @@ class EnvironmentInterface:
 
         if episode_id is not None:
             assert type(episode_id) == str
+            # @BUG:
+            # It seems that habitat-sim would use some cache if reset_environment stay in the same episode.
+            # We force the environment to reset to a new episode once before we set the current episode.
+            self.env.reset()
             episode_interest = [
                 epi
                 for epi in self.env.env.env._env._dataset.episodes
