@@ -54,7 +54,7 @@ class OpenAIChat(BaseLLM):
             api_version = "2024-06-01"
         self.model_name = os.getenv("OPENAI_MODEL_NAME")
         if self.model_name is None:
-            self.model_name = "gpt-4o-mini"
+            assert ValueError("No LLM_MODEL_NAME keys provided")
         # self.client = AzureOpenAI(
         #     api_version="2024-06-01",
         #     api_key=api_key,
@@ -124,7 +124,6 @@ class OpenAIChat(BaseLLM):
             messages.append(generate_message(prompt, image_detail=image_detail))
 
         text_response = self.client.chat.completions.create(
-            # model="gpt-4o-mini", messages=messages
             model=self.model_name, messages=messages
         )
         text_response = text_response.choices[0].message.content
