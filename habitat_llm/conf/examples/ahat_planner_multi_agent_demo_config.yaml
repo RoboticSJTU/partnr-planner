@@ -62,6 +62,7 @@ habitat:
   task:
     pddl_domain_def: fp
   simulator:
+    agents_order: ["agent_0", "agent_1"]
     agents:
 
       agent_1:

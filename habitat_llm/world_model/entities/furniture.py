@@ -93,6 +93,7 @@ class Furniture(Entity):
         env: "EnvironmentInterface",
         agent: ArticulatedAgentBase,
         grasp_mgr: RearrangeGraspManager = None,
+        sample_region_scale: float = 1.0,
     ) -> List[Tuple[mn.Vector3, mn.Quaternion]]:
         """
         Compute valid placement locations on this furniture.
@@ -112,7 +113,26 @@ class Furniture(Entity):
             env,
             agent=agent,
             grasp_mgr=grasp_mgr,
+            sample_region_scale=sample_region_scale,
         )
+
+
+def uniform_sample_on_furniture(sim, rec, sampled_scale=1.0, margin=0.0):
+    # sample a position from rec.bounds
+    scaled_region = mn.Range3D.from_center(
+        rec.bounds.center(),
+        (rec.bounds.size() / 2) * sampled_scale - mn.Vector3(margin, margin, margin),
+    )
+
+    # NOTE: does not scale the "up" direction
+    # print("up_axis", rec.up_axis)
+    sample_range = [scaled_region.min, scaled_region.max]
+    sample_range[0][rec.up_axis] = rec.bounds.min[rec.up_axis] + 0.03
+    sample_range[1][rec.up_axis] = rec.bounds.max[rec.up_axis] + 0.03
+
+    local_pose = np.random.uniform(sample_range[0], sample_range[1])
+    global_pose = rec.get_global_transform(sim).transform_point(local_pose)
+    return global_pose
 
 
 def sample_position_on_furniture(
@@ -124,9 +144,10 @@ def sample_position_on_furniture(
     agent: ArticulatedAgentBase,
     grasp_mgr: RearrangeGraspManager,
     min_sample_distance: float = 0.10,
-    sample_region_scale: float = 1,
-    max_samples: int = 10,
-    max_tries: int = 100,
+    sample_region_scale: float = 0.8,
+    margin=0.0,
+    max_samples: int = 300,
+    max_tries: int = 500,
 ) -> List[Tuple[mn.Vector3, mn.Quaternion]]:
     """
     Sample points on Receptacles on/inside/within both rigid furniture and articulated furniture (e.g. drawers/cabinets).
@@ -167,6 +188,43 @@ def sample_position_on_furniture(
     candidate_rec = fur_obj_handle_to_recs_map[place_entity.sim_handle][
         spatial_relation
     ]
+    # print(f"Found {len(candidate_rec)} receptacles for proposition {spatial_relation} on {place_entity.name}")
+    # get all candidate's center positions
+    # rec.bounds ->mn.Range3D
+    # calculate the center position of each receptacle, shrink the bounds by sample_region_scale
+    np.average([rec.bounds.center() for rec in candidate_rec], axis=0)
+    # shrink the center position, and the bounds scale
+    # for rec in candidate_rec:
+    #     rec_new_center = rec.bounds.center() * sample_region_scale + all_center * (
+    #         1 - sample_region_scale
+    #     )
+    #     # print(
+    #     #     f"Receptacle {rec.name} center position is {rec_new_center}"
+    #     # )
+    #     # rec._bounds = mn.Range3D(
+    #     #     rec_new_center - rec.bounds.size() * sample_region_scale / 2,
+    #     #     rec_new_center + rec.bounds.size() * sample_region_scale / 2,
+    #     # )
+    #     #only scaling on x and z
+
+    #     rec._bounds = mn.Range3D(
+    #         mn.Vector3(
+    #             rec_new_center.x - rec.bounds.size().x * sample_region_scale / 2,
+    #             rec.bounds.min.y,
+    #             rec_new_center.z - rec.bounds.size().z * sample_region_scale / 2,
+    #         ),
+    #         mn.Vector3(
+    #             rec_new_center.x + rec.bounds.size().x * sample_region_scale / 2,
+    #             rec.bounds.max.y,
+    #             rec_new_center.z + rec.bounds.size().z * sample_region_scale / 2,
+    #         ),
+    #     )
+
+    # print min and max
+    # print(
+    #     f"Receptacle {rec.name} bounds min is {rec.get_global_transform(env_interface.sim).transform_point(rec.bounds.min)}, max is {rec.get_global_transform(env_interface.sim).transform_point(rec.bounds.max)}"
+    # )
+    # new_candidate_rec.append(rec)
 
     # Throw if no valid rec are found
     if len(candidate_rec) == 0:
@@ -176,13 +234,17 @@ def sample_position_on_furniture(
 
     # Declare container to store sampled poses
     sampled_poses: List[Tuple[mn.Vector3, mn.Quaternion]] = []
+    sampled_recs = []
     num_tries = 0
 
     # Rejection sampling
     while len(sampled_poses) < max_samples and num_tries < max_tries:
         # Select a random Receptacle from the valid spatial subset
         rec = random.choice(candidate_rec)
-        sampled_pos = rec.sample_uniform_global(env_interface.sim, sample_region_scale)
+        sampled_pos = uniform_sample_on_furniture(
+            env_interface.sim, rec, sample_region_scale, margin
+        )
+        # print(f"Sampled position {sampled_pos} on receptacle {rec.name}")
         num_tries += 1
 
         # Cache the state of the grasped object
@@ -197,7 +259,9 @@ def sample_position_on_furniture(
             obj_id = obj.link_ids_to_object_ids[rec_link_id]
 
         # Teleport the object to the sampled_pos
-        grasp_mgr.snap_rigid_obj.translation = sampled_pos + mn.Vector3(0, 0.08, 0)
+        # grasp_mgr.snap_rigid_obj.translation = sampled_pos + mn.Vector3(0, 0.08, 0)
+        grasp_mgr.snap_rigid_obj.translation = sampled_pos
+
         # randomize the yaw orientation (around Y axis)
         rot = random.uniform(0, math.pi * 2.0)
         grasp_mgr.snap_rigid_obj.rotation = mn.Quaternion.rotation(
@@ -234,6 +298,7 @@ def sample_position_on_furniture(
             and can_add
         ):
             sampled_poses.append((sampled_pos, grasp_mgr.snap_rigid_obj.rotation))
+            sampled_recs.append(rec)
         # Snap the object back to its original position
         grasp_mgr.snap_rigid_obj.translation = cache_pos
         grasp_mgr.snap_rigid_obj.rotation = cache_rot
@@ -246,3 +311,249 @@ def sample_position_on_furniture(
 
     # Sort the samples based on the distance to robot
     return sort_proposed_samples_based_on_distance_to_agent(sampled_poses, agent)
+
+
+def sample_position_on_furniture_no_grasp_mgr(
+    spatial_relation: str,
+    place_entity=None,
+    # spatial_constraint: str | None,
+    env_interface=None,
+    # agent: ArticulatedAgentBase,
+    # grasp_mgr: RearrangeGraspManager,
+    min_sample_distance: float = 0.10,
+    sample_region_scale: float = 0.8,
+    margin: float = 0.0,
+    max_samples: int = 100,
+    max_tries: int = 100,
+    candidate_rec=None,
+):
+    """
+    Sample points on Receptacles on/inside/within both rigid furniture and articulated furniture (e.g. drawers/cabinets).
+
+    :param spatial_relation: string representing the spatial relationship between the object and furniture
+    :param place_entity: node from the world graph representing the entity on which to place an object
+    :param spatial_constraint: string representing the spatial constraint between the object and a reference object
+    :param reference_object: node from the world graph representing the reference object
+    :param env_interface: an env
+    :param agent: the articulated agent
+    :param grasp_mgr: the grasping manager
+    :param min_sample_distance: the minimum distance between two sampled placement locations
+    :param sample_region_scale: a uniform scaling value for shrinking the sampling region of Receptacles which support scaling
+    :param max_samples: the maximum number of samples to be included in the final return
+    :param max_tries: the maximum number of tries to sample a position
+
+    :return: A set of valid candidate placements (pos, orientation) sorted by distance to the agent.
+    """
+
+    # Throw if the spatial relation is invalid
+    if spatial_relation not in ["on", "within"]:
+        raise ValueError("spatial relation can only be 'on' and 'within'")
+
+    # # Throw if the spatial relation is invalid
+    # if spatial_constraint is not None and spatial_constraint != "next_to":
+    #     raise ValueError("spatial constraint can only be 'next_to'")
+
+    # Get fur to rec map
+    fur_obj_handle_to_recs_map = env_interface.perception.fur_obj_handle_to_recs
+
+    # Make sure that the furniture is in the fur_obj_handle_to_recs_map
+    # if place_entity.sim_handle not in fur_obj_handle_to_recs_map:
+    #     raise ValueError(
+    #         f"Entity with handle {place_entity.sim_handle} not found in fur_obj_handle_to_recs_map"
+    #     )
+
+    # Get the list of all receptacle which satisfy given spatial relationship
+    if candidate_rec is None:
+        candidate_rec = fur_obj_handle_to_recs_map[place_entity.sim_handle][
+            spatial_relation
+        ]
+
+    # print(f"Found {len(candidate_rec)} receptacles for proposition {spatial_relation} on {place_entity.name}")
+    # get all candidate's center positions
+    # rec.bounds ->mn.Range3D
+    # calculate the center position of each receptacle, shrink the bounds by sample_region_scale
+    # all_center = np.average(
+    #     [rec.bounds.center() for rec in candidate_rec], axis=0
+    # )
+
+    # shrink the center position, and the bounds scale
+    # for rec in candidate_rec:
+    #     rec_new_center = rec.bounds.center() * sample_region_scale + all_center * (
+    #         1 - sample_region_scale
+    #     )
+
+    #     rec._bounds = mn.Range3D(
+    #         mn.Vector3(
+    #             rec_new_center.x - rec.bounds.size().x * sample_region_scale / 2 + margin,
+    #             rec.bounds.min.y,
+    #             rec_new_center.z - rec.bounds.size().z * sample_region_scale / 2 + margin,
+    #         ),
+    #         mn.Vector3(
+    #             rec_new_center.x + rec.bounds.size().x * sample_region_scale / 2 - margin,
+    #             rec.bounds.max.y,
+    #             rec_new_center.z + rec.bounds.size().z * sample_region_scale / 2 - margin,
+    #         ),
+    #     )
+
+    # Throw if no valid rec are found
+    # if len(candidate_rec) == 0:
+    #     raise ValueError(
+    #         f"Furniture {place_entity.name} has no receptacle for proposition {spatial_relation}"
+    #     )
+
+    # Declare container to store sampled poses
+    sampled_poses: List[Tuple[mn.Vector3, mn.Quaternion]] = []
+    sampled_recs = []
+    num_tries = 0
+
+    # Rejection sampling
+    while len(sampled_poses) < max_samples and num_tries < max_tries:
+        # Select a random Receptacle from the valid spatial subset
+        rec = random.choice(candidate_rec)
+        sampled_pos = uniform_sample_on_furniture(
+            env_interface.sim, rec, sample_region_scale, margin
+        )
+        # print(f"Sampled position {sampled_pos} on receptacle {rec.name}")
+        num_tries += 1
+
+        # Load rigid and articulated object managers
+        env_interface.sim.get_rigid_object_manager()
+        # TODO: currently using the default l2_threshold=0.5 everywhere.
+        # However, this is configurable per-proposition and should be pulled from config
+        # (e.g. hor_l2_threshold=env_interface.env.env.env._env.current_episode.evaluation_propositions).
+        # Call sim next to function to check
+        can_add = True
+        if (
+            distance_to_other_samples(sampled_pos, sampled_poses) > min_sample_distance
+            and can_add
+        ):
+            rotation = random.uniform(0, math.pi * 2.0)
+            sampled_rotation = mn.Quaternion.rotation(
+                mn.Rad(rotation), mn.Vector3.y_axis()
+            )
+            sampled_poses.append((sampled_pos, sampled_rotation))
+            sampled_recs.append(rec)
+
+        if len(sampled_poses) >= max_samples or num_tries >= max_tries:
+            break
+
+    if len(sampled_poses) == 0:
+        return []
+
+    # randomly sample a group of sampled poses and recs
+    sampled_pose_index = np.random.choice(len(sampled_poses), size=1, replace=False)
+    sampled_pose = sampled_poses[sampled_pose_index[0]]
+    sampled_rec = sampled_recs[sampled_pose_index[0]]
+    return sampled_pose, sampled_rec
+
+    # Sort the samples based on the distance to robot
+    # return sort_proposed_samples_based_on_distance_to_agent(sampled_poses, agent)
+
+
+def sample_positions_on_furniture_no_grasp_mgr(
+    spatial_relation: str,
+    place_entity: Furniture,
+    # spatial_constraint: str | None,
+    env_interface: "EnvironmentInterface",
+    # agent: ArticulatedAgentBase,
+    # grasp_mgr: RearrangeGraspManager,
+    min_sample_distance: float = 0.10,
+    sample_region_scale: float = 0.8,
+    margin: float = 0.0,
+    max_samples: int = 100,
+    max_tries: int = 100,
+) -> List[Tuple[mn.Vector3, mn.Quaternion]]:
+    """
+    Sample points on Receptacles on/inside/within both rigid furniture and articulated furniture (e.g. drawers/cabinets).
+
+    :param spatial_relation: string representing the spatial relationship between the object and furniture
+    :param place_entity: node from the world graph representing the entity on which to place an object
+    :param spatial_constraint: string representing the spatial constraint between the object and a reference object
+    :param reference_object: node from the world graph representing the reference object
+    :param env_interface: an env
+    :param agent: the articulated agent
+    :param grasp_mgr: the grasping manager
+    :param min_sample_distance: the minimum distance between two sampled placement locations
+    :param sample_region_scale: a uniform scaling value for shrinking the sampling region of Receptacles which support scaling
+    :param max_samples: the maximum number of samples to be included in the final return
+    :param max_tries: the maximum number of tries to sample a position
+
+    :return: A set of valid candidate placements (pos, orientation) sorted by distance to the agent.
+    """
+
+    # Throw if the spatial relation is invalid
+    if spatial_relation not in ["on", "within"]:
+        raise ValueError("spatial relation can only be 'on' and 'within'")
+
+    # # Throw if the spatial relation is invalid
+    # if spatial_constraint is not None and spatial_constraint != "next_to":
+    #     raise ValueError("spatial constraint can only be 'next_to'")
+
+    # Get fur to rec map
+    fur_obj_handle_to_recs_map = env_interface.perception.fur_obj_handle_to_recs
+
+    # Make sure that the furniture is in the fur_obj_handle_to_recs_map
+    if place_entity.sim_handle not in fur_obj_handle_to_recs_map:
+        raise ValueError(
+            f"Entity with handle {place_entity.sim_handle} not found in fur_obj_handle_to_recs_map"
+        )
+
+    # Get the list of all receptacle which satisfy given spatial relationship
+    candidate_rec = fur_obj_handle_to_recs_map[place_entity.sim_handle][
+        spatial_relation
+    ]
+    # print(f"Found {len(candidate_rec)} receptacles for proposition {spatial_relation} on {place_entity.name}")
+    # get all candidate's center positions
+    # rec.bounds ->mn.Range3D
+    # calculate the center position of each receptacle, shrink the bounds by sample_region_scale
+    np.average([rec.bounds.center() for rec in candidate_rec], axis=0)
+
+    # Throw if no valid rec are found
+    if len(candidate_rec) == 0:
+        raise ValueError(
+            f"Furniture {place_entity.name} has no receptacle for proposition {spatial_relation}"
+        )
+
+    # Declare container to store sampled poses
+    sampled_poses: List[Tuple[mn.Vector3, mn.Quaternion]] = []
+    sampled_recs = []
+    num_tries = 0
+
+    # Rejection sampling
+    while len(sampled_poses) < max_samples and num_tries < max_tries:
+        # Select a random Receptacle from the valid spatial subset
+        rec = random.choice(candidate_rec)
+        sampled_pos = uniform_sample_on_furniture(
+            env_interface.sim, rec, sample_region_scale, margin
+        )
+        # print(f"Sampled position {sampled_pos} on receptacle {rec.name}")
+        num_tries += 1
+
+        # Load rigid and articulated object managers
+        env_interface.sim.get_rigid_object_manager()
+        # TODO: currently using the default l2_threshold=0.5 everywhere.
+        # However, this is configurable per-proposition and should be pulled from config
+        # (e.g. hor_l2_threshold=env_interface.env.env.env._env.current_episode.evaluation_propositions).
+        # Call sim next to function to check
+        can_add = True
+        if (
+            distance_to_other_samples(sampled_pos, sampled_poses) > min_sample_distance
+            and can_add
+        ):
+            rotation = random.uniform(0, math.pi * 2.0)
+            sampled_rotation = mn.Quaternion.rotation(
+                mn.Rad(rotation), mn.Vector3.y_axis()
+            )
+            sampled_poses.append((sampled_pos, sampled_rotation))
+            sampled_recs.append(rec)
+
+        if len(sampled_poses) >= max_samples or num_tries >= max_tries:
+            break
+
+    if len(sampled_poses) == 0:
+        return []
+
+    return sampled_poses
+
+    # Sort the samples based on the distance to robot
+    # return sort_proposed_samples_based_on_distance_to_agent(sampled_poses, agent)

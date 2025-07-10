@@ -489,14 +489,17 @@ class TerminalSatisfactionConstraint(EvaluationConstraint):
         constraints_valid = [True for _ in range(len(proposition_satisfied_at))]
         if len(state_sequence) == 0:
             return constraints_valid
+        try:
+            idxs = self.proposition_indices
+            idxs_to_check = [idx for idx in idxs if proposition_satisfied_at[idx] != -1]
+            final_state = state_sequence[-1]
+            for idx in idxs_to_check:
+                constraints_valid[idx] = final_state[idx].is_satisfied
 
-        idxs = self.proposition_indices
-        idxs_to_check = [idx for idx in idxs if proposition_satisfied_at[idx] != -1]
-        final_state = state_sequence[-1]
-        for idx in idxs_to_check:
-            constraints_valid[idx] = final_state[idx].is_satisfied
-
-        return constraints_valid
+            return constraints_valid
+        except IndexError:
+            constraints_valid = [True for _ in range(len(proposition_satisfied_at))]
+            return constraints_valid
 
     def __str__(self):
         return (

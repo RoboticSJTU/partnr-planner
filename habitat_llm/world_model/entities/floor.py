@@ -53,6 +53,7 @@ class Floor(Furniture):
         env: "EnvironmentInterface",
         agent: ArticulatedAgentBase,
         grasp_mgr: RearrangeGraspManager = None,
+        sample_region_scale: float = 1.0,
     ) -> List[Tuple[mn.Vector3, mn.Quaternion]]:
         """
         Compute valid placement locations on this furniture.

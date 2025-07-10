@@ -104,6 +104,8 @@ class OracleNavSkill(SkillPolicy):
             self.linear_velocity_index = self.action_range[0]
             self.angular_velocity_index = self.action_range[1] - 1
 
+        self.failed = False
+
     def reset(self, batch_idxs):
         super().reset(batch_idxs)
         self._has_reached_goal = torch.zeros(self._batch_size)

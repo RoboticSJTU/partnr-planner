@@ -140,6 +140,9 @@ class MotorSkillTool(Tool):
                     f"{e}. The entity name may be wrong or the entity may not exist in the house.",
                 )
 
+        if hasattr(self.skill, "action_failed") and self.skill.action_failed:
+            raise ValueError("Skill failed to set target.")
+
         # Get low level action from the skill
         low_level_action, msg = self.skill.get_low_level_action(observations)
 

@@ -16,7 +16,7 @@ numpy==1.26.4
 openai==1.10.0
 pandas
 peft==0.13.1
-protobuf==3.20.1
+protobuf
 pytest
 retry
 scikit-fmm
