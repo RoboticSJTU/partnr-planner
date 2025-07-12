@@ -55,11 +55,15 @@ class PerceptionSim(Perception):
 
     # Parameterized Constructor
     def __init__(
-        self, sim: RearrangeSim, metadata_dict: Dict[str, str] = None, detectors=None
+        self, sim: RearrangeSim, 
+        metadata_dict: Dict[str, str] = None, 
+        detectors=None,
+        additional_furnitures: List[str] = []
     ):
         # Call base class constructor
         super().__init__(detectors)
-
+        self.additional_furnitures = additional_furnitures
+        
         # Load the metadata
         self.metadata_interface: MetadataInterface = None
         if metadata_dict is not None:
@@ -370,6 +374,59 @@ class PerceptionSim(Perception):
                     # increment rec counter
                     rec_counter += 1
 
+        # AHAT
+        # Iterate through additional furnitures (with no receptacles)
+        for furniture_hash in self.additional_furnitures:
+            rigid_object_manager = self.sim.get_rigid_object_manager()
+            furniture_sim_handles  = rigid_object_manager.get_object_handles(furniture_hash)
+            
+            for furniture_sim_handle in furniture_sim_handles:
+                
+                if furniture_sim_handle in self.fur_obj_handle_to_recs:
+                    logger.warning(
+                        f"Furniture with handle {furniture_sim_handle} already exists in the graph, skipping."
+                    )
+                    continue
+                
+                fur_obj = sutils.get_obj_from_handle(self.sim, furniture_sim_handle)
+                furniture_type = self.get_furniture_property_from_metadata(
+                    furniture_sim_handle, "type"
+                )
+
+                # Generate name for furniture
+                furniture_name = (
+                    f"{furniture_type}_{self.gt_graph.count_nodes_of_type(Furniture)}"
+                )
+
+                # Create properties dict
+                properties = {
+                    "type": furniture_type,
+                    "is_articulated": fur_obj.is_articulated,
+                    "translation": fur_obj.translation,
+                    # An array to track non-receptacle sub-components of the furniture, i.e. faucet, power outlets,
+                    "components": [],
+                }
+
+                if furniture_sim_handle in faucet_points:
+                    properties["components"].append("faucet")
+
+                # Create furniture instance and receptacle instance
+                fur = Furniture(furniture_name, properties, furniture_sim_handle)
+
+                # Add furniture to the graph
+                self.gt_graph.add_node(fur)
+
+                # Add name to handle mapping
+                self.sim_handle_to_name[furniture_sim_handle] = furniture_name
+
+                # Fetch room for this furniture
+                room_name = self.get_room_name(furniture_sim_handle)
+
+                # Add edge between furniture and room
+                self.gt_graph.add_edge(fur, room_name, "inside", flip_edge("inside"))
+
+                # DEBUG PRINT
+                logger.debug(f"Added additional furniture {furniture_name} to room {room_name} with handle {furniture_sim_handle} to the graph.")
         # Confirm that the gt graph is not empty
         if self.gt_graph.is_empty():
             raise ValueError(

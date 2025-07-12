@@ -53,8 +53,14 @@ def camera_spec_to_intrinsics(camera_spec):
 
 class EnvironmentInterface:
     def __init__(
-        self, conf, dataset=None, init_wg=True, init_env=True, gym_habitat_env=None
+        self, conf, dataset=None, init_wg=True, init_env=True, gym_habitat_env=None,
+        additional_furnitures=[]
     ):
+        # AHAT
+        # additional_furnitures is a list of "handles", or "hashes" of additional furnitures.
+        # They does not have receptacles, but can be powered on, cleaned, or applied with other skills.
+        self.additional_furnitures = additional_furnitures
+        
         if init_env:
             self.env = habitat.registry.get_env("GymHabitatEnv")(
                 config=conf, dataset=dataset
@@ -145,9 +151,9 @@ class EnvironmentInterface:
         """
         # Create instance of perception
         if self.perception_mode == "gt":
-            self.perception = PerceptionSim(self.sim, self.metadata_dict)
+            self.perception = PerceptionSim(self.sim, self.metadata_dict, additional_furnitures=self.additional_furnitures)
         else:
-            self.perception = PerceptionObs(self.sim, self.metadata_dict)
+            self.perception = PerceptionObs(self.sim, self.metadata_dict, additional_furnitures=self.additional_furnitures)
         # Set the partial observability flag
         self.partial_obs = self.conf.world_model.partial_obs
 
