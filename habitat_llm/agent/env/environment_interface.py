@@ -54,12 +54,17 @@ def camera_spec_to_intrinsics(camera_spec):
 class EnvironmentInterface:
     def __init__(
         self, conf, dataset=None, init_wg=True, init_env=True, gym_habitat_env=None,
-        additional_furnitures=[]
+        additional_furnitures=[],
+        exclude_furnitures=[],
     ):
-        # AHAT
-        # additional_furnitures is a list of "handles", or "hashes" of additional furnitures.
-        # They does not have receptacles, but can be powered on, cleaned, or applied with other skills.
+        #AHAT
+        # 注意：
+        # additional_furnitures 和 exclude_furnitures 的格式并不相同，
+        # additional_furnitures 每个元素使 template handle，是数字资产的 hash name，例如 51bf4c899c925cae53ee4d4305ac00beaec03a4b
+        # exclude_furnitures 每个元素是完整的 sim handle，例如 51bf4c899c925cae53ee4d4305ac00beaec03a4b_:0000
+        # 这个不一致性很糟糕，但是目前的实现就是这样。
         self.additional_furnitures = additional_furnitures
+        self.exclude_furnitures = exclude_furnitures
         
         if init_env:
             self.env = habitat.registry.get_env("GymHabitatEnv")(
@@ -151,9 +156,9 @@ class EnvironmentInterface:
         """
         # Create instance of perception
         if self.perception_mode == "gt":
-            self.perception = PerceptionSim(self.sim, self.metadata_dict, additional_furnitures=self.additional_furnitures)
+            self.perception = PerceptionSim(self.sim, self.metadata_dict, additional_furnitures=self.additional_furnitures, exclude_furnitures=self.exclude_furnitures)
         else:
-            self.perception = PerceptionObs(self.sim, self.metadata_dict, additional_furnitures=self.additional_furnitures)
+            self.perception = PerceptionObs(self.sim, self.metadata_dict, additional_furnitures=self.additional_furnitures, exclude_furnitures=self.exclude_furnitures)
         # Set the partial observability flag
         self.partial_obs = self.conf.world_model.partial_obs
 

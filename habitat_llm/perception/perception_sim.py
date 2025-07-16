@@ -58,11 +58,13 @@ class PerceptionSim(Perception):
         self, sim: RearrangeSim, 
         metadata_dict: Dict[str, str] = None, 
         detectors=None,
-        additional_furnitures: List[str] = []
+        additional_furnitures: List[str] = [],
+        exclude_furnitures: List[str] = [],
     ):
         # Call base class constructor
         super().__init__(detectors)
         self.additional_furnitures = additional_furnitures
+        self.exclude_furnitures = exclude_furnitures
         
         # Load the metadata
         self.metadata_interface: MetadataInterface = None
@@ -313,6 +315,11 @@ class PerceptionSim(Perception):
 
         # Iterate through furniture to rec dict and populate the graph
         for furniture_sim_handle in self.fur_obj_handle_to_recs:
+            if furniture_sim_handle in self.exclude_furnitures:
+                logger.warning(
+                    f"Furniture with handle {furniture_sim_handle} is excluded from the graph."
+                )
+                continue
             fur_obj = sutils.get_obj_from_handle(self.sim, furniture_sim_handle)
             # Get furniture type using metadata
             furniture_type = self.get_furniture_property_from_metadata(
@@ -844,6 +851,7 @@ class PerceptionSim(Perception):
             # this object does not match a Receptacle or floor, check that it corresponds to a room
             # if it does then add object to the floor of that room
             # NOTE: objects need to have a furniture associated with them and Floor inherits from Furniture
+            room_name = "?"
             if rec_handle in self.region_id_to_name:
                 room_name = self.region_id_to_name[rec_handle]
                 floor_node = self.gt_graph.get_node_from_name(f"floor_{room_name}")
