@@ -385,7 +385,10 @@ class PerceptionSim(Perception):
         # Iterate through additional furnitures (with no receptacles)
         for furniture_hash in self.additional_furnitures:
             rigid_object_manager = self.sim.get_rigid_object_manager()
-            furniture_sim_handles  = rigid_object_manager.get_object_handles(furniture_hash)
+            articulated_object_manager = self.sim.get_articulated_object_manager()
+            # furniture_sim_handles  = rigid_object_manager.get_object_handles(furniture_hash)
+            furniture_sim_handles = rigid_object_manager.get_object_handles(furniture_hash) + articulated_object_manager.get_object_handles(furniture_hash)
+            furniture_sim_handles = set(furniture_sim_handles)
             
             for furniture_sim_handle in furniture_sim_handles:
                 
