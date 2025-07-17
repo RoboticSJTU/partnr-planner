@@ -23,7 +23,18 @@ from habitat_llm.sims.metadata_interface import (
     MetadataInterface,
     get_metadata_dict_from_config,
 )
-from habitat_llm.world_model.object_states import ObjectIsClean, ObjectIsFilled
+from habitat_llm.world_model.object_states import (
+    ObjectIsClean,
+    ObjectIsFilled,
+    ObjectIsHeated,
+    ObjectIsLightOn,
+    ObjectIsTimerSet,
+    ObjectRequireWaterToClean,
+    ObjectIsCleaningTool,
+    ObjectIsHeatingDevice,
+    ObjectHasFaucet,
+    ObjectCanBeOpened,
+    ObjectIsOpened)
 
 if TYPE_CHECKING:
     import habitat
@@ -61,9 +72,53 @@ def initialize_object_state_machine(
     power_state.accepted_semantic_classes = metadata_interface.affordance_info[
         "turned on or off"
     ]
+
+    heat_state = ObjectIsHeated()
+    heat_state.accepted_semantic_classes = metadata_interface.affordance_info[
+        "can be heated"
+        ]
+
+    lightened_state = ObjectIsLightOn()
+    lightened_state.accepted_semantic_classes = metadata_interface.affordance_info[
+        "can be lightened"
+        ]
+       
+    timered_state = ObjectIsTimerSet()
+    timered_state.accepted_semantic_classes = metadata_interface.affordance_info[
+        "can be set with a timer"
+        ]
+    
     requires_faucet = metadata_interface.affordance_info[
         "cleaned under a faucet if dirty"
-    ]
+        ]
+
+    required_water_to_clean_state = ObjectRequireWaterToClean()
+    required_water_to_clean_state.accepted_semantic_classes = requires_faucet
+
+    is_cleaning_tool_state = ObjectIsCleaningTool()
+    is_cleaning_tool_state.accepted_semantic_classes = metadata_interface.affordance_info[
+        "can be used as a cleaning tool"
+        ]
+
+    is_heating_device_state = ObjectIsHeatingDevice()
+    is_heating_device_state.accepted_semantic_classes = metadata_interface.affordance_info[
+        "can be used to heat something"
+        ]
+
+    open_state = ObjectCanBeOpened()
+    open_state.accepted_semantic_classes = metadata_interface.affordance_info[
+        "is opened or closed"
+        ]
+
+    has_faucet_state = ObjectHasFaucet()
+    has_faucet_state.accepted_semantic_classes = metadata_interface.affordance_info[
+        "has a faucet"
+        ]
+
+    can_be_opened_state = ObjectCanBeOpened()
+    can_be_opened_state.accepted_semantic_classes = metadata_interface.affordance_info[
+        "can be opened or closed"
+        ]
     clean_state = ObjectIsClean()
     clean_state.accepted_semantic_classes = (
         metadata_interface.affordance_info["cleaned with a brush if dirty"]
@@ -73,8 +128,20 @@ def initialize_object_state_machine(
     filled_state = ObjectIsFilled()
     filled_state.accepted_semantic_classes = metadata_interface.affordance_info[
         "filled with water"
-    ]
-    active_states = [power_state, clean_state, filled_state]
+        ]
+    active_states = [
+        power_state,
+        clean_state,
+        filled_state,
+        lightened_state,
+        heat_state,
+        timered_state,
+        is_cleaning_tool_state,
+        required_water_to_clean_state,
+        is_heating_device_state,
+        has_faucet_state,
+        open_state,
+        can_be_opened_state,]
     object_state_machine = ObjectStateMachine(active_states=active_states)
     object_state_machine.initialize_object_state_map(sim)
     return object_state_machine
