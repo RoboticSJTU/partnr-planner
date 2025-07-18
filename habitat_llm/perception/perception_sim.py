@@ -60,11 +60,14 @@ class PerceptionSim(Perception):
         detectors=None,
         additional_furnitures: List[str] = [],
         exclude_furnitures: List[str] = [],
+        renamed_furnitures: Dict[str, str] = {},
     ):
         # Call base class constructor
         super().__init__(detectors)
+        # AHAT
         self.additional_furnitures = additional_furnitures
         self.exclude_furnitures = exclude_furnitures
+        self.renamed_furnitures = renamed_furnitures
         
         # Load the metadata
         self.metadata_interface: MetadataInterface = None
@@ -437,6 +440,23 @@ class PerceptionSim(Perception):
 
                 # DEBUG PRINT
                 logger.debug(f"Added additional furniture {furniture_name} to room {room_name} with handle {furniture_sim_handle} to the graph.")
+        
+        # AHAT, rename selected furnitures
+        fur_nodes = self.gt_graph.get_all_furnitures()
+        fur_names = [fur_node.name for fur_node in fur_nodes]
+        fur_handles = [fur_node.sim_handle for fur_node in fur_nodes]
+        for fur_handle, new_name in self.renamed_furnitures.items():
+            if fur_handle in fur_handles:
+                if new_name not in fur_names:
+                    fur = self.gt_graph.get_node_from_sim_handle(fur_handle)
+                    fur.name = new_name
+                    fur = self.gt_graph.get_node_from_sim_handle(fur_handle)
+                    logger.info(f"The furniture node with handle: {fur_handle} changes its name to {new_name}.")
+                else:
+                    logger.info(f"The furniture node with handle: {fur_handle} failed due to duplicated names")
+            else:
+                logger.info(f"The furniture node with handle: {fur_handle} is not in current world graph")
+        
         # Confirm that the gt graph is not empty
         if self.gt_graph.is_empty():
             raise ValueError(
