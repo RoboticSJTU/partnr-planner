@@ -162,35 +162,35 @@ class ObjectIsHeatingDevice(BooleanObjectState):
         return True
     
 
-class ObjectHasFaucet(BooleanObjectState):
-    """
-    ObjectHasFaucet state specifies whether an object have faucet or not.
-    """
+# class ObjectHasFaucet(BooleanObjectState):
+#     """
+#     ObjectHasFaucet state specifies whether an object have faucet or not.
+#     """
 
-    def __init__(self):
-        super().__init__()
-        self.name = "has_faucet"
-        self.display_name = "Has Faucet"
-        self.display_name_true = "has faucet"
-        self.display_name_false = "not have any faucet"
-        self.accepted_semantic_classes = []
+#     def __init__(self):
+#         super().__init__()
+#         self.name = "has_faucet"
+#         self.display_name = "Has Faucet"
+#         self.display_name_true = "has faucet"
+#         self.display_name_false = "not have any faucet"
+#         self.accepted_semantic_classes = []
 
-    def default_value(self) -> bool:
-        return True
+#     def default_value(self) -> bool:
+#         return True
     
 
-class ObjectCanBeOpened(BooleanObjectState):
-    """
-    ObjectCanBeOpened state specifies whether an object can be opened or not.
-    """
+# class ObjectCanBeOpened(BooleanObjectState):
+#     """
+#     ObjectCanBeOpened state specifies whether an object can be opened or not.
+#     """
 
-    def __init__(self):
-        super().__init__()
-        self.name = "can_be_opened"
-        self.display_name = "Can Be Opened"
-        self.display_name_true = "can be opened"
-        self.display_name_false = "cannot be opened"
-        self.accepted_semantic_classes = []
+#     def __init__(self):
+#         super().__init__()
+#         self.name = "can_be_opened"
+#         self.display_name = "Can Be Opened"
+#         self.display_name_true = "can be opened"
+#         self.display_name_false = "cannot be opened"
+#         self.accepted_semantic_classes = []
 
-    def default_value(self) -> bool:
-        return True
+#     def default_value(self) -> bool:
+#         return True

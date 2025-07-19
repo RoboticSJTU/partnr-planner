@@ -60,14 +60,14 @@ class PerceptionSim(Perception):
         detectors=None,
         additional_furnitures: List[str] = [],
         exclude_furnitures: List[str] = [],
-        renamed_furnitures: Dict[str, str] = {},
+        wg_post_processing: Dict[str, str] = {},
     ):
         # Call base class constructor
         super().__init__(detectors)
         # AHAT
         self.additional_furnitures = additional_furnitures
         self.exclude_furnitures = exclude_furnitures
-        self.renamed_furnitures = renamed_furnitures
+        self.post_processing_info = wg_post_processing
         
         # Load the metadata
         self.metadata_interface: MetadataInterface = None
@@ -112,6 +112,9 @@ class PerceptionSim(Perception):
         # Add agents to the graph
         # This together with the above command completes the scene initialization.
         self.add_agents_to_gt_graph()
+
+        # AHAT
+        self.post_processing()
 
         # Cache of receptacle names containing objects.
         self._obj_to_rec_cache: Dict[str, str] = {}
@@ -440,23 +443,7 @@ class PerceptionSim(Perception):
 
                 # DEBUG PRINT
                 logger.debug(f"Added additional furniture {furniture_name} to room {room_name} with handle {furniture_sim_handle} to the graph.")
-        
-        # AHAT, rename selected furnitures
-        fur_nodes = self.gt_graph.get_all_furnitures()
-        fur_names = [fur_node.name for fur_node in fur_nodes]
-        fur_handles = [fur_node.sim_handle for fur_node in fur_nodes]
-        for fur_handle, new_name in self.renamed_furnitures.items():
-            if fur_handle in fur_handles:
-                if new_name not in fur_names:
-                    fur = self.gt_graph.get_node_from_sim_handle(fur_handle)
-                    fur.name = new_name
-                    fur = self.gt_graph.get_node_from_sim_handle(fur_handle)
-                    logger.info(f"The furniture node with handle: {fur_handle} changes its name to {new_name}.")
-                else:
-                    logger.info(f"The furniture node with handle: {fur_handle} failed due to duplicated names")
-            else:
-                logger.info(f"The furniture node with handle: {fur_handle} is not in current world graph")
-        
+               
         # Confirm that the gt graph is not empty
         if self.gt_graph.is_empty():
             raise ValueError(
@@ -913,3 +900,70 @@ class PerceptionSim(Perception):
             return None
         # return the best match
         return recs[0]
+
+    def post_processing(self):
+        self.add_obj_fur_spatial_relation()
+        self.mute_furniture_in_wg(self.post_processing_info["muted"])
+        self.remove_unknown_rooms()
+        self.rename_fur(self.post_processing_info["rename"])
+        self.fur_state_reset()
+        self.change_state(self.post_processing_info["change_in_state"])
+
+    def add_obj_fur_spatial_relation(self):
+        "add affordance `need_open_b4_use` to states based on its spatial relationship with its furniture."
+        # NOTE: this function is typically for AHAT use.
+        obj_in_wg = self.gt_graph.get_all_objects()
+        for obj in obj_in_wg:
+            obj.properties["states"]["need_open_b4_use"] = False
+            for rec in self.gt_graph.graph[obj]:
+                if isinstance(rec, Receptacle):
+                    if rec.properties["type"] == "within":
+                        obj.properties["states"]["need_open_b4_use"] = True
+                        break
+    
+    def mute_furniture_in_wg(self, muted_list):
+        fur_in_wg = self.gt_graph.get_all_furnitures()
+        for fur in fur_in_wg:
+            if fur.sim_handle in muted_list:
+                self.gt_graph.remove_node(fur)
+
+    def remove_unknown_rooms(self):
+        room_in_wg = self.gt_graph.get_all_rooms()
+        # remove unkown rooms
+        for room in room_in_wg:
+            if "unknown" in room.name:
+                self.gt_graph.remove_node(room)
+
+    def rename_fur(self, renamed_furnitures):
+
+        # AHAT, rename selected furnitures
+        fur_nodes = self.gt_graph.get_all_furnitures()
+        fur_names = [fur_node.name for fur_node in fur_nodes]
+        fur_handles = [fur_node.sim_handle for fur_node in fur_nodes]
+        for fur_handle, new_name in renamed_furnitures.items():
+            if fur_handle in fur_handles:
+                if new_name not in fur_names:
+                    fur = self.gt_graph.get_node_from_sim_handle(fur_handle)
+                    fur.name = new_name
+                    logger.info(f"The furniture node with handle: {fur_handle} changes its name to {new_name}.")
+                else:
+                    logger.info(f"The furniture node with handle: {fur_handle} failed due to duplicated names")
+            else:
+                logger.info(f"The furniture node with handle: {fur_handle} is not in current world graph")
+    
+    def change_state(self, change_state_dict):
+        for handle, update_states in change_state_dict.items():
+            obj_fur = self.gt_graph.get_node_from_sim_handle(handle)
+            obj_fur.properties["states"].update(update_states)
+            obj_fur = obj_fur = self.gt_graph.get_node_from_sim_handle(handle)
+
+    # AHAT set state methods, we add a state indicates the existence of faucet
+    def fur_state_reset(self):
+        furs = self.gt_graph.get_all_furnitures()
+        for fur in furs:
+            if "states" in fur.properties:
+                if_has_faucet = "faucet" in fur.properties.get("components", [])
+                fur.properties["states"]["has_faucet"] = if_has_faucet
+                if_can_be_opened = fur.properties.get("is_articulated")
+                fur.properties["states"]["can_be_opened"] = if_can_be_opened
+                fur.properties["states"]["is_opened"] = False

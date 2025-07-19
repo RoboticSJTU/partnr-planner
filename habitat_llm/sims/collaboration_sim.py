@@ -32,8 +32,8 @@ from habitat_llm.world_model.object_states import (
     ObjectRequireWaterToClean,
     ObjectIsCleaningTool,
     ObjectIsHeatingDevice,
-    ObjectHasFaucet,
-    ObjectCanBeOpened,
+    # ObjectHasFaucet,
+    # ObjectCanBeOpened,
     ObjectIsOpened)
 
 if TYPE_CHECKING:
@@ -105,20 +105,20 @@ def initialize_object_state_machine(
         "can be used to heat something"
         ]
 
-    open_state = ObjectCanBeOpened()
-    open_state.accepted_semantic_classes = metadata_interface.affordance_info[
-        "is opened or closed"
-        ]
+    # open_state = ObjectIsOpened()
+    # open_state.accepted_semantic_classes = metadata_interface.affordance_info[
+    #     "is opened or closed"
+    #     ]
 
-    has_faucet_state = ObjectHasFaucet()
-    has_faucet_state.accepted_semantic_classes = metadata_interface.affordance_info[
-        "has a faucet"
-        ]
+    # has_faucet_state = ObjectHasFaucet()
+    # has_faucet_state.accepted_semantic_classes = metadata_interface.affordance_info[
+    #     "has a faucet"
+    #     ]
 
-    can_be_opened_state = ObjectCanBeOpened()
-    can_be_opened_state.accepted_semantic_classes = metadata_interface.affordance_info[
-        "can be opened or closed"
-        ]
+    # can_be_opened_state = ObjectCanBeOpened()
+    # can_be_opened_state.accepted_semantic_classes = metadata_interface.affordance_info[
+    #     "can be opened or closed"
+    #     ]
     clean_state = ObjectIsClean()
     clean_state.accepted_semantic_classes = (
         metadata_interface.affordance_info["cleaned with a brush if dirty"]
@@ -139,9 +139,10 @@ def initialize_object_state_machine(
         is_cleaning_tool_state,
         required_water_to_clean_state,
         is_heating_device_state,
-        has_faucet_state,
-        open_state,
-        can_be_opened_state,]
+        # has_faucet_state,
+        # open_state,
+        # can_be_opened_state,
+        ]
     object_state_machine = ObjectStateMachine(active_states=active_states)
     object_state_machine.initialize_object_state_map(sim)
     return object_state_machine
@@ -183,7 +184,11 @@ class CollaborationSim(RearrangeSim):
         # Load initial states from the episode info
         for state_name, handle_value_map in ep_info.object_states.items():
             for handle, value in handle_value_map.items():
+                # print(handle)
+                # try:
                 set_state_of_obj(get_obj_from_handle(self, handle), state_name, value)
+                # except: 
+                #     print(handle,"-------")
 
     def reconfigure(
         self, config: "DictConfig", ep_info: "CollaborationEpisode"

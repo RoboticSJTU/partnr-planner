@@ -56,7 +56,7 @@ class EnvironmentInterface:
         self, conf, dataset=None, init_wg=True, init_env=True, gym_habitat_env=None,
         additional_furnitures=[],
         exclude_furnitures=[],
-        renamed_furnitures={}
+        wg_post_processing={}
     ):
         #AHAT
         # 注意：
@@ -66,7 +66,7 @@ class EnvironmentInterface:
         # 这个不一致性很糟糕，但是目前的实现就是这样。
         self.additional_furnitures = additional_furnitures
         self.exclude_furnitures = exclude_furnitures
-        self.renamed_furnitures = renamed_furnitures
+        self.wg_post_processing = wg_post_processing
         
         if init_env:
             self.env = habitat.registry.get_env("GymHabitatEnv")(
@@ -163,13 +163,13 @@ class EnvironmentInterface:
                 self.metadata_dict,
                 additional_furnitures=self.additional_furnitures,
                 exclude_furnitures=self.exclude_furnitures,
-                renamed_furnitures=self.renamed_furnitures)
+                wg_post_processing=self.wg_post_processing)
         else:
             self.perception = PerceptionObs(
                 self.sim, self.metadata_dict,
                 additional_furnitures=self.additional_furnitures,
                 exclude_furnitures=self.exclude_furnitures,
-                renamed_furnitures=self.renamed_furnitures)
+                wg_post_processing=self.wg_post_processing)
         # Set the partial observability flag
         self.partial_obs = self.conf.world_model.partial_obs
 
