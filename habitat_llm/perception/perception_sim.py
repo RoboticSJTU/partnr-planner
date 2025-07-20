@@ -923,9 +923,20 @@ class PerceptionSim(Perception):
     
     def mute_furniture_in_wg(self, muted_list):
         fur_in_wg = self.gt_graph.get_all_furnitures()
+        candidate_neighbors = []
         for fur in fur_in_wg:
             if fur.sim_handle in muted_list:
-                self.gt_graph.remove_node(fur)
+        #         neighbors = list(self.gt_graph.graph[fur].keys())
+        #         candidate_neighbors += [x for x in neighbors if type(x) in [Receptacle, Object]]
+        #         for neighbor in neighbors:
+        #             candidate_neighbors += list(self.gt_graph.graph[neighbor].keys())
+        # # candidate_neighbors = list(set(candidate_neighbors))
+        # print("_-------------------")
+        # print([x.name for x in candidate_neighbors])
+                # self.gt_graph = self.gt_graph.pop_node(fur)
+                # print("---- before", type(self.gt_graph))
+                self.gt_graph.pop_node(fur)
+                # print("---- after", type(self.gt_graph))
 
     def remove_unknown_rooms(self):
         room_in_wg = self.gt_graph.get_all_rooms()
@@ -966,4 +977,4 @@ class PerceptionSim(Perception):
                 fur.properties["states"]["has_faucet"] = if_has_faucet
                 if_can_be_opened = fur.properties.get("is_articulated")
                 fur.properties["states"]["can_be_opened"] = if_can_be_opened
-                fur.properties["states"]["is_opened"] = False
+                # fur.properties["states"]["is_opened"] = False
