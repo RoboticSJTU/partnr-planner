@@ -94,6 +94,7 @@ class Furniture(Entity):
         agent: ArticulatedAgentBase,
         grasp_mgr: RearrangeGraspManager = None,
         sample_region_scale: float = 1.0,
+        margin: float = 0.0,
     ) -> List[Tuple[mn.Vector3, mn.Quaternion]]:
         """
         Compute valid placement locations on this furniture.
@@ -114,21 +115,26 @@ class Furniture(Entity):
             agent=agent,
             grasp_mgr=grasp_mgr,
             sample_region_scale=sample_region_scale,
+            margin=margin,
         )
 
 
 def uniform_sample_on_furniture(sim, rec, sampled_scale=1.0, margin=0.0):
     # sample a position from rec.bounds
+    # print("sample scale", sampled_scale)
+    # print("margin", margin)
+    # print("rec_bounds: ", rec.bounds)
     scaled_region = mn.Range3D.from_center(
         rec.bounds.center(),
         (rec.bounds.size() / 2) * sampled_scale - mn.Vector3(margin, margin, margin),
     )
+    # print(f"scaled_region: {scaled_region}")
 
     # NOTE: does not scale the "up" direction
     # print("up_axis", rec.up_axis)
     sample_range = [scaled_region.min, scaled_region.max]
-    sample_range[0][rec.up_axis] = rec.bounds.min[rec.up_axis] + 0.03
-    sample_range[1][rec.up_axis] = rec.bounds.max[rec.up_axis] + 0.03
+    sample_range[0][rec.up_axis] = rec.bounds.max[rec.up_axis] + 0.01
+    sample_range[1][rec.up_axis] = rec.bounds.max[rec.up_axis] + 0.01
 
     local_pose = np.random.uniform(sample_range[0], sample_range[1])
     global_pose = rec.get_global_transform(sim).transform_point(local_pose)
@@ -273,9 +279,10 @@ def sample_position_on_furniture(
             support_obj_ids=[obj_id],
         )
 
-        if snap_success:
-            sampled_pos = grasp_mgr.snap_rigid_obj.translation
-        else:
+        # if snap_success:
+        #     sampled_pos = grasp_mgr.snap_rigid_obj.translation
+        # else:
+        if not snap_success:
             grasp_mgr.snap_rigid_obj.translation = cache_pos
             grasp_mgr.snap_rigid_obj.rotation = cache_rot
             continue

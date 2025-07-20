@@ -47,13 +47,14 @@ class Floor(Furniture):
 
     def sample_place_location(
         self,
-        spatial_relation: str | None,
+        spatial_relation: str,
         spatial_constraint: str | None,
-        reference_object: None | Object | Furniture,
+        reference_object: Object | None,
         env: "EnvironmentInterface",
         agent: ArticulatedAgentBase,
         grasp_mgr: RearrangeGraspManager = None,
         sample_region_scale: float = 1.0,
+        margin: float = 0.0,
     ) -> List[Tuple[mn.Vector3, mn.Quaternion]]:
         """
         Compute valid placement locations on this furniture.
