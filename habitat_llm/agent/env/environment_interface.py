@@ -157,6 +157,14 @@ class EnvironmentInterface:
         This method initializes perception and world graph
         """
         # Create instance of perception
+        
+        # # open
+        # for entity in world_graph.get_all_furnitures():
+        # if 'door' in entity.name:
+        #     break
+        # sutils.set_link_normalized_joint_position(sutils.get_obj_from_handle(sim, entity.sim_handle), 0, 1)
+        # self.sim.recompute_navmesh(self.sim.pathfinder, self.sim.pathfinder.nav_mesh_settings)
+        
         if self.perception_mode == "gt":
             self.perception = PerceptionSim(
                 self.sim,
@@ -170,6 +178,10 @@ class EnvironmentInterface:
                 additional_furnitures=self.additional_furnitures,
                 exclude_furnitures=self.exclude_furnitures,
                 wg_post_processing=self.wg_post_processing)
+            
+        # sutils.set_link_normalized_joint_position(sutils.get_obj_from_handle(sim, entity.sim_handle), 0, 0)
+            
+            
         # Set the partial observability flag
         self.partial_obs = self.conf.world_model.partial_obs
 
