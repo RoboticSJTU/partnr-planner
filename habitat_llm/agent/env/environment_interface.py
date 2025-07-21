@@ -30,6 +30,7 @@ from habitat_llm.sims.metadata_interface import get_metadata_dict_from_config
 from habitat_llm.utils.core import separate_agent_idx
 
 # LOCAL
+import habitat.sims.habitat_simulator.sim_utilities as sutils
 from habitat_llm.world_model import DynamicWorldGraph, WorldGraph
 
 if hasattr(torch, "inference_mode"):
@@ -162,8 +163,8 @@ class EnvironmentInterface:
         # for entity in world_graph.get_all_furnitures():
         # if 'door' in entity.name:
         #     break
-        # sutils.set_link_normalized_joint_position(sutils.get_obj_from_handle(sim, entity.sim_handle), 0, 1)
-        # self.sim.recompute_navmesh(self.sim.pathfinder, self.sim.pathfinder.nav_mesh_settings)
+        sutils.set_link_normalized_joint_position(sutils.get_obj_from_handle(self.sim, "200-3_:0000"), 0, 1)
+        self.sim.recompute_navmesh(self.sim.pathfinder, self.sim.pathfinder.nav_mesh_settings)
         
         if self.perception_mode == "gt":
             self.perception = PerceptionSim(
@@ -179,7 +180,7 @@ class EnvironmentInterface:
                 exclude_furnitures=self.exclude_furnitures,
                 wg_post_processing=self.wg_post_processing)
             
-        # sutils.set_link_normalized_joint_position(sutils.get_obj_from_handle(sim, entity.sim_handle), 0, 0)
+        sutils.set_link_normalized_joint_position(sutils.get_obj_from_handle(self.sim, "200-3_:0000"), 0, 1)
             
             
         # Set the partial observability flag
